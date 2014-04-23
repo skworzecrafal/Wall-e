@@ -147,7 +147,7 @@ void Reshape(int width, int height)
 	
 }
 
-// obs³uga klawiatury rgerhtwert
+// obs³uga klawiatury rgerhtw214564
 
 void Keyboard(unsigned char key, int x, int y)
 {
