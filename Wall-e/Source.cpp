@@ -4,6 +4,7 @@
 #include <GL\glu.h>
 #include <Windows.h>
 #include "robot.h"
+#include "Robo_AI.h"
 
 
 
@@ -244,7 +245,15 @@ void SpecialKeys(int key, int x, int y)
 
 int main(int argc, char * argv[])
 {
+	////////////////////
+	mclInitializeApplication(NULL, 0);
+	RobotSI1Initialize();
+	/////////////////////////////  
 
+	char path[] = "C:\\Users\\Rafal.Rafal\\Desktop\\robotSugeno.fis";
+	double *ret;
+	ret = RobotScripts::Dodge(0, 1023, 0, path);
+	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
@@ -274,6 +283,8 @@ int main(int argc, char * argv[])
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
+	RobotSI1Terminate();
+	mclTerminateApplication();
 
 	return 0;
 }
