@@ -6,7 +6,6 @@
 #include "robot.h"
 #include "Robo_AI.h"
 
-
 char path[] = "C:\\Users\\Rafal.Rafal\\Desktop\\robotSugeno.fis";
 double *ret;
 
