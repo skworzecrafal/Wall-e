@@ -6,6 +6,8 @@
 #include "robot.h"
 
 
+
+
 int obrotL = 0;
 int obrotR = 0;
 int kierunek = 0;
