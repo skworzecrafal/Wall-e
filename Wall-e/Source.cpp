@@ -7,7 +7,8 @@
 #include "Robo_AI.h"
 
 
-
+char path[] = "C:\\Users\\Rafal.Rafal\\Desktop\\robotSugeno.fis";
+double *ret;
 
 int obrotL = 0;
 int obrotR = 0;
@@ -84,6 +85,8 @@ void Display()
 
 void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 {
+	ret = Robo_AI::Dodge(0, 1023, 0, path);
+	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	if (krokL >= 0)
 	{
 		obrotL += krokL;
@@ -250,8 +253,7 @@ int main(int argc, char * argv[])
 	RobotSI1Initialize();
 	/////////////////////////////  
 
-	char path[] = "C:\\Users\\Rafal.Rafal\\Desktop\\robotSugeno.fis";
-	double *ret;
+	
 	ret = Robo_AI::Dodge(0, 1023, 0, path);
 	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
