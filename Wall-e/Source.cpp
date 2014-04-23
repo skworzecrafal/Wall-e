@@ -159,7 +159,7 @@ void Keyboard(unsigned char key, int x, int y)
 		// klawisz -
 	if (key == '-' && scale > 0.1)
 		scale -= 0.1;
-
+	 
 	if (key == 'q')
 	{
 		if (krokL != 10)
