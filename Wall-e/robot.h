@@ -85,20 +85,20 @@ void gasienica(int obrot)
 	glEnd();
 	
 	//TASMA:
-	int liczKol = 8-obrot;
+	int liczKol = 16-obrot;
 	int color = 1;
 	glColor3f(1.0, 0, 0);
 	float wsp = wspSr[0][X];
 	glBegin(GL_QUAD_STRIP);
 	while (wsp<=wspSr[1][X])
 	{
-		if (color==1 && liczKol==8)
+		if (color==1 && liczKol==16)
 		{
 			glColor3f(1, 0, 0);
 			color = 0;
 			liczKol = 0;
 		}
-		if (color == 0 && liczKol == 8)
+		if (color == 0 && liczKol == 16)
 		{
 			glColor3f(0, 1, 0);
 			color = 1;
@@ -112,13 +112,13 @@ void gasienica(int obrot)
 	angle = -85;
 	while (angle <= 60 )
 	{
-		if (color == 1 && liczKol == 8)
+		if (color == 1 && liczKol == 16)
 		{
 			glColor3f(1, 0, 0);
 			color = 0;
 			liczKol = 0;
 		}
-		if (color == 0 && liczKol == 8)
+		if (color == 0 && liczKol == 16)
 		{
 			glColor3f(0, 1, 0);
 			color = 1;
@@ -134,13 +134,13 @@ void gasienica(int obrot)
 	wsp = wspPkt[1][X] - skokUksos;
 	while (wsp >= wspPkt[2][X])
 	{
-		if (color == 1 && liczKol == 8)
+		if (color == 1 && liczKol == 16)
 		{
 			glColor3f(1, 0, 0);
 			color = 0;
 			liczKol = 0;
 		}
-		if (color == 0 && liczKol == 8)
+		if (color == 0 && liczKol == 16)
 		{
 			glColor3f(0, 1, 0);
 			color = 1;
@@ -154,13 +154,13 @@ void gasienica(int obrot)
 	angle = 65;
 	while (angle <= 120 )
 	{
-		if (color == 1 && liczKol == 8)
+		if (color == 1 && liczKol == 16)
 		{
 			glColor3f(1, 0, 0);
 			color = 0;
 			liczKol = 0;
 		}
-		if (color == 0 && liczKol == 8)
+		if (color == 0 && liczKol == 16)
 		{
 			glColor3f(0, 1, 0);
 			color = 1;
@@ -175,13 +175,13 @@ void gasienica(int obrot)
 	wsp = wspPkt[3][X] - skokUksos;
 	while (wsp >= wspPkt[0][X])
 	{
-		if (color == 1 && liczKol == 8)
+		if (color == 1 && liczKol == 16)
 		{
 			glColor3f(1, 0, 0);
 			color = 0;
 			liczKol = 0;
 		}
-		if (color == 0 && liczKol == 8)
+		if (color == 0 && liczKol == 16)
 		{
 			glColor3f(0, 1, 0);
 			color = 1;
@@ -195,13 +195,13 @@ void gasienica(int obrot)
 	angle = 125;
 	while ( angle <= 270 )
 	{
-		if (color == 1 && liczKol == 8)
+		if (color == 1 && liczKol == 16)
 		{
 			glColor3f(1, 0, 0);
 			color = 0;
 			liczKol = 0;
 		}
-		if (color == 0 && liczKol == 8)
+		if (color == 0 && liczKol == 16)
 		{
 			glColor3f(0, 1, 0);
 			color = 1;

@@ -90,26 +90,26 @@ void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 	if (krokL >= 0)
 	{
 		obrotL += krokL;
-		if (obrotL > 15)
+		if (obrotL > 19)
 			obrotL = 0;
 	}
 	else
 	{
 		obrotL += krokL;
 		if (obrotL < 0)
-			obrotL = 15;
+			obrotL = 19;
 	}
 	if (krokR >= 0)
 	{
 		obrotR += krokR;
-		if (obrotR > 15)
+		if (obrotR > 19)
 			obrotR = 0;
 	}
 	else
 	{
 		obrotR += krokR;
 		if (obrotR < 0)
-			obrotR = 15;
+			obrotR = 19;
 	}
 	Display();
 }
@@ -162,7 +162,7 @@ void Keyboard(unsigned char key, int x, int y)
 
 	if (key == 'q')
 	{
-		if (krokL != 7)
+		if (krokL != 10)
 		{
 			krokL ++;
 		}
@@ -170,7 +170,7 @@ void Keyboard(unsigned char key, int x, int y)
 
 	if (key == 'a')
 	{
-		if (krokL !=-7)
+		if (krokL !=-10)
 		{
 			krokL--;
 		}
@@ -186,7 +186,7 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 	if (key == 'w')
 	{
-		if (krokR != 7)
+		if (krokR != 10)
 		{
 			krokR++;
 		}
@@ -194,7 +194,7 @@ void Keyboard(unsigned char key, int x, int y)
 
 	if (key == 's')
 	{
-		if (krokR != -7)
+		if (krokR != -10)
 		{
 			krokR--;
 		}
