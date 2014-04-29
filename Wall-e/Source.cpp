@@ -1,12 +1,12 @@
 #include <stdlib.h>
-#include <GL/glut.h>
+#include <GL\glut.h>
 #include <GL\gl.h>
 #include <GL\glu.h>
 #include <Windows.h>
 #include "robot.h"
 #include "Robo_AI.h"
 
-char path[] = "C:\\Users\\Rafal.Rafal\\Desktop\\robotSugeno.fis";
+char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
 int obrotL = 0;
@@ -89,26 +89,26 @@ void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 	if (krokL >= 0)
 	{
 		obrotL += krokL;
-		if (obrotL > 19)
-			obrotL = 0;
+		if (obrotL > 31)
+			obrotL = obrotL % 32;
 	}
 	else
 	{
 		obrotL += krokL;
 		if (obrotL < 0)
-			obrotL = 19;
+			obrotL = 31 + obrotL;
 	}
 	if (krokR >= 0)
 	{
 		obrotR += krokR;
-		if (obrotR > 19)
-			obrotR = 0;
+		if (obrotR > 31)
+			obrotR = obrotR % 32;
 	}
 	else
 	{
 		obrotR += krokR;
 		if (obrotR < 0)
-			obrotR = 19;
+			obrotR = 31 + obrotR;
 	}
 	Display();
 }
