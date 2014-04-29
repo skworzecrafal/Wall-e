@@ -26,7 +26,7 @@ void gasienica(int obrot)
 	float skok = (wspSr[1][X] - wspSr[0][X]) / roundf((wspSr[1][X] - wspSr[0][X]) / (kat / 180.0 * M_PI));
 	float ilosc = sqrtf(pow((wspPkt[2][Y] - wspPkt[1][Y]), 2) + pow((wspPkt[2][X] - wspPkt[1][X]), 2))/skok;
 	float skokUksos = (wspPkt[1][X] - wspPkt[2][X])/ilosc;
-	float grubosc = 1.5;
+	float grubosc = 2;
 	//PRZOD:
 	glColor3d(0.9, 0.3, 0);
 
@@ -279,7 +279,7 @@ void ramie(double r1, double r2, double h, double d)
 	//prawa strona
 	double angle, x, y;
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3d(1, 0, 0);
+	glColor3d(0, 0, 1);
 	glVertex3d(d, 0.0f, 0.0f);
 	for (angle = 0.0f; angle <= (M_PI); angle += (M_PI / 8.0f))
 	{
@@ -309,7 +309,7 @@ void ramie(double r1, double r2, double h, double d)
 
 	//lewa strona
 
-	glColor3d(0, 1, 0);
+	//glColor3d(0, 1, 0);
 	glBegin(GL_TRIANGLE_FAN);
 	glVertex3d(0.0f, 0.0f, 0.0f);
 	for (angle = M_PI; angle <= (2 * M_PI); angle += (M_PI / 8.0f))
@@ -339,7 +339,7 @@ void ramie(double r1, double r2, double h, double d)
 	glEnd();
 
 	glBegin(GL_QUADS);
-	glColor3d(0, 0, 1);
+	//glColor3d(0, 0, 1);
 	glVertex3d(0, r1, 0);
 	glVertex3d(0, r1, h);
 	glVertex3d(d, r2, h);
@@ -419,11 +419,11 @@ void figura1(float a, float b, float c)
 
 void robot(int obrotL, int obrotR)
 {
-	float rozstaw = 6;
+	float rozstaw = 10;
 
 	glPushMatrix();
 	glTranslatef(-7.5, 2, rozstaw / 2);
-	figura1(15, 10, rozstaw);
+	figura1(15, 12, rozstaw);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -432,7 +432,32 @@ void robot(int obrotL, int obrotR)
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0, 0, rozstaw / 2 + 1.5);
+	glTranslatef(0, 0, rozstaw / 2 + 2);
 	gasienica(obrotL);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0, 11, rozstaw / 2 + 0.6 );
+	glColor3f(1, 0, 0);
+	gluSphere(obj, 2, 20, 10);
+	glTranslatef(0,0,-0.5);
+	glRotatef(180, 0, 0, 1);
+	ramie(1.5, 1.25, 1, 5);
+	glTranslatef(5, 0, 0);
+	ramie(1.25, 0.8, 1, 7);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0, 11, -rozstaw / 2 - 0.6);
+	glColor3f(1, 0, 0);
+	gluSphere(obj, 2, 20, 10);
+	glTranslatef(0, 0, -0.5);
+	glRotatef(180, 0, 0, 1);
+	glRotatef(60, 0, 1, 0);
+	glRotatef(-10, 0, 0, 1);
+	ramie(1.5, 1.25, 1, 5);
+	glTranslatef(5, 0, 0);
+	glRotatef(-45, 0, 0, 1);
+	ramie(1.25, 0.8, 1, 7);
 	glPopMatrix();
 }
