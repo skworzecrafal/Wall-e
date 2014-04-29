@@ -6,7 +6,6 @@
 #include "robot.h"
 #include "Robo_AI.h"
 
-
 char path[] = "C:\\Users\\Rafal.Rafal\\Desktop\\robotSugeno.fis";
 double *ret;
 
@@ -90,26 +89,26 @@ void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 	if (krokL >= 0)
 	{
 		obrotL += krokL;
-		if (obrotL > 19)
-			obrotL = 0;
+		if (obrotL > 31)
+			obrotL = obrotL % 32;
 	}
 	else
 	{
 		obrotL += krokL;
 		if (obrotL < 0)
-			obrotL = 19;
+			obrotL = 31 + obrotL;
 	}
 	if (krokR >= 0)
 	{
 		obrotR += krokR;
-		if (obrotR > 19)
-			obrotR = 0;
+		if (obrotR > 31)
+			obrotR = obrotR % 32;
 	}
 	else
 	{
 		obrotR += krokR;
 		if (obrotR < 0)
-			obrotR = 19;
+			obrotR = 31 + obrotR;
 	}
 	Display();
 }
@@ -147,7 +146,7 @@ void Reshape(int width, int height)
 	
 }
 
-// obs³uga klawiatury rgerhtw214564
+// obs³uga klawiatury i czegoœ tam
 
 void Keyboard(unsigned char key, int x, int y)
 {
