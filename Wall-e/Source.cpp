@@ -84,8 +84,8 @@ void Display()
 
 void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 {
-	ret = Robo_AI::Dodge(0, 1023, 0, path);
-	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
+	//ret = Robo_AI::Dodge(0, 1023, 0, path);
+	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	if (krokL >= 0)
 	{
 		obrotL += krokL;
@@ -248,13 +248,13 @@ void SpecialKeys(int key, int x, int y)
 int main(int argc, char * argv[])
 {
 	////////////////////
-	mclInitializeApplication(NULL, 0);
+	//mclInitializeApplication(NULL, 0);
 	RobotSI1Initialize();
 	/////////////////////////////  
 
 	
-	ret = Robo_AI::Dodge(0, 1023, 0, path);
-	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
+	//ret = Robo_AI::Dodge(0, 1023, 0, path);
+	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
@@ -284,8 +284,9 @@ int main(int argc, char * argv[])
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
+	///////////////////////////
 	RobotSI1Terminate();
 	mclTerminateApplication();
-
+	///////////////////////////
 	return 0;
 }
