@@ -84,15 +84,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="glWrap.cpp" />
     <ClCompile Include="Robo_AI.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="glVrap.h" />
+    <ClInclude Include="glWrap.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="robot.h" />
     <ClInclude Include="Robo_AI.h" />
-    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Wall-e.rc" />

@@ -5,6 +5,8 @@
 #include <Windows.h>
 #include "robot.h"
 #include "Robo_AI.h"
+#include "glWrap.h"
+
 
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
@@ -70,9 +72,9 @@ void Display()
 
 	//glPolygonMode(GL_BACK, GL_LINE);
 	// TU RYSOWAC::
-
+	glWrap::Axis();
 	robot(obrotL, obrotR);
-
+	
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
@@ -112,7 +114,6 @@ void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 	}
 	Display();
 }
-
 // zmiana wielkoœci okna
 void Reshape(int width, int height)
 {
@@ -145,9 +146,7 @@ void Reshape(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	
 }
-
 // obs³uga klawiatury r
-
 void Keyboard(unsigned char key, int x, int y)
 {
 	// klawisz +
@@ -211,10 +210,7 @@ void Keyboard(unsigned char key, int x, int y)
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
-
-
 // obs³uga klawiszy funkcyjnych i klawiszy kursora
-
 void SpecialKeys(int key, int x, int y)
 {
 	switch (key)
@@ -243,18 +239,16 @@ void SpecialKeys(int key, int x, int y)
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
-
-
 int main(int argc, char * argv[])
 {
 	////////////////////
-	//mclInitializeApplication(NULL, 0);
+	mclInitializeApplication(NULL, 0);
 	RobotSI1Initialize();
 	/////////////////////////////  
 
 	
-	//ret = Robo_AI::Dodge(0, 1023, 0, path);
-	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
+	ret = Robo_AI::Dodge(0, 1023, 0, path);
+	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
