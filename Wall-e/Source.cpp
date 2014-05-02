@@ -6,7 +6,7 @@
 #include "robot.h"
 #include "Robo_AI.h"
 #include "glWrap.h"
-
+#include "Vector3.h"
 
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
@@ -38,6 +38,10 @@ GLfloat scale = 1.0;
 
 GLfloat rotatex = 0.0;
 GLfloat rotatey = 0.0;
+GLfloat transx=0, transy=0, transz=0;
+int old_x=0;
+int old_y=0;
+int valid =0;
 
 // funkcja generuj¹ca scenê 3D
 
@@ -73,6 +77,7 @@ void Display()
 	//glPolygonMode(GL_BACK, GL_LINE);
 	// TU RYSOWAC::
 	glWrap::Axis();
+	glTranslatef(transx, transy, transz);
 	robot(obrotL, obrotR);
 	
 
@@ -86,8 +91,6 @@ void Display()
 
 void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 {
-	//ret = Robo_AI::Dodge(0, 1023, 0, path);
-	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	if (krokL >= 0)
 	{
 		obrotL += krokL;
@@ -220,15 +223,17 @@ void SpecialKeys(int key, int x, int y)
 		rotatey -= 3;
 		break;
 
+		// kursor w prawo
+	case GLUT_KEY_RIGHT:
+		rotatey += 3;
+		break;
+
 		// kursor w górê
 	case GLUT_KEY_UP:
 		rotatex -= 3;
 		break;
 
-		// kursor w prawo
-	case GLUT_KEY_RIGHT:
-		rotatey += 3;
-		break;
+	
 
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
@@ -238,6 +243,36 @@ void SpecialKeys(int key, int x, int y)
 
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+}
+void Mouse(int button, int state, int x, int y)
+{
+	switch (button)
+	{
+	case GLUT_LEFT_BUTTON:
+		old_x = x;
+		old_y = y;
+		valid = GLUT_UP;
+		break;
+	case GLUT_RIGHT_BUTTON :
+		break;
+	case GLUT_MIDDLE_BUTTON :
+		break;
+	default:
+		break;
+	}
+}
+void ActiveMouse(int x, int y)
+{
+	if (valid) {
+		
+		int dx = old_x - x;
+		int dy = old_y - y;
+		rotatex += dy/3;
+		rotatey += dx/3;
+		/* do something with dx and dy */
+	}
+	old_x = x;
+	old_y = y;
 }
 int main(int argc, char * argv[])
 {
@@ -271,6 +306,10 @@ int main(int argc, char * argv[])
 
 	// do³¹czenie funkcji obs³ugi klawiatury
 	glutKeyboardFunc(Keyboard);
+
+	// do³¹czenie ob³ugi myszki
+	glutMouseFunc(Mouse);
+	glutMotionFunc(ActiveMouse);
 
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
