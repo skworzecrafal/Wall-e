@@ -76,10 +76,13 @@ void Display()
 
 	//glPolygonMode(GL_BACK, GL_LINE);
 	// TU RYSOWAC::
+
+
 	glWrap::Axis();
-	glTranslatef(transx, transy, transz);
+	//glTranslatef(transx, transy, transz);
 	robot(obrotL, obrotR);
 	
+
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
@@ -267,8 +270,8 @@ void ActiveMouse(int x, int y)
 		
 		int dx = old_x - x;
 		int dy = old_y - y;
-		rotatex += dy/3;
-		rotatey += dx/3;
+		rotatex -= dy/2;
+		rotatey -= dx/2;
 		/* do something with dx and dy */
 	}
 	old_x = x;
@@ -310,7 +313,6 @@ int main(int argc, char * argv[])
 	// do³¹czenie ob³ugi myszki
 	glutMouseFunc(Mouse);
 	glutMotionFunc(ActiveMouse);
-
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
 

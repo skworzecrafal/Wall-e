@@ -9,11 +9,6 @@ glWrap::glWrap()
 glWrap::~glWrap()
 {
 }
-//template<class T>
-//void glWrap::LineOfPoints(std::vector < Vector3<T> Points)
-//{
-
-//}
 void glWrap::Axis()
 {
 	glBegin(GL_LINES);
