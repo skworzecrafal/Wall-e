@@ -7,7 +7,7 @@
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "Vector3.h"
-
+#include "Sensor.h" 
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
@@ -42,6 +42,9 @@ GLfloat transx=0, transy=0, transz=0;
 int old_x=0;
 int old_y=0;
 int valid =0;
+
+Vector3f A(0, 0, 0);
+Vector3f B(0, 10, 0);
 
 // funkcja generuj¹ca scenê 3D
 
@@ -80,8 +83,10 @@ void Display()
 
 	glWrap::Axis();
 	glTranslatef(transx, transy, transz);
-	robot(obrotL, obrotR);
-	glWrap::LineOfPoints(Vector3f(0, 0, 10), Vector3f(0, 10, 0));
+	//robot(obrotL, obrotR);
+	Sensor* a = new Sensor();
+	a->Draw();
+	glWrap::LineOfPoints(A, B);
 	
 
 
@@ -255,11 +260,21 @@ void Mouse(int button, int state, int x, int y)
 	case GLUT_LEFT_BUTTON:
 		old_x = x;
 		old_y = y;
+		B.x = x-400;
+		B.y = y-300;
+		std::cout <<"       "<< x-400 << "    " << y-300<<"\n";
+		B.y = -B.y;
 		valid = GLUT_UP;
 		break;
 	case GLUT_RIGHT_BUTTON :
 		break;
 	case GLUT_MIDDLE_BUTTON :
+		break;
+	case 3:
+		scale += 0.03;
+		break;
+	case 4:
+		scale -= 0.03;
 		break;
 	default:
 		break;

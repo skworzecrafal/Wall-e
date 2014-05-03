@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="glWrap.cpp" />
     <ClCompile Include="Robo_AI.cpp" />
+    <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +94,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="robot.h" />
     <ClInclude Include="Robo_AI.h" />
+    <ClInclude Include="Sensor.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>

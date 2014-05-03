@@ -31,6 +31,10 @@ struct Vector3f
 		this->y = y;
 		this->z = z;
 	}
+	Vector3f()
+	{
+		x = y = z = 0;
+	}
 };
 struct Vector3i
 {
@@ -46,6 +50,10 @@ struct Vector3i
 		this->x = x;
 		this->y = y;
 		this->z = z;
+	}
+	Vector3i()
+	{
+		x = y = z = 0;
 	}
 };
 
