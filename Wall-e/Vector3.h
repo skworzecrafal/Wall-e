@@ -16,5 +16,37 @@ public:
 	{
 	}
 };
+struct Vector3f
+{
+	float x, y, z;
+	Vector3f(float x, float y, float z)
+	{
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+	Vector3f(int x, int y, int z)
+	{
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+};
+struct Vector3i
+{
+	int x, y, z;
+	Vector3i(int x, int y, int z)
+	{
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+	Vector3i(float x, float y, float z)
+	{
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+};
 
 

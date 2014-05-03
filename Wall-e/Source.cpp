@@ -79,8 +79,9 @@ void Display()
 
 
 	glWrap::Axis();
-	//glTranslatef(transx, transy, transz);
+	glTranslatef(transx, transy, transz);
 	robot(obrotL, obrotR);
+	glWrap::LineOfPoints(Vector3f(0, 0, 10), Vector3f(0, 10, 0));
 	
 
 
@@ -285,8 +286,8 @@ int main(int argc, char * argv[])
 	/////////////////////////////  
 
 	
-	ret = Robo_AI::Dodge(0, 1023, 0, path);
-	std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
+	//ret = Robo_AI::Dodge(0, 1023, 0, path);
+	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
