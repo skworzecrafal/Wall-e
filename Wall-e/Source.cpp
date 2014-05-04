@@ -11,6 +11,10 @@
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
+
+Sensor* a = new Sensor();
+
+
 int obrotL = 0;
 int obrotR = 0;
 int kierunek = 0;
@@ -84,7 +88,7 @@ void Display()
 	glWrap::Axis();
 	glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
-	Sensor* a = new Sensor();
+
 	a->Draw();
 	glWrap::LineOfPoints(A, B);
 	
@@ -170,7 +174,7 @@ void Keyboard(unsigned char key, int x, int y)
 	if (key == '-' && scale > 0.1)
 		scale -= 0.1;
 
-	if (key == 'q')
+	/*if (key == 'q')
 	{
 		if (krokL != 10)
 		{
@@ -218,7 +222,33 @@ void Keyboard(unsigned char key, int x, int y)
 		if (krokR < 0)
 			krokR++;
 	}
-		
+		*/
+
+	switch (key)
+	{
+	case 'w':
+		a->Position.z -= 1;
+		break;
+	case 's':
+		a->Position.z += 1;
+		break;
+	case 'a':
+		a->Position.x -= 1;
+		break;
+	case 'd':
+		a->Position.x += 1;
+		break;
+	case 'q':
+		a->Rotation.y += 1;
+		break;
+	case 'e':
+		a->Rotation.y -= 1;
+		break;
+	case 27 :
+		exit(0);
+	default:
+		break;
+	}
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
@@ -229,24 +259,19 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		rotatey -= 3;
+		a->Translation.x -= 1;
 		break;
-
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		rotatey += 3;
+		a->Translation.x += 1;
 		break;
-
 		// kursor w górê
 	case GLUT_KEY_UP:
-		rotatex -= 3;
+		a->Translation.z -= 1;
 		break;
-
-	
-
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		rotatex += 3;
+		a->Translation.z += 1;
 		break;
 	}
 
@@ -296,8 +321,8 @@ void ActiveMouse(int x, int y)
 int main(int argc, char * argv[])
 {
 	////////////////////
-	mclInitializeApplication(NULL, 0);
-	RobotSI1Initialize();
+	//mclInitializeApplication(NULL, 0);
+	//RobotSI1Initialize();
 	/////////////////////////////  
 
 	
@@ -336,8 +361,8 @@ int main(int argc, char * argv[])
 	glutMainLoop();
 	KillTimer(NULL, 1);
 	///////////////////////////
-	RobotSI1Terminate();
-	mclTerminateApplication();
+	//RobotSI1Terminate();
+	//mclTerminateApplication();
 	///////////////////////////
 	return 0;
 }
