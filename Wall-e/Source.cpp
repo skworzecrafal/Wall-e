@@ -82,10 +82,11 @@ void Display()
 	glColor3f(0.0, 0.0, 0.0);
 
 	//glPolygonMode(GL_BACK, GL_LINE);
+
+
 	// TU RYSOWAC::
-
-
 	glWrap::Axis();
+	
 	glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
 
@@ -249,6 +250,7 @@ void Keyboard(unsigned char key, int x, int y)
 	default:
 		break;
 	}
+	std::cout << "DL: " << a->DownLeft.ToString()  << std::endl;
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
@@ -259,22 +261,21 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		a->Translation.x -= 1;
+		a->Origin.x -= 1;
 		break;
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		a->Translation.x += 1;
+		a->Origin.x += 1;
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
-		a->Translation.z -= 1;
+		a->Origin.z -= 1;
 		break;
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		a->Translation.z += 1;
+		a->Origin.z += 1;
 		break;
 	}
-
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
@@ -287,7 +288,6 @@ void Mouse(int button, int state, int x, int y)
 		old_y = y;
 		B.x = x-400;
 		B.y = y-300;
-		std::cout <<"       "<< x-400 << "    " << y-300<<"\n";
 		B.y = -B.y;
 		valid = GLUT_UP;
 		break;

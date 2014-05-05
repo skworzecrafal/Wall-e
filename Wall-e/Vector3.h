@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <string>
 template<typename T>class Vector3
 {
 public:
@@ -31,9 +33,17 @@ struct Vector3f
 		this->y = y;
 		this->z = z;
 	}
+	Vector3f operator + (const Vector3f &left)
+	{
+		return Vector3f(x + left.x, y + left.y, z + left.z);
+	}
 	Vector3f()
 	{
 		x = y = z = 0;
+	}
+	std::string ToString()
+	{
+		return std::string("x: "+std::to_string(x) +"y: "+ std::to_string(y) + "z: "+std::to_string(z));
 	}
 };
 struct Vector3i
@@ -56,5 +66,4 @@ struct Vector3i
 		x = y = z = 0;
 	}
 };
-
 

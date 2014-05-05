@@ -4,19 +4,26 @@
 Sensor::Sensor()
 {
 }
-
-
 Sensor::~Sensor()
 {
 }
 void Sensor::Draw()
 {
+	DownLeft = Position;
+	DownRight = Position + Vector3f(10, 0, 0);
+	UpLeft = Position + Vector3f(0, 0, -10);
+	UpRight = Position + Vector3f(10, 0, -10);
+	float ptr[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, ptr);
+	DownLeft.x = DownLeft.x * ptr[0];
+	DownLeft.z = DownLeft.z * ptr[8];
 	int a, b, c = b = a = 10;
 	glPushMatrix();
+	glTranslatef(Origin.x, Origin.y, Origin.z);
 	glRotatef(Rotation.x, 1, 0, 0);
 	glRotatef(Rotation.y, 0, 1, 0);
 	glRotatef(Rotation.z, 0, 0, 1);
-	glTranslatef(Translation.x, Translation.y, Translation.z);
+	glTranslatef(-Origin.x, -Origin.y, -Origin.z);
 	glBegin(GL_QUADS);
 
 	glNormal3d(0, 0, 1);

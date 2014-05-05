@@ -3,11 +3,11 @@
 glWrap::glWrap()
 {
 }
-
-
 glWrap::~glWrap()
 {
 }
+
+
 std::vector<Vector3f> glWrap::LineOfPoints(Vector3f A, Vector3f B)
 {
 	glBegin(GL_POINTS);
@@ -25,8 +25,6 @@ std::vector<Vector3f> glWrap::LineOfPoints(Vector3f A, Vector3f B)
 	glEnd();
 	return vec;
 }
-
-
 void glWrap::Axis()
 {
 	glBegin(GL_LINES);
