@@ -14,6 +14,13 @@ int obrotR = 0;
 int kierunek = 0;
 int krokL = 0;
 int krokR = 0;
+
+int ramieL1 = 0;
+int ramieR1 = 0;
+int ramieL2Z = 0;
+int ramieL2Y = 0;
+int ramieR2Z = 0;
+int ramieR2Y = 0;
 // aspekt obrazu
 
 int aspect = 1;
@@ -71,7 +78,7 @@ void Display()
 	//glPolygonMode(GL_BACK, GL_LINE);
 	// TU RYSOWAC::
 
-	robot(obrotL, obrotR);
+	robot(obrotL, obrotR, ramieL1, ramieR1, ramieL2Z, ramieL2Y, ramieR2Z, ramieR2Y);
 
 
 	// skierowanie poleceñ do wykonania
@@ -206,6 +213,109 @@ void Keyboard(unsigned char key, int x, int y)
 			krokR--;
 		if (krokR < 0)
 			krokR++;
+	}
+
+	if (key == 'e')
+	{
+		if (ramieR2Y < 90)
+		{
+			ramieR2Y += 2;
+		}
+
+	}
+
+	if (key == 'd')
+	{
+		if (ramieR2Y > 0)
+		{
+			ramieR2Y -= 2;
+		}
+	}
+
+	if (key == 'r')
+	{
+		if (ramieR2Z > -60)
+		{
+			ramieR2Z -= 2;
+		}
+
+	}
+
+	if (key == 'f')
+	{
+		if (ramieR2Z < 20)
+		{
+			ramieR2Z += 2;
+		}
+	}
+
+	if (key == 'c')
+	{
+		if (ramieR1 > -120)
+		{
+			ramieR1 -= 2;
+		}
+
+	}
+
+	if (key == 'v')
+	{
+		if (ramieR1 < 0)
+		{
+			ramieR1 += 2;
+		}
+	}
+
+
+	if (key == 't')
+	{
+		if (ramieL2Y > -90)
+		{
+			ramieL2Y -= 2;
+		}
+
+	}
+
+	if (key == 'g')
+	{
+		if (ramieL2Y < 0)
+		{
+			ramieL2Y += 2;
+		}
+	}
+
+	if (key == 'y')
+	{
+		if (ramieL2Z > -60)
+		{
+			ramieL2Z -= 2;
+		}
+
+	}
+
+	if (key == 'h')
+	{
+		if (ramieL2Z < 20)
+		{
+			ramieL2Z += 2;
+		}
+	}
+
+	if (key == 'b')
+	{
+		if (ramieL1 > -120)
+		{
+			ramieL1 -= 2;
+		}
+
+	}
+
+	if (key == 'n')
+	{
+		if (ramieL1 < 0)
+		{
+			ramieL1 += 2;
+		}
 	}
 		
 	// odrysowanie okna

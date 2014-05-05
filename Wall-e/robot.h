@@ -280,12 +280,12 @@ void ramie(double r1, double r2, double h, double d)
 	double angle, x, y;
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3d(0, 0, 1);
-	glVertex3d(d, 0.0f, 0.0f);
+	glVertex3d(d, 0.0f, -h / 2);
 	for (angle = 0.0f; angle <= (M_PI); angle += (M_PI / 8.0f))
 	{
 		x = r2*sin(angle);
 		y = r2*cos(angle);
-		glVertex3d(x + d, y, 0.0);
+		glVertex3d(x + d, y, -h/2);
 	}
 	glEnd();
 	glBegin(GL_QUAD_STRIP);
@@ -293,17 +293,17 @@ void ramie(double r1, double r2, double h, double d)
 	{
 		x = r2*sin(angle);
 		y = r2*cos(angle);
-		glVertex3d(x + d, y, 0);
-		glVertex3d(x + d, y, h);
+		glVertex3d(x + d, y, -h/2);
+		glVertex3d(x + d, y, h/2);
 	}
 	glEnd();
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex3d(d, 0.0f, h);
+	glVertex3d(d, 0.0f, h/2);
 	for (angle = -M_PI; angle >= -(2.0f*M_PI); angle -= (M_PI / 8.0f))
 	{
 		x = r2*sin(angle);
 		y = r2*cos(angle);
-		glVertex3d(x + d, y, h);
+		glVertex3d(x + d, y, h/2);
 	}
 	glEnd();
 
@@ -311,12 +311,12 @@ void ramie(double r1, double r2, double h, double d)
 
 	//glColor3d(0, 1, 0);
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex3d(0.0f, 0.0f, 0.0f);
+	glVertex3d(0.0f, 0.0f, -h / 2);
 	for (angle = M_PI; angle <= (2 * M_PI); angle += (M_PI / 8.0f))
 	{
 		x = r1*sin(angle);
 		y = r1*cos(angle);
-		glVertex3d(x, y, 0.0);
+		glVertex3d(x, y, -h/2);
 	}
 	glEnd();
 	glBegin(GL_QUAD_STRIP);
@@ -324,41 +324,41 @@ void ramie(double r1, double r2, double h, double d)
 	{
 		x = r1*sin(angle);
 		y = r1*cos(angle);
-		glVertex3d(x, y, 0);
-		glVertex3d(x, y, h);
+		glVertex3d(x, y, -h/2);
+		glVertex3d(x, y, h/2);
 	}
 	glEnd();
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex3d(0.0f, 0.0f, h);
+	glVertex3d(0.0f, 0.0f, h/2);
 	for (angle = 0.0f; angle >= -(M_PI); angle -= (M_PI / 8.0f))
 	{
 		x = r1*sin(angle);
 		y = r1*cos(angle);
-		glVertex3d(x, y, h);
+		glVertex3d(x, y, h/2);
 	}
 	glEnd();
 
 	glBegin(GL_QUADS);
 	//glColor3d(0, 0, 1);
-	glVertex3d(0, r1, 0);
-	glVertex3d(0, r1, h);
-	glVertex3d(d, r2, h);
-	glVertex3d(d, r2, 0);
+	glVertex3d(0, r1, -h/2);
+	glVertex3d(0, r1, h/2);
+	glVertex3d(d, r2, h/2);
+	glVertex3d(d, r2, -h / 2);
 
-	glVertex3d(0, r1, h);
-	glVertex3d(0, -r1, h);
-	glVertex3d(d, -r2, h);
-	glVertex3d(d, r2, h);
+	glVertex3d(0, r1, h/2);
+	glVertex3d(0, -r1, h/2);
+	glVertex3d(d, -r2, h/2);
+	glVertex3d(d, r2, h/2);
 
-	glVertex3d(0, r1, 0);
-	glVertex3d(d, r2, 0);
-	glVertex3d(d, -r2, 0);
-	glVertex3d(0, -r1, 0);
+	glVertex3d(0, r1, -h / 2);
+	glVertex3d(d, r2, -h / 2);
+	glVertex3d(d, -r2, -h / 2);
+	glVertex3d(0, -r1, -h / 2);
 
-	glVertex3d(0, -r1, h);
-	glVertex3d(0, -r1, 0);
-	glVertex3d(d, -r2, 0);
-	glVertex3d(d, -r2, h);
+	glVertex3d(0, -r1, h/2);
+	glVertex3d(0, -r1, -h / 2);
+	glVertex3d(d, -r2, -h / 2);
+	glVertex3d(d, -r2, h/2);
 
 	glEnd();
 
@@ -417,47 +417,61 @@ void figura1(float a, float b, float c)
 	glEnd();
 }
 
-void robot(int obrotL, int obrotR)
+void robot(int obrotL, int obrotR, int ramieL1, int ramieR1, int ramieL2Z, int ramieL2Y, int ramieR2Z, int ramieR2Y)
 {
 	float rozstaw = 10;
-
+//srodek
 	glPushMatrix();
 	glTranslatef(-7.5, 2, rozstaw / 2);
 	figura1(15, 12, rozstaw);
 	glPopMatrix();
 
+	//prawa gasienica
 	glPushMatrix();
 	glTranslatef(0, 0, -rozstaw / 2);
 	gasienica(obrotR);
 	glPopMatrix();
 
+	//lewa gasienica
 	glPushMatrix();
 	glTranslatef(0, 0, rozstaw / 2 + 2);
 	gasienica(obrotL);
 	glPopMatrix();
-
+	
+	//lewa reka
 	glPushMatrix();
 	glTranslatef(0, 11, rozstaw / 2 + 0.6 );
 	glColor3f(1, 0, 0);
 	gluSphere(obj, 2, 20, 10);
-	glTranslatef(0,0,-0.5);
+	//glTranslatef(0,0,-0.5);
 	glRotatef(180, 0, 0, 1);
+	//glRotatef(60, 0, 1, 0);
+	glRotatef(ramieL2Y, 0, 1, 0);
+	//glRotatef(-10, 0, 0, 1);
+	glRotatef(ramieL2Z, 0, 0, 1);
 	ramie(1.5, 1.25, 1, 5);
 	glTranslatef(5, 0, 0);
+	//glRotatef(-45, 0, 0, 1);
+	glRotatef(ramieL1, 0, 0, 1);
 	ramie(1.25, 0.8, 1, 7);
 	glPopMatrix();
 
+
+	//prawa reka
 	glPushMatrix();
 	glTranslatef(0, 11, -rozstaw / 2 - 0.6);
 	glColor3f(1, 0, 0);
 	gluSphere(obj, 2, 20, 10);
-	glTranslatef(0, 0, -0.5);
+	//glTranslatef(0, 0, -0.5);
 	glRotatef(180, 0, 0, 1);
-	glRotatef(60, 0, 1, 0);
-	glRotatef(-10, 0, 0, 1);
+	//glRotatef(60, 0, 1, 0);
+	glRotatef(ramieR2Y, 0, 1, 0);
+	//glRotatef(-10, 0, 0, 1);
+	glRotatef(ramieR2Z, 0, 0, 1);
 	ramie(1.5, 1.25, 1, 5);
 	glTranslatef(5, 0, 0);
-	glRotatef(-45, 0, 0, 1);
+	//glRotatef(-45, 0, 0, 1);
+	glRotatef(ramieR1, 0, 0, 1);
 	ramie(1.25, 0.8, 1, 7);
 	glPopMatrix();
 }
