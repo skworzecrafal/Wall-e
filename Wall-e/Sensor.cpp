@@ -14,6 +14,7 @@ void Sensor::Draw()
 	UpLeft = Position + Vector3f(0, 0, -10);
 	UpRight = Position + Vector3f(10, 0, -10);
 	float ptr[16];
+
 	glGetFloatv(GL_MODELVIEW_MATRIX, ptr);
 	DownLeft.x = DownLeft.x * ptr[0];
 	DownLeft.z = DownLeft.z * ptr[8];

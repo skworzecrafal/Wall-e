@@ -250,8 +250,9 @@ void Keyboard(unsigned char key, int x, int y)
 	default:
 		break;
 	}
-	std::cout << "DL: " << a->DownLeft.ToString()  << std::endl;
-	// odrysowanie okna
+	//for (int i = 0; i < 9; i++)
+		// odrysowanie okna
+		std::cout<<a->DownLeft.ToString()<<'\n';
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
 // obs³uga klawiszy funkcyjnych i klawiszy kursora
@@ -261,19 +262,19 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		a->Origin.x -= 1;
+		a->Origin = a->DownLeft;
 		break;
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		a->Origin.x += 1;
+		a->Origin = a->DownRight;
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
-		a->Origin.z -= 1;
+		a->Origin = a->UpLeft;
 		break;
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		a->Origin.z += 1;
+		a->Origin = a->UpRight;
 		break;
 	}
 	// odrysowanie okna
@@ -321,8 +322,8 @@ void ActiveMouse(int x, int y)
 int main(int argc, char * argv[])
 {
 	////////////////////
-	//mclInitializeApplication(NULL, 0);
-	//RobotSI1Initialize();
+	mclInitializeApplication(NULL, 0);
+	RobotSI1Initialize();
 	/////////////////////////////  
 
 	
@@ -361,8 +362,9 @@ int main(int argc, char * argv[])
 	glutMainLoop();
 	KillTimer(NULL, 1);
 	///////////////////////////
-	//RobotSI1Terminate();
-	//mclTerminateApplication();
+	RobotSI1Terminate();
+	mclTerminateApplication();
 	///////////////////////////
+	
 	return 0;
 }

@@ -11,7 +11,7 @@ public:
 	Vector3f DownRight = Position + Vector3f(10, 0, 0);
 	Vector3f UpLeft  = Position + Vector3f(0, 0, -10);
 	Vector3f UpRight = Position + Vector3f(10, 0, -10);
-
+	float ptr[16];
 	void Draw();
 	Sensor();
 	~Sensor();
