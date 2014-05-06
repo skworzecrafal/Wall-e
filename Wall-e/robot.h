@@ -276,7 +276,7 @@ void gasienica(int obrot)
 
 void ramie(double r1, double r2, double h, double d)
 {
-	//prawa strona
+	//prawa strona:
 	double angle, x, y;
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3d(0, 0, 1);
