@@ -42,7 +42,7 @@ GLfloat scale = 1.0;
 
 GLfloat rotatex = 0.0;
 GLfloat rotatey = 0.0;
-GLfloat transx=0, transy=0, transz=0;
+//GLfloat transx=0, transy=0, transz=0;
 int old_x=0;
 int old_y=0;
 int valid =0;
@@ -112,9 +112,8 @@ void Display()
 	// TU RYSOWAC::
 	glWrap::Axis();
 	
-	glTranslatef(transx, transy, transz);
+	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
-
 	a->Draw();
 	glWrap::LineOfPoints(A, B);
 	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->DownLeft.ToString());
