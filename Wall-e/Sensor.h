@@ -1,11 +1,19 @@
 #pragma once
 #include "Vector3.h"
+enum Ori
+{
+	oDownLeft,
+	oDownRight,
+	oUpLeft,
+	oUpRight
+};
 class Sensor
 {
 public:
-	Vector3f Position;
+	Ori OriPosition = oDownLeft;
+	Vector3f Position; 
 	Vector3f Translation;
-	Vector3f Origin;
+	Vector3f Origin ;
 	Vector3f Rotation;
 	Vector3f DownLeft = Position;
 	Vector3f DownRight = Position + Vector3f(10, 0, 0);

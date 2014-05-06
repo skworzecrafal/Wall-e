@@ -55,6 +55,21 @@ Vector3f B(0, 10, 0);
 
 void Display()
 {
+	switch (a->OriPosition)
+	{
+	case oDownLeft:
+		std::cout << "DL" << a->DownLeft.ToString() << '\n';
+		break;
+	case oDownRight:
+		std::cout << "DR" << a->DownRight.ToString() << '\n';
+		break;
+	case oUpLeft:
+		std::cout << "UL" << a->UpLeft.ToString() << '\n';
+		break;
+	case oUpRight:
+		std::cout << "" << a->UpRight.ToString() << '\n';
+		break;
+	}
 	// kolor t³a - zawartoœæ bufora koloru
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -163,7 +178,7 @@ void Reshape(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	
 }
-// obs³uga klawiatury r
+// obs³uga klawiatury
 void Keyboard(unsigned char key, int x, int y)
 {
 	// klawisz +
@@ -228,16 +243,16 @@ void Keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'w':
-		a->Position.z -= 1;
+		a->Translation.z -= 1;
 		break;
 	case 's':
-		a->Position.z += 1;
+		a->Translation.z += 1;
 		break;
 	case 'a':
-		a->Position.x -= 1;
+		a->Translation.x -= 1;
 		break;
 	case 'd':
-		a->Position.x += 1;
+		a->Translation.x += 1;
 		break;
 	case 'q':
 		a->Rotation.y += 1;
@@ -252,7 +267,11 @@ void Keyboard(unsigned char key, int x, int y)
 	}
 	//for (int i = 0; i < 9; i++)
 		// odrysowanie okna
-		std::cout<<a->DownLeft.ToString()<<'\n';
+	/*std::cout << "DL"<<a->DownLeft.ToString() << '\n';
+	std::cout <<"DR"<<a->DownRight.ToString() << '\n';
+	std::cout << "UL"<< a->UpLeft.ToString() << '\n';
+	std::cout <<"RU" <<a->UpRight.ToString() << '\n';*/
+
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
 // obs³uga klawiszy funkcyjnych i klawiszy kursora
@@ -262,19 +281,19 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		a->Origin = a->DownLeft;
+		a->OriPosition = oDownLeft;
 		break;
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		a->Origin = a->DownRight;
+		a->OriPosition = oDownRight;
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
-		a->Origin = a->UpLeft;
+		a->OriPosition = oUpLeft;
 		break;
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		a->Origin = a->UpRight;
+		a->OriPosition = oUpRight;
 		break;
 	}
 	// odrysowanie okna
@@ -322,8 +341,8 @@ void ActiveMouse(int x, int y)
 int main(int argc, char * argv[])
 {
 	////////////////////
-	mclInitializeApplication(NULL, 0);
-	RobotSI1Initialize();
+	//mclInitializeApplication(NULL, 0);
+	//RobotSI1Initialize();
 	/////////////////////////////  
 
 	
@@ -362,8 +381,8 @@ int main(int argc, char * argv[])
 	glutMainLoop();
 	KillTimer(NULL, 1);
 	///////////////////////////
-	RobotSI1Terminate();
-	mclTerminateApplication();
+	//RobotSI1Terminate();
+	//mclTerminateApplication();
 	///////////////////////////
 	
 	return 0;

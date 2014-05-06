@@ -7,24 +7,44 @@ Sensor::Sensor()
 Sensor::~Sensor()
 {
 }
+
+//fajny efekt Matrixf(Translation)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*
+//Matrixf(Rotation.y)*Matrixf(Origin.x, Origin.y, Origin.z)*(Vector3f(0, 0, -10));
 void Sensor::Draw()
 {
-	DownLeft = Position;
-	DownRight = Position + Vector3f(10, 0, 0);
-	UpLeft = Position + Vector3f(0, 0, -10);
-	UpRight = Position + Vector3f(10, 0, -10);
-	float ptr[16];
 
-	glGetFloatv(GL_MODELVIEW_MATRIX, ptr);
-	DownLeft.x = DownLeft.x * ptr[0];
-	DownLeft.z = DownLeft.z * ptr[8];
+	Matrixf tmp =Matrixf(Translation)*Matrixf(Rotation.y);
+		
+	
+	UpLeft = (Vector3f(0, 0, -10));
+	DownLeft = Vector3f(0, 0, 0);
+	DownRight =Vector3f(10, 0, 0);
+	UpRight = Vector3f(10, 0, -10);
+
+	switch (OriPosition)
+	{
+	case oDownLeft:
+		Origin = DownLeft;
+		break;
+	case oDownRight:
+		Origin = DownRight;
+		break;
+	case oUpLeft:
+		Origin = UpLeft;
+		break;
+	case oUpRight:
+		Origin = UpRight;
+		break;
+	}
 	int a, b, c = b = a = 10;
+
+
 	glPushMatrix();
+
 	glTranslatef(Origin.x, Origin.y, Origin.z);
-	glRotatef(Rotation.x, 1, 0, 0);
 	glRotatef(Rotation.y, 0, 1, 0);
-	glRotatef(Rotation.z, 0, 0, 1);
 	glTranslatef(-Origin.x, -Origin.y, -Origin.z);
+	glTranslatef(Translation.x, Translation.y, Translation.z);
 	glBegin(GL_QUADS);
 
 	glNormal3d(0, 0, 1);
@@ -69,4 +89,5 @@ void Sensor::Draw()
 	glVertex3d(Position.x + a, Position.y, Position.z);
 	glEnd();
 	glPopMatrix();
+	
 }
