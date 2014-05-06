@@ -51,7 +51,17 @@ Vector3f A(0, 0, 0);
 Vector3f B(0, 10, 0);
 
 // funkcja generuj¹ca scenê 3D
-
+void output(int x, int y, float r, float g, float b, void *font, std::string str)
+{
+	glColor3f(r, g, b);
+	glRasterPos2f(x, y);
+	int len, i;
+	std::vector<char> chars(str.c_str(), str.c_str() + str.size() + 1u);
+	len = chars.size();
+	for (i = 0; i < len; i++) {
+		glutBitmapCharacter(font, chars[i]);
+	}
+}
 
 void Display()
 {
@@ -107,14 +117,40 @@ void Display()
 
 	a->Draw();
 	glWrap::LineOfPoints(A, B);
-	
+	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->DownLeft.ToString());
+	output(10, 40, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DR" + a->DownRight.ToString());
+	output(10, 30, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpLeft.ToString());
+	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpRight.ToString());
+	//glutPostRedisplay();
 
-
-	// skierowanie poleceñ do wykonania
+	 //skierowanie poleceñ do wykonania
 	glFlush();
 
 	// zamiana buforów koloru
 	glutSwapBuffers();
+	//glDisable(GL_TEXTURE_2D); //added this
+	//glMatrixMode(GL_PROJECTION);
+	//glPushMatrix();
+	//glLoadIdentity();
+	//gluOrtho2D(0.0, 800, 0.0, 600);
+	//glMatrixMode(GL_MODELVIEW);
+	//glPushMatrix();
+	//glLoadIdentity();
+	//glRasterPos2i(10, 10);
+	//std::string s = "Some text";
+	//void * font = GLUT_BITMAP_9_BY_15;
+	//for (std::string::iterator i = s.begin(); i != s.end(); ++i)
+	//{
+	//	char c = *i;
+	//	glColor3d(1.0, 0.0, 0.0);
+	//	glutBitmapCharacter(font, c);
+	//}
+	//glMatrixMode(GL_PROJECTION); //swapped this with...
+	//glPopMatrix();
+	//glMatrixMode(GL_MODELVIEW); //...this
+	//glPopMatrix();
+	////added this
+	//glEnable(GL_TEXTURE_2D);
 }
 
 
