@@ -101,7 +101,7 @@ struct Matrixf
 	//Y-axis Rotation
 	Matrixf(float alfa)
 	{
-		alfa = (alfa / 180.0) * 3.14;
+		alfa = (alfa / 180.0) * 3.14159265;
 		a = Vector4f(cos(alfa), 0, sin(alfa), 0);
 		b = Vector4f(0, 1, 0, 0);
 		c = Vector4f(-sin(alfa), 0, cos(alfa), 0);
