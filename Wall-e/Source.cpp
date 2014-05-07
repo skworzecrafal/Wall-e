@@ -116,10 +116,10 @@ void Display()
 	//robot(obrotL, obrotR);
 	a->Draw();
 	glWrap::LineOfPoints(A, B);
-	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->DownLeft.ToString());
-	output(10, 40, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DR" + a->DownRight.ToString());
-	output(10, 30, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpLeft.ToString());
-	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UR" + a->UpRight.ToString());
+	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->downL.ToString());
+	output(10, 40, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DR" + a->downR.ToString());
+	output(10, 30, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->upL.ToString());
+	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UR" + a->upR.ToString());
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania

@@ -27,7 +27,7 @@ void Sensor::Draw()
 		glRotatef(Rotation.y, 0, 1, 0);
 		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
 		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(downL)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(Translation);
+		tmp = Matrixf(downL)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
 		break;
 	case oDownRight:
 		Origin = DownRight;
@@ -59,41 +59,15 @@ void Sensor::Draw()
 	}
 	
 	int a, b, c = b = a = 10;
-
-	/*glTranslatef(downL.x, downL.y, downL.z);
-	glTranslatef(Origin.x, Origin.y, Origin.z);
-	glRotatef(oldRot, 0, 1, 0);
-
-
-	glRotatef(Rotation.y, 0, 1, 0);
-	glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-	glTranslatef(Translation.x, Translation.y, Translation.z);
-	tmp = Matrixf(downL)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(Translation);*/
-	
-
 	
 
 	//Matrixf tmp = Matrixf(DownLeft.x, DownLeft.y, DownLeft.z)*Matrixf(Origin.x, Origin.y, Origin.z)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-	UpLeft = tmp*Vector3f(0, 0, -10);
-	DownLeft = tmp* Vector3f(0, 0, 0);
-	DownRight = tmp*Vector3f(10, 0, 0);
-	UpRight = tmp*Vector3f(10, 0, -10);
-	downL = Vector3f(DownLeft);
-	downR = Vector3f(DownRight);
-	upL = Vector3f(UpLeft);
-	upR = Vector3f(UpRight);
+	upL = tmp*Vector3f(0, 0, -10);
+	downL = tmp* Vector3f(0, 0, 0);
+	downR = tmp*Vector3f(10, 0, 0);
+	upR = tmp*Vector3f(10, 0, -10);
 	oldRot += Rotation.y;
-	//test:
-	/*glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(Origin.x, Origin.y, Origin.z);
-	glRotatef(Rotation.y, 0, 1, 0);
-	glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-	glTranslatef(Translation.x, Translation.y, Translation.z);
-	czy = 1;
-	glGetFloatv(GL_MODELVIEW_MATRIX, test);
-	glPopMatrix();*/
-
+	
 	Translation.x = 0;
 	Translation.y = 0;
 	Translation.z = 0;
