@@ -65,21 +65,6 @@ void output(int x, int y, float r, float g, float b, void *font, std::string str
 
 void Display()
 {
-	switch (a->OriPosition)
-	{
-	case oDownLeft:
-		std::cout << "DL" << a->DownLeft.ToString() << '\n';
-		break;
-	case oDownRight:
-		std::cout << "DR" << a->DownRight.ToString() << '\n';
-		break;
-	case oUpLeft:
-		std::cout << "UL" << a->UpLeft.ToString() << '\n';
-		break;
-	case oUpRight:
-		std::cout << "" << a->UpRight.ToString() << '\n';
-		break;
-	}
 	// kolor t³a - zawartoœæ bufora koloru
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -114,13 +99,13 @@ void Display()
 	
 	glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
-
 	a->Draw();
 	glWrap::LineOfPoints(A, B);
-	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->DownLeft.ToString());
+	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->DownLeft.ToString());   
 	output(10, 40, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DR" + a->DownRight.ToString());
 	output(10, 30, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpLeft.ToString());
 	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpRight.ToString());
+	output(10, 10, 1, 0, 0, GLUT_BITMAP_9_BY_15, "Rot: " + std::to_string( a->Rotation.y));
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
