@@ -13,10 +13,10 @@ Sensor::~Sensor()
 void Sensor::Draw()
 {
 	glPushMatrix();
-	UpLeft = Vector3f(0, 0, -10);
+	UpLeft = Vector3f(0, 0, -5);
 	DownLeft = Vector3f(0, 0, 0);
 	DownRight = Vector3f(10, 0, 0);
-	UpRight = Vector3f(10, 0, -10);
+	UpRight = Vector3f(10, 0, -5);
 		
 	switch (OriPosition)
 	{
@@ -62,10 +62,10 @@ void Sensor::Draw()
 	
 
 	//Matrixf tmp = Matrixf(DownLeft.x, DownLeft.y, DownLeft.z)*Matrixf(Origin.x, Origin.y, Origin.z)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-	upL = tmp*Vector3f(0, 0, -10);
+	upL = tmp*Vector3f(0, 0, -5);
 	downL = tmp* Vector3f(0, 0, 0);
 	downR = tmp*Vector3f(10, 0, 0);
-	upR = tmp*Vector3f(10, 0, -10);
+	upR = tmp*Vector3f(10, 0, -5);
 	oldRot += Rotation.y;
 	
 	Translation.x = 0;
