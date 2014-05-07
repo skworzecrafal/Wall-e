@@ -77,7 +77,7 @@ void Display()
 		std::cout << "UL" << a->UpLeft.ToString() << '\n';
 		break;
 	case oUpRight:
-		std::cout << "" << a->UpRight.ToString() << '\n';
+		std::cout << "UR" << a->UpRight.ToString() << '\n';
 		break;
 	}
 	// kolor t³a - zawartoœæ bufora koloru
@@ -119,7 +119,7 @@ void Display()
 	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->DownLeft.ToString());
 	output(10, 40, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DR" + a->DownRight.ToString());
 	output(10, 30, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpLeft.ToString());
-	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->UpRight.ToString());
+	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UR" + a->UpRight.ToString());
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
