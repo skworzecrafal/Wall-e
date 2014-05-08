@@ -3,11 +3,12 @@
 #include <GL\gl.h>
 #include <GL\glu.h>
 #include <Windows.h>
+#include "PMath.h"
+
 #include "robot.h"
 #include "Robo_AI.h"
 #include "glWrap.h"
-#include "Vector3.h"
-#include "Sensor.h" 
+#include "PMath.h"
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 

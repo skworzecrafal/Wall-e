@@ -1,5 +1,6 @@
 #include "Sensor.h"
 #include "glWrap.h"
+#include "PMath.h"
 #include <GL\glut.h>
 
 Sensor::Sensor()
@@ -116,5 +117,6 @@ void Sensor::Draw()
 	glPopMatrix();
 	glWrap::Print(-60, 50, points[0].ToString());
 	glWrap::Print(-60, 40, points[points.size() - 1].ToString());
+	glWrap::Print(-60, 30, std::to_string(PMath::Plength(points[0], points[points.size() - 1])));
 	
 }
