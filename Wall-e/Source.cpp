@@ -278,7 +278,7 @@ void SpecialKeys(int key, int x, int y)
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
-		a->OriPosition = oCenter;
+		Robo_AI::Movement(a, 1, 3);
 		break;
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
