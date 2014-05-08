@@ -6,6 +6,17 @@ glWrap::glWrap()
 glWrap::~glWrap()
 {
 }
+void glWrap::Print(int x, int y, std::string str)
+{
+	glColor3f(1, 0, 0);
+	glRasterPos2f(x, y);
+	int len, i;
+	std::vector<char> chars(str.c_str(), str.c_str() + str.size() + 1u);
+	len = chars.size();
+	for (i = 0; i < len; i++) {
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, chars[i]);
+	}
+}
 
 
 std::vector<Vector3f> glWrap::LineOfPoints(Vector3f A, Vector3f B)

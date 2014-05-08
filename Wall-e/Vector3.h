@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <vector>
+using namespace std;
 template<typename T>class Vector3
 {
 public:
@@ -122,6 +124,27 @@ struct Matrixf
 		c = Vector4f(0, 0, 1, z);
 		d = Vector4f(0, 0, 0, 1);
 	}
+
+	vector<Vector3f> operator *(const vector<Vector3f> &right)
+	{
+		vector<Vector3f> out;
+		Vector4f tmp;
+		for (int i = 0; i < right.size(); i++)
+		{
+
+			tmp.x = a.x*right[i].x + a.y*right[i].y + a.z*right[i].z + a.w;
+			tmp.y = b.x*right[i].x + b.y*right[i].y + b.z*right[i].z + b.w;
+			tmp.z = c.x*right[i].x + c.y*right[i].y + c.z*right[i].z + c.w;
+			tmp.w = d.x*right[i].x + d.y*right[i].y + d.z*right[i].z + d.w;
+			out.push_back(Vector3f(tmp.x, tmp.y, tmp.z));
+		}
+		
+		return out;
+	}
+
+
+
+
 	Vector3f operator *(const Vector3f &right)
 	{
 		Vector4f tmp;
@@ -132,6 +155,8 @@ struct Matrixf
 		Vector3f out(tmp.x, tmp.y, tmp.z);
 		return out;
 	}
+	
+
 	Matrixf operator *(const Matrixf &r)
 	{
 		Matrixf tmp;

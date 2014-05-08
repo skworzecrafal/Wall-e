@@ -27,8 +27,8 @@ int aspect = 1;
 
 // rozmiary bry³y obcinania
 
-const GLdouble left = -50.0;
-const GLdouble right = 50.0;
+const GLdouble Left = -50.0;
+const GLdouble Right = 50.0;
 const GLdouble bottom = -50.0;
 const GLdouble top = 50.0;
 const GLdouble Near = 250.0;
@@ -51,35 +51,9 @@ Vector3f A(0, 0, 0);
 Vector3f B(0, 10, 0);
 
 // funkcja generuj¹ca scenê 3D
-void output(int x, int y, float r, float g, float b, void *font, std::string str)
-{
-	glColor3f(r, g, b);
-	glRasterPos2f(x, y);
-	int len, i;
-	std::vector<char> chars(str.c_str(), str.c_str() + str.size() + 1u);
-	len = chars.size();
-	for (i = 0; i < len; i++) {
-		glutBitmapCharacter(font, chars[i]);
-	}
-}
 
 void Display()
 {
-	switch (a->OriPosition)
-	{
-	case oDownLeft:
-		std::cout << "DL" << a->DownLeft.ToString() << '\n';
-		break;
-	case oDownRight:
-		std::cout << "DR" << a->DownRight.ToString() << '\n';
-		break;
-	case oUpLeft:
-		std::cout << "UL" << a->UpLeft.ToString() << '\n';
-		break;
-	case oUpRight:
-		std::cout << "UR" << a->UpRight.ToString() << '\n';
-		break;
-	}
 	// kolor t³a - zawartoœæ bufora koloru
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -111,15 +85,17 @@ void Display()
 
 	// TU RYSOWAC::
 	glWrap::Axis();
-	
+
 	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
 	a->Draw();
-	glWrap::LineOfPoints(A, B);
-	output(10, 50, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DL" + a->downL.ToString());
-	output(10, 40, 1, 0, 0, GLUT_BITMAP_9_BY_15, "DR" + a->downR.ToString());
-	output(10, 30, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UL" + a->upL.ToString());
-	output(10, 20, 1, 0, 0, GLUT_BITMAP_9_BY_15, "UR" + a->upR.ToString());
+	
+
+
+	glWrap::Print(10, 50, "DL" + a->DownLeft.ToString());
+	glWrap::Print(10, 40, "DR" + a->DownRight.ToString());
+	glWrap::Print(10, 30, "UL" + a->UpLeft.ToString());
+	glWrap::Print(10, 20, "UR" + a->UpRight.ToString());
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
@@ -127,29 +103,7 @@ void Display()
 
 	// zamiana buforów koloru
 	glutSwapBuffers();
-	//glDisable(GL_TEXTURE_2D); //added this
-	//glMatrixMode(GL_PROJECTION);
-	//glPushMatrix();
-	//glLoadIdentity();
-	//gluOrtho2D(0.0, 800, 0.0, 600);
-	//glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
-	//glLoadIdentity();
-	//glRasterPos2i(10, 10);
-	//std::string s = "Some text";
-	//void * font = GLUT_BITMAP_9_BY_15;
-	//for (std::string::iterator i = s.begin(); i != s.end(); ++i)
-	//{
-	//	char c = *i;
-	//	glColor3d(1.0, 0.0, 0.0);
-	//	glutBitmapCharacter(font, c);
-	//}
-	//glMatrixMode(GL_PROJECTION); //swapped this with...
-	//glPopMatrix();
-	//glMatrixMode(GL_MODELVIEW); //...this
-	//glPopMatrix();
-	////added this
-	//glEnable(GL_TEXTURE_2D);
+
 }
 
 
@@ -199,16 +153,16 @@ void Reshape(int width, int height)
 	{
 		// wysokoœæ okna wiêksza od wysokoœci okna
 		if (width < height && width > 0)
-			glFrustum(left, right, bottom * height / width, top * height / width, Near, Far);
+			glFrustum(Left, Right, bottom * height / width, top * height / width, Near, Far);
 		else
 
 			// szerokoœæ okna wiêksza lub równa wysokoœci okna
 		if (width >= height && height > 0)
-			glFrustum(left * width / height, right * width / height, bottom, top, Near, Far);
+			glFrustum(Left * width / height, Right * width / height, bottom, top, Near, Far);
 
 	}
 	else
-		glFrustum(left, right, bottom, top, Near, Far);
+		glFrustum(Left, Right, bottom, top, Near, Far);
 	// wybór macierzy modelowania
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -316,19 +270,19 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		a->OriPosition = oDownLeft;
+		a->OriPosition = oLeftWheel;
 		break;
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		a->OriPosition = oDownRight;
+		a->OriPosition = oRightWheel;
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
-		a->OriPosition = oUpLeft;
+		a->OriPosition = oCenter;
 		break;
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		a->OriPosition = oUpRight;
+		a->OriPosition = oCenter;
 		break;
 	}
 	// odrysowanie okna

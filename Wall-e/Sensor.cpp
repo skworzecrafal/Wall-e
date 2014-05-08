@@ -1,8 +1,17 @@
 #include "Sensor.h"
+#include "glWrap.h"
 #include <GL\glut.h>
 
 Sensor::Sensor()
 {
+	width = 10;
+	downL = Vector3f(0, 0, 0);
+	downR = Vector3f(width, 0, 0);
+	upL = Vector3f(0, 0, -width);
+	upR = Vector3f(width, 0, -width);
+	lWheel = Vector3f(0, 0, -width/2);
+	rWheel = Vector3f(width, 0, -width / 2);
+	center = Vector3f(width/2, 0, -width / 2);
 }
 Sensor::~Sensor()
 {
@@ -12,60 +21,44 @@ Sensor::~Sensor()
 //Matrixf(Rotation.y)*Matrixf(Origin.x, Origin.y, Origin.z)*(Vector3f(0, 0, -10));
 void Sensor::Draw()
 {
-	glPushMatrix();
-	UpLeft = Vector3f(0, 0, -5);
-	DownLeft = Vector3f(0, 0, 0);
-	DownRight = Vector3f(10, 0, 0);
-	UpRight = Vector3f(10, 0, -5);
-		
+	glPushMatrix();		
 	switch (OriPosition)
 	{
-	case oDownLeft:
-		Origin = DownLeft;
-		glTranslatef(downL.x, downL.y, downL.z);
+	case oLeftWheel:
+		Origin = lWheel;
+		glTranslatef(LeftWheel.x, LeftWheel.y, LeftWheel.z);
 		glRotatef(oldRot, 0, 1, 0);
 		glRotatef(Rotation.y, 0, 1, 0);
 		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
 		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(downL)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
+		tmp = Matrixf(LeftWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
 		break;
-	case oDownRight:
-		Origin = DownRight;
-		glTranslatef(downR.x, downR.y, downR.z);
+	case oRightWheel:
+		Origin = rWheel;
+		glTranslatef(RightWheel.x, RightWheel.y, RightWheel.z);
 		glRotatef(oldRot, 0, 1, 0);
 		glRotatef(Rotation.y, 0, 1, 0);
 		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
 		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(downR)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
+		tmp = Matrixf(RightWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
 		break;
-	case oUpLeft:
-		Origin = UpLeft;
-		glTranslatef(upL.x, upL.y, upL.z);
+	case oCenter:
+		Origin = center;
+		glTranslatef(Center.x, Center.y, Center.z);
 		glRotatef(oldRot, 0, 1, 0);
 		glRotatef(Rotation.y, 0, 1, 0);
 		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
 		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(upL)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	case oUpRight:
-		Origin = UpRight;
-		glTranslatef(upR.x, upR.y, upR.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(upR)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
+		tmp = Matrixf(Center)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
 		break;
 	}
-	
-	int a, b, c = b = a = 10;
-	
-
-	//Matrixf tmp = Matrixf(DownLeft.x, DownLeft.y, DownLeft.z)*Matrixf(Origin.x, Origin.y, Origin.z)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-	upL = tmp*Vector3f(0, 0, -5);
-	downL = tmp* Vector3f(0, 0, 0);
-	downR = tmp*Vector3f(10, 0, 0);
-	upR = tmp*Vector3f(10, 0, -5);
+	UpLeft = tmp*upL;
+	DownLeft = tmp* downL;
+	DownRight = tmp*downR;
+	UpRight = tmp*upR;
+	LeftWheel = tmp *lWheel;
+	RightWheel = tmp*rWheel;
+	Center = tmp*center;
 	oldRot += Rotation.y;
 	
 	Translation.x = 0;
@@ -78,45 +71,50 @@ void Sensor::Draw()
 
 	glNormal3d(0, 0, 1);
 	glVertex3d(Position.x, Position.y, Position.z);
-	glVertex3d(Position.x + a, Position.y, Position.z);
-	glVertex3d(Position.x + (a - a / 8.0), Position.y + b, Position.z);
-	glVertex3d(Position.x + (a / 8.0), Position.y + b, Position.z);
+	glVertex3d(Position.x + width, Position.y, Position.z);
+	glVertex3d(Position.x + (width - width / 8.0), Position.y + width, Position.z);
+	glVertex3d(Position.x + (width / 8.0), Position.y + width, Position.z);
 
 	glColor3d(0, 0.5, 1);
 	glNormal3d(1, 0, 0);
-	glVertex3d(Position.x + a, Position.y, Position.z);
-	glVertex3d(Position.x + a, Position.y, Position.z - c);
-	glVertex3d(Position.x + (a - a / 8.0), Position.y + b, Position.z - c);
-	glVertex3d(Position.x + (a - a / 8.0), Position.y + b, Position.z);
+	glVertex3d(Position.x + width, Position.y, Position.z);
+	glVertex3d(Position.x + width, Position.y, Position.z - width);
+	glVertex3d(Position.x + (width - width / 8.0), Position.y + width, Position.z - width);
+	glVertex3d(Position.x + (width - width / 8.0), Position.y + width, Position.z);
 
 	glColor3d(0.0, 1, 0.5);
 	glNormal3d(0, 0, -1);
-	glVertex3d(Position.x + a, Position.y, Position.z - c);
-	glVertex3d(Position.x, Position.y, Position.z - c);
-	glVertex3d(Position.x + (a / 8.0), Position.y + b, Position.z - c);
-	glVertex3d(Position.x + (a - a / 8.0), Position.y + b, Position.z - c);
+	glVertex3d(Position.x + width, Position.y, Position.z - width);
+	glVertex3d(Position.x, Position.y, Position.z - width);
+	glVertex3d(Position.x + (width / 8.0), Position.y + width, Position.z - width);
+	glVertex3d(Position.x + (width - width / 8.0), Position.y + width, Position.z - width);
 
 	glColor3d(0.0, 1, 1);
 	glNormal3d(-1, 0, 0);
-	glVertex3d(Position.x  , Position.y, Position.z - c);
+	glVertex3d(Position.x, Position.y, Position.z - width);
 	glVertex3d(Position.x , Position.y, Position.z);
-	glVertex3d(Position.x + a / 8.0, Position.y + b, Position.z);
-	glVertex3d(Position.x + a / 8.0, Position.y + b, Position.z - c);
+	glVertex3d(Position.x + width / 8.0, Position.y + width, Position.z);
+	glVertex3d(Position.x + width / 8.0, Position.y + width, Position.z - width);
 
 	glColor3d(1.0, 0, 1);
 	glNormal3d(0, 1, 0);
-	glVertex3d(Position.x + a / 8.0, Position.y + b, Position.z);
-	glVertex3d(Position.x + a - a / 8.0, Position.y + b, Position.z);
-	glVertex3d(Position.x + a - a / 8.0, Position.y + b, Position.z - c);
-	glVertex3d(Position.x + a / 8.0, Position.y + b, Position.z - c);
+	glVertex3d(Position.x + width / 8.0, Position.y + width, Position.z);
+	glVertex3d(Position.x + width - width / 8.0, Position.y + width, Position.z);
+	glVertex3d(Position.x + width - width / 8.0, Position.y + width, Position.z - width);
+	glVertex3d(Position.x + width / 8.0, Position.y + width, Position.z - width);
 
 	glColor3d(1.0, 1, 0);
 	glNormal3d(0, -1, 0);
 	glVertex3d(Position.x, Position.y, Position.z);
-	glVertex3d(Position.x, Position.y, Position.z - c);
-	glVertex3d(Position.x + a, Position.y, Position.z - c);
-	glVertex3d(Position.x + a, Position.y, Position.z);
+	glVertex3d(Position.x, Position.y, Position.z - width);
+	glVertex3d(Position.x + width, Position.y, Position.z - width);
+	glVertex3d(Position.x + width, Position.y, Position.z);
 	glEnd();
+	std::vector<Vector3f> points;
+	points = glWrap::LineOfPoints(Vector3f(5, 5, 0), Vector3f(5, 5, -5));
+	points = tmp*points;
 	glPopMatrix();
+	glWrap::Print(-60, 50, points[0].ToString());
+	glWrap::Print(-60, 40, points[points.size() - 1].ToString());
 	
 }
