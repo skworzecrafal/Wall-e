@@ -326,8 +326,8 @@ void ActiveMouse(int x, int y)
 		int dx = old_x - x;
 		int dy = old_y - y;
 		//eyex -= (dx/60.0);
-		eyez -= (dy/60.0);
-		eyey -= (dy / 60.0);
+		rotatex -= dy / 2;
+		rotatey -= dx / 2;
 		/* do something with dx and dy */
 	}
 	old_x = x;
