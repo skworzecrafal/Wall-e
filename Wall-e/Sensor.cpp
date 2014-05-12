@@ -1,15 +1,11 @@
 #include "Sensor.h"
 #include "glWrap.h"
-#include "PMath.h"
+
 #include <GL\glut.h>
 
 Sensor::Sensor()
 {
-	width = 10;
-	downL = Vector3f(0, 0, 0);
-	downR = Vector3f(width, 0, 0);
-	upL = Vector3f(0, 0, -width);
-	upR = Vector3f(width, 0, -width);
+	width = 2;
 	lWheel = Vector3f(0, 0, -width/2);
 	rWheel = Vector3f(width, 0, -width / 2);
 	center = Vector3f(width/2, 0, -width / 2);
@@ -53,10 +49,6 @@ void Sensor::Draw()
 		tmp = Matrixf(Center)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
 		break;
 	}
-	UpLeft = tmp*upL;
-	DownLeft = tmp* downL;
-	DownRight = tmp*downR;
-	UpRight = tmp*upR;
 	LeftWheel = tmp *lWheel;
 	RightWheel = tmp*rWheel;
 	Center = tmp*center;
@@ -112,11 +104,13 @@ void Sensor::Draw()
 	glVertex3d(Position.x + width, Position.y, Position.z);
 	glEnd();
 	std::vector<Vector3f> points;
-	points = glWrap::LineOfPoints(Vector3f(5, 5, 0), Vector3f(5, 5, -5));
+	points = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2));
 	points = tmp*points;
 	glPopMatrix();
 	glWrap::Print(-60, 50, points[0].ToString());
 	glWrap::Print(-60, 40, points[points.size() - 1].ToString());
-	glWrap::Print(-60, 30, std::to_string(PMath::Plength(points[0], points[points.size() - 1])));
+	float x = PMath::Plength(points[0], points[points.size() - 1]);
+	
+	glWrap::Print(-60, 30, std::to_string(PMath::GetEValue((float)0)));
 	
 }

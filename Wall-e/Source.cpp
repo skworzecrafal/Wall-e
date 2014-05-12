@@ -5,7 +5,8 @@
 #include <Windows.h>
 #include "PMath.h"
 
-#include "robot.h"
+#include "robo.h"
+#include "Robot.h"
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "PMath.h"
@@ -13,7 +14,7 @@ char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fi
 double *ret;
 
 
-Sensor* a = new Sensor();
+Robot* a = new Robot();
 
 
 int obrotL = 0;
@@ -33,7 +34,7 @@ const GLdouble Right = 50.0;
 const GLdouble bottom = -50.0;
 const GLdouble top = 50.0;
 const GLdouble Near = 250.0;
-const GLdouble Far = 350.0;
+const GLdouble Far = 550.0;
 
 // wspó³czynnik skalowania
 
@@ -48,8 +49,16 @@ int old_x=0;
 int old_y=0;
 int valid =0;
 
-Vector3f A(0, 0, 0);
-Vector3f B(0, 10, 0);
+
+GLdouble eyex = 0;
+GLdouble eyey = 0;
+GLdouble eyez = 3;
+
+// wspó³rzêdne punktu w którego kierunku jest zwrócony obserwator,
+
+GLdouble centerx = 0;
+GLdouble centery = 0;
+GLdouble centerz = 0;
 
 // funkcja generuj¹ca scenê 3D
 
@@ -63,7 +72,7 @@ void Display()
 
 	// macierz modelowania = macierz jednostkowa
 	glLoadIdentity();
-
+	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
 	//glEnable(GL_CULL_FACE);
 
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
@@ -92,11 +101,9 @@ void Display()
 	a->Draw();
 	
 
-
-	glWrap::Print(10, 50, "DL" + a->DownLeft.ToString());
-	glWrap::Print(10, 40, "DR" + a->DownRight.ToString());
-	glWrap::Print(10, 30, "UL" + a->UpLeft.ToString());
-	glWrap::Print(10, 20, "UR" + a->UpRight.ToString());
+	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());
+	glWrap::Print(10, 40, "RW " + a->RightWheel.ToString());
+	glWrap::Print(10, 30, "C " + a->Center.ToString());
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
@@ -296,9 +303,6 @@ void Mouse(int button, int state, int x, int y)
 	case GLUT_LEFT_BUTTON:
 		old_x = x;
 		old_y = y;
-		B.x = x-400;
-		B.y = y-300;
-		B.y = -B.y;
 		valid = GLUT_UP;
 		break;
 	case GLUT_RIGHT_BUTTON :
@@ -321,8 +325,9 @@ void ActiveMouse(int x, int y)
 		
 		int dx = old_x - x;
 		int dy = old_y - y;
-		rotatex -= dy/2;
-		rotatey -= dx/2;
+		//eyex -= (dx/60.0);
+		eyez -= (dy/60.0);
+		eyey -= (dy / 60.0);
 		/* do something with dx and dy */
 	}
 	old_x = x;

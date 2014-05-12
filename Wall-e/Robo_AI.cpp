@@ -26,7 +26,7 @@ double* Robo_AI::Dodge(short left, short front, short right, const char* path)
 	double ret[] = { out(1, 1), out(1, 2) };
 	return ret;
 }
-void Robo_AI::Movement(Sensor* object, float Left, float Right)
+void Robo_AI::Movement(Robot* object, float Left, float Right)
 {
 	if (Left == Right)
 	{
