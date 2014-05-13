@@ -111,6 +111,6 @@ void Sensor::Draw()
 	glWrap::Print(-60, 40, points[points.size() - 1].ToString());
 	float x = PMath::Plength(points[0], points[points.size() - 1]);
 	
-	glWrap::Print(-60, 30, std::to_string(PMath::GetEValue((float)0)));
+	glWrap::Print(-60, 30, std::to_string(PMath::GetEValue((float)60)));
 	
 }

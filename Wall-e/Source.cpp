@@ -336,8 +336,8 @@ void ActiveMouse(int x, int y)
 int main(int argc, char * argv[])
 {
 	////////////////////
-	//mclInitializeApplication(NULL, 0);
-	//RobotSI1Initialize();
+	/*mclInitializeApplication(NULL, 0);
+	RobotSI1Initialize();*/
 	/////////////////////////////  
 
 	
