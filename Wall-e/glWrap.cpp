@@ -25,7 +25,7 @@ Model glWrap::LoadModel(std::string filepath)
 	Model tmp;
 	tmp.GLVertex = new GLfloat[3];
 	tmp.GLNormal = new GLfloat[3];
-	tmp.GLFace = new GLfloat[3];
+	tmp.GLFace = new GLfloat[6];
 	int sizeV=1, sizeN=1, sizeF=1;
 	std::string line;
 	while (std::getline(infile, line))
@@ -42,8 +42,8 @@ Model glWrap::LoadModel(std::string filepath)
 			tmp.GLVertex[(sizeV - 1) * 3 - 2] = tmp.Vertex[tmp.Vertex.size() - 1].y;
 			tmp.GLVertex[(sizeV - 1) * 3 - 1] = tmp.Vertex[tmp.Vertex.size() - 1].z;
 
-			cout << "Vertex "<<tmp.Vertex[tmp.Vertex.size()-1].ToString() << endl;
-			cout << "x "<<tmp.GLVertex[(sizeV - 1) * 3 - 3] <<"y "<< tmp.GLVertex[(sizeV - 1) * 3 - 2] <<"z "<< tmp.GLVertex[(sizeV - 1) * 3 - 1] << endl;
+		//	cout << "Vertex "<<tmp.Vertex[tmp.Vertex.size()-1].ToString() << endl;
+			//cout << "x "<<tmp.GLVertex[(sizeV - 1) * 3 - 3] <<"y "<< tmp.GLVertex[(sizeV - 1) * 3 - 2] <<"z "<< tmp.GLVertex[(sizeV - 1) * 3 - 1] << endl;
 			GLfloat* temp = new GLfloat[sizeV * 3];
 			std::_Copy_impl(tmp.GLVertex, tmp.GLVertex + (sizeV-1)*3, temp);
 			delete[] tmp.GLVertex;
@@ -54,11 +54,11 @@ Model glWrap::LoadModel(std::string filepath)
 			sizeN++;
 			tmp.Normal.push_back(Vector3f());
 			in >> tmp.Normal[tmp.Normal.size()-1].x >> tmp.Normal[tmp.Normal.size()-1].y >> tmp.Normal[tmp.Normal.size()-1].z;
-			tmp.GLNormal[(sizeV - 1) * 3 - 3] = tmp.Vertex[tmp.Vertex.size() - 1].x;
-			tmp.GLNormal[(sizeV - 1) * 3 - 2] = tmp.Vertex[tmp.Vertex.size() - 1].y;
-			tmp.GLNormal[(sizeV - 1) * 3 - 1] = tmp.Vertex[tmp.Vertex.size() - 1].z;
-			cout << "normal " <<tmp.Normal[tmp.Normal.size()-1].ToString() << endl;
-			cout << "x " << tmp.GLNormal[(sizeV - 1) * 3 - 3] << "y " << tmp.GLNormal[(sizeV - 1) * 3 - 2] << "z " << tmp.GLNormal[(sizeV - 1) * 3 - 1] << endl;
+			tmp.GLNormal[(sizeN - 1) * 3 - 3] = tmp.Normal[tmp.Normal.size() - 1].x;
+			tmp.GLNormal[(sizeN - 1) * 3 - 2] = tmp.Normal[tmp.Normal.size() - 1].y;
+			tmp.GLNormal[(sizeN - 1) * 3 - 1] = tmp.Normal[tmp.Normal.size() - 1].z;
+			//cout << "normal " <<tmp.Normal[tmp.Normal.size()-1].ToString() << endl;
+			//cout << "x " << tmp.GLNormal[(sizeV - 1) * 3 - 3] << "y " << tmp.GLNormal[(sizeV - 1) * 3 - 2] << "z " << tmp.GLNormal[(sizeV - 1) * 3 - 1] << endl;
 			GLfloat* temp = new GLfloat[sizeV * 3];
 			std::_Copy_impl(tmp.GLNormal, tmp.GLNormal + (sizeV - 1) * 3, temp);
 			delete[] tmp.GLNormal;
@@ -77,6 +77,7 @@ Model glWrap::LoadModel(std::string filepath)
 					}
 				}
 			}
+			sizeF++;
 			std::stringstream in(line);
 			char a;
 			tmp.Face.push_back(Vector3<std::pair<int,int>>());
@@ -85,17 +86,38 @@ Model glWrap::LoadModel(std::string filepath)
 				tmp.Face[tmp.Face.size() - 1].x.first >> tmp.Face[tmp.Face.size() - 1].x.second >>
 				tmp.Face[tmp.Face.size() - 1].y.first >> tmp.Face[tmp.Face.size() - 1].y.second >>
 				tmp.Face[tmp.Face.size() - 1].z.first >> tmp.Face[tmp.Face.size() - 1].z.second;
+
 			tmp.Face[tmp.Face.size() - 1].x.first -= 1;
 			tmp.Face[tmp.Face.size() - 1].x.second -= 1;
 			tmp.Face[tmp.Face.size() - 1].y.first -= 1;
 			tmp.Face[tmp.Face.size() - 1].y.second -= 1;
 			tmp.Face[tmp.Face.size() - 1].z.first -= 1;
 			tmp.Face[tmp.Face.size() - 1].z.second -= 1;
-			//cout << "Face " <<
-			//	tmp.Face[tmp.Face.size() - 1].x.first << tmp.Face[tmp.Face.size() - 1].x.second <<
-			//	tmp.Face[tmp.Face.size() - 1].y.first << tmp.Face[tmp.Face.size() - 1].y.second <<
-			//	tmp.Face[tmp.Face.size() - 1].z.first << tmp.Face[tmp.Face.size() - 1].z.second <<
-			//	endl;
+
+			tmp.GLFace[(sizeF - 1) * 6 - 6] = tmp.Face[tmp.Face.size() - 1].x.second;
+			tmp.GLFace[(sizeF - 1) * 6 - 5] = tmp.Face[tmp.Face.size() - 1].y.second;
+			tmp.GLFace[(sizeF - 1) * 6 - 4] = tmp.Face[tmp.Face.size() - 1].z.second;
+			tmp.GLFace[(sizeF - 1) * 6 - 3] = tmp.Face[tmp.Face.size() - 1].x.first;
+			tmp.GLFace[(sizeF - 1) * 6 - 2] = tmp.Face[tmp.Face.size() - 1].y.first;
+			tmp.GLFace[(sizeF - 1) * 6 - 1] = tmp.Face[tmp.Face.size() - 1].z.first;
+
+			GLfloat* temp = new GLfloat[sizeF * 6];
+			std::_Copy_impl(tmp.GLFace, tmp.GLFace + (sizeF - 1) * 6, temp);
+			delete[] tmp.GLFace;
+			tmp.GLFace = temp;
+
+			/*cout << "Face " <<
+				tmp.Face[tmp.Face.size() - 1].x.first << tmp.Face[tmp.Face.size() - 1].x.second <<
+				tmp.Face[tmp.Face.size() - 1].y.first << tmp.Face[tmp.Face.size() - 1].y.second <<
+				tmp.Face[tmp.Face.size() - 1].z.first << tmp.Face[tmp.Face.size() - 1].z.second <<
+				endl;*/
+		/*	cout << (sizeF - 1) * 6 - 6 <<" : "<< tmp.GLFace[(sizeF - 1) * 6 - 6]
+				<< (sizeF - 1) * 6 - 5 << " : " << tmp.GLFace[(sizeF - 1) * 6 - 5]
+				<< (sizeF - 1) * 6 - 4 << " : " << tmp.GLFace[(sizeF - 1) * 6 - 4]
+				<< (sizeF - 1) * 6 - 3 << " : " << tmp.GLFace[(sizeF - 1) * 6 - 3]
+				<< (sizeF - 1) * 6 - 2 << " : " << tmp.GLFace[(sizeF - 1) * 6 - 2]
+				<< (sizeF - 1) * 6 - 1 << " : " << tmp.GLFace[(sizeF - 1) * 6 - 1]
+				<< endl;*/
 			
 
 		}

@@ -16,9 +16,6 @@ public:
 	GLfloat *GLNormal;
 	GLfloat *GLFace;
 
-
-
-	std::vector<std::pair<int, int>> as;
 	Model();
 	~Model();
 };
