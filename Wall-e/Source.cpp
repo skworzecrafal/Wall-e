@@ -4,7 +4,6 @@
 #include <GL\glu.h>
 #include <Windows.h>
 #include "PMath.h"
-
 #include "robo.h"
 #include "Robot.h"
 #include "Robo_AI.h"
@@ -339,7 +338,7 @@ int main(int argc, char * argv[])
 	/*mclInitializeApplication(NULL, 0);
 	RobotSI1Initialize();*/
 	/////////////////////////////  
-
+	glWrap::LoadModel("obiekt");
 	
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;

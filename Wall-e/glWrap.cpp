@@ -18,7 +18,39 @@ void glWrap::Print(int x, int y, std::string str)
 	}
 }
 
+Model glWrap::LoadModel(std::string filepath)
+{
 
+	std::ifstream infile(filepath);
+	Model tmp;
+	std::string line;
+	while (std::getline(infile, line))
+	{
+		std::istringstream in(line);      //make a stream for the line itself
+		std::string type;
+		in >> type;                  //and read the first whitespace-separated token
+		if (type == "v")       //and check its value
+		{
+			tmp.Vertex.push_back(Vector3f());
+			in >> tmp.Vertex[tmp.Vertex.size()-1].x >> tmp.Vertex[tmp.Vertex.size()-1].y >> tmp.Vertex[tmp.Vertex.size()-1].z;       //now read the whitespace-separated floats
+			cout << "Vertex "<<tmp.Vertex[tmp.Vertex.size()-1].ToString() << endl;
+		}
+		else if (type == "vn")
+		{
+			tmp.Normal.push_back(Vector3f());
+			in >> tmp.Normal[tmp.Normal.size()-1].x >> tmp.Normal[tmp.Normal.size()-1].y >> tmp.Normal[tmp.Normal.size()-1].z;
+			cout << "normal " <<tmp.Normal[tmp.Normal.size()-1].ToString() << endl;
+		}
+		else if (type == "f")
+		{
+			
+			tmp.Face.push_back(std::pair<Vector3f, Vector3f>(Vector3f(), Vector3f()));
+			in >> tmp.Face[tmp.Face.size() - 1].first.x>>tmp.Face[tmp.Face.size() - 1].y >> tmp.Face[tmp.Face.size() - 1].z;
+			cout << "Face " << tmp.Face[tmp.Face.size() - 1].ToString() << endl;
+		}
+	}
+	return tmp;
+}
 std::vector<Vector3f> glWrap::LineOfPoints(Vector3f A, Vector3f B)
 {
 	glBegin(GL_POINTS);

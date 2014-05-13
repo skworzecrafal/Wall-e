@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glWrap.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="PMath.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="Robo_AI.cpp" />
@@ -93,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glWrap.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="PMath.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="robo.h" />
