@@ -7,7 +7,8 @@ class Model
 public:
 	std::vector<Vector3f> Vertex;
 	std::vector<Vector3f> Normal;
-	std::vector<std::pair<Vector3f,Vector3f>> Face;
+	std::vector<Vector3<std::pair<int, int>>> Face;
+	std::vector<std::pair<int, int>> as;
 	Model();
 	~Model();
 };

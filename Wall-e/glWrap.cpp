@@ -43,10 +43,32 @@ Model glWrap::LoadModel(std::string filepath)
 		}
 		else if (type == "f")
 		{
+			for (int i = 0; i < line.length(); i++)
+			{
+				if (line[i] == '/')
+				{
+					if (line[i + 1] == '/')
+					{
+						line[i] =' ';
+						line.erase(i + 1, 1);
+					}
+				}
+			}
+			std::stringstream in(line);
+			char a;
+			tmp.Face.push_back(Vector3<std::pair<int,int>>());
+			cout << line << endl;
+			in >> a >> 
+				tmp.Face[tmp.Face.size() - 1].x.first >> tmp.Face[tmp.Face.size() - 1].x.second >>
+				tmp.Face[tmp.Face.size() - 1].y.first >> tmp.Face[tmp.Face.size() - 1].y.second >>
+				tmp.Face[tmp.Face.size() - 1].z.first >> tmp.Face[tmp.Face.size() - 1].z.second;
+			cout << "Face " <<
+				tmp.Face[tmp.Face.size() - 1].x.first << tmp.Face[tmp.Face.size() - 1].x.second <<
+				tmp.Face[tmp.Face.size() - 1].y.first << tmp.Face[tmp.Face.size() - 1].y.second <<
+				tmp.Face[tmp.Face.size() - 1].z.first << tmp.Face[tmp.Face.size() - 1].z.second <<
+				endl;
 			
-			tmp.Face.push_back(std::pair<Vector3f, Vector3f>(Vector3f(), Vector3f()));
-			in >> tmp.Face[tmp.Face.size() - 1].first.x>>tmp.Face[tmp.Face.size() - 1].y >> tmp.Face[tmp.Face.size() - 1].z;
-			cout << "Face " << tmp.Face[tmp.Face.size() - 1].ToString() << endl;
+
 		}
 	}
 	return tmp;
