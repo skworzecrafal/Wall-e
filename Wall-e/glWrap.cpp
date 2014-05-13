@@ -23,10 +23,9 @@ Model glWrap::LoadModel(std::string filepath)
 
 	std::ifstream infile(filepath);
 	Model tmp;
-	tmp.GLVertex = new GLfloat[3];
-	tmp.GLNormal = new GLfloat[3];
-	tmp.GLFace = new GLfloat[6];
-	int sizeV=1, sizeN=1, sizeF=1;
+	tmp.GLNormal_Vertex = new GLfloat[6];
+	tmp.GLFace = new GLubyte[3];
+	int sizeN=1, sizeF=1;
 	std::string line;
 	while (std::getline(infile, line))
 	{
@@ -35,34 +34,33 @@ Model glWrap::LoadModel(std::string filepath)
 		in >> type;                  //and read the first whitespace-separated token
 		if (type == "v")       //and check its value
 		{
-			sizeV++;
 			tmp.Vertex.push_back(Vector3f());
 			in >> tmp.Vertex[tmp.Vertex.size()-1].x >> tmp.Vertex[tmp.Vertex.size()-1].y >> tmp.Vertex[tmp.Vertex.size()-1].z;       //now read the whitespace-separated floats
-			tmp.GLVertex[(sizeV - 1) * 3 - 3] = tmp.Vertex[tmp.Vertex.size() - 1].x;
-			tmp.GLVertex[(sizeV - 1) * 3 - 2] = tmp.Vertex[tmp.Vertex.size() - 1].y;
-			tmp.GLVertex[(sizeV - 1) * 3 - 1] = tmp.Vertex[tmp.Vertex.size() - 1].z;
-
 		//	cout << "Vertex "<<tmp.Vertex[tmp.Vertex.size()-1].ToString() << endl;
 			//cout << "x "<<tmp.GLVertex[(sizeV - 1) * 3 - 3] <<"y "<< tmp.GLVertex[(sizeV - 1) * 3 - 2] <<"z "<< tmp.GLVertex[(sizeV - 1) * 3 - 1] << endl;
-			GLfloat* temp = new GLfloat[sizeV * 3];
-			std::_Copy_impl(tmp.GLVertex, tmp.GLVertex + (sizeV-1)*3, temp);
-			delete[] tmp.GLVertex;
-			tmp.GLVertex = temp;
 		}
 		else if (type == "vn")
 		{
 			sizeN++;
 			tmp.Normal.push_back(Vector3f());
 			in >> tmp.Normal[tmp.Normal.size()-1].x >> tmp.Normal[tmp.Normal.size()-1].y >> tmp.Normal[tmp.Normal.size()-1].z;
-			tmp.GLNormal[(sizeN - 1) * 3 - 3] = tmp.Normal[tmp.Normal.size() - 1].x;
+
+			tmp.GLNormal_Vertex[(sizeN - 1) * 6 - 6] = tmp.Normal[tmp.Normal.size() - 1].x;
+			tmp.GLNormal_Vertex[(sizeN - 1) * 6 - 5] = tmp.Normal[tmp.Normal.size() - 1].y;
+			tmp.GLNormal_Vertex[(sizeN - 1) * 6 - 4] = tmp.Normal[tmp.Normal.size() - 1].z;
+			tmp.GLNormal_Vertex[(sizeN - 1) * 6 - 3] = tmp.Vertex[tmp.Normal.size() - 1].x;
+			tmp.GLNormal_Vertex[(sizeN - 1) * 6 - 2] = tmp.Vertex[tmp.Normal.size() - 1].y;
+			tmp.GLNormal_Vertex[(sizeN - 1) * 6 - 1] = tmp.Vertex[tmp.Normal.size() - 1].z;
+			
+			/*tmp.GLNormal[(sizeN - 1) * 3 - 3] = tmp.Normal[tmp.Normal.size() - 1].x;
 			tmp.GLNormal[(sizeN - 1) * 3 - 2] = tmp.Normal[tmp.Normal.size() - 1].y;
-			tmp.GLNormal[(sizeN - 1) * 3 - 1] = tmp.Normal[tmp.Normal.size() - 1].z;
+			tmp.GLNormal[(sizeN - 1) * 3 - 1] = tmp.Normal[tmp.Normal.size() - 1].z;*/
 			//cout << "normal " <<tmp.Normal[tmp.Normal.size()-1].ToString() << endl;
 			//cout << "x " << tmp.GLNormal[(sizeV - 1) * 3 - 3] << "y " << tmp.GLNormal[(sizeV - 1) * 3 - 2] << "z " << tmp.GLNormal[(sizeV - 1) * 3 - 1] << endl;
-			GLfloat* temp = new GLfloat[sizeV * 3];
-			std::_Copy_impl(tmp.GLNormal, tmp.GLNormal + (sizeV - 1) * 3, temp);
-			delete[] tmp.GLNormal;
-			tmp.GLNormal = temp;
+			GLfloat* temp = new GLfloat[sizeN * 6];
+			std::_Copy_impl(tmp.GLNormal_Vertex, tmp.GLNormal_Vertex + (sizeN - 1) * 6, temp);
+			delete[] tmp.GLNormal_Vertex;
+			tmp.GLNormal_Vertex = temp;
 		}
 		else if (type == "f")
 		{
@@ -94,15 +92,15 @@ Model glWrap::LoadModel(std::string filepath)
 			tmp.Face[tmp.Face.size() - 1].z.first -= 1;
 			tmp.Face[tmp.Face.size() - 1].z.second -= 1;
 
-			tmp.GLFace[(sizeF - 1) * 6 - 6] = tmp.Face[tmp.Face.size() - 1].x.second;
+			/*tmp.GLFace[(sizeF - 1) * 6 - 6] = tmp.Face[tmp.Face.size() - 1].x.second;
 			tmp.GLFace[(sizeF - 1) * 6 - 5] = tmp.Face[tmp.Face.size() - 1].y.second;
-			tmp.GLFace[(sizeF - 1) * 6 - 4] = tmp.Face[tmp.Face.size() - 1].z.second;
-			tmp.GLFace[(sizeF - 1) * 6 - 3] = tmp.Face[tmp.Face.size() - 1].x.first;
-			tmp.GLFace[(sizeF - 1) * 6 - 2] = tmp.Face[tmp.Face.size() - 1].y.first;
-			tmp.GLFace[(sizeF - 1) * 6 - 1] = tmp.Face[tmp.Face.size() - 1].z.first;
+			tmp.GLFace[(sizeF - 1) * 6 - 4] = tmp.Face[tmp.Face.size() - 1].z.second;*/
+			tmp.GLFace[(sizeF - 1) * 3 - 3] = tmp.Face[tmp.Face.size() - 1].x.first;
+			tmp.GLFace[(sizeF - 1) * 3 - 2] = tmp.Face[tmp.Face.size() - 1].y.first;
+			tmp.GLFace[(sizeF - 1) * 3 - 1] = tmp.Face[tmp.Face.size() - 1].z.first;
 
-			GLfloat* temp = new GLfloat[sizeF * 6];
-			std::_Copy_impl(tmp.GLFace, tmp.GLFace + (sizeF - 1) * 6, temp);
+			GLubyte* temp = new GLubyte[sizeF * 3];
+			std::_Copy_impl(tmp.GLFace, tmp.GLFace + (sizeF - 1) * 3, temp);
 			delete[] tmp.GLFace;
 			tmp.GLFace = temp;
 

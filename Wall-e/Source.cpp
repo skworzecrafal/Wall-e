@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <GL\glut.h>
 #include <GL\gl.h>
+#include <GL/glext.h>
 #include <GL\glu.h>
 #include <Windows.h>
 #include "PMath.h"
@@ -9,10 +10,24 @@
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "PMath.h"
+
+PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
+
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
-
+GLubyte test[12 * 3] = {1,2,3,
+7,6,5,
+0,4,5,
+1,5,6,
+6,7,3,
+0,3,7,
+0,1,3,
+4,7,5,
+1,0,5,
+2,1,6,
+2,6,3,
+4,0,7};
 Robot* a = new Robot();
 
 
@@ -89,15 +104,18 @@ void Display()
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
 
-	//glPolygonMode(GL_BACK, GL_LINE);
-
+	// utworzenie danych o wektorach normalnych i wspó³rzêdnych wierzcho³ków
+	glInterleavedArrays(GL_N3F_V3F, 0, glWrap::LoadModel("obiekt").GLNormal_Vertex);
 
 	// TU RYSOWAC::
 	glWrap::Axis();
-
+	if (glDrawRangeElementsEXT == NULL)
+		glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, glWrap::LoadModel("obiekt").GLFace);
+	else
+		glDrawRangeElementsEXT(GL_TRIANGLES, 0, 7, 12 * 3, GL_UNSIGNED_BYTE, glWrap::LoadModel("obiekt").GLFace);
 	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
-	a->Draw();
+	//a->Draw();
 	
 
 	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());
