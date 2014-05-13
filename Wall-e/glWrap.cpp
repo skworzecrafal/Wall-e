@@ -62,6 +62,12 @@ Model glWrap::LoadModel(std::string filepath)
 				tmp.Face[tmp.Face.size() - 1].x.first >> tmp.Face[tmp.Face.size() - 1].x.second >>
 				tmp.Face[tmp.Face.size() - 1].y.first >> tmp.Face[tmp.Face.size() - 1].y.second >>
 				tmp.Face[tmp.Face.size() - 1].z.first >> tmp.Face[tmp.Face.size() - 1].z.second;
+			tmp.Face[tmp.Face.size() - 1].x.first -= 1;
+			tmp.Face[tmp.Face.size() - 1].x.second -= 1;
+			tmp.Face[tmp.Face.size() - 1].y.first -= 1;
+			tmp.Face[tmp.Face.size() - 1].y.second -= 1;
+			tmp.Face[tmp.Face.size() - 1].z.first -= 1;
+			tmp.Face[tmp.Face.size() - 1].z.second -= 1;
 			cout << "Face " <<
 				tmp.Face[tmp.Face.size() - 1].x.first << tmp.Face[tmp.Face.size() - 1].x.second <<
 				tmp.Face[tmp.Face.size() - 1].y.first << tmp.Face[tmp.Face.size() - 1].y.second <<
