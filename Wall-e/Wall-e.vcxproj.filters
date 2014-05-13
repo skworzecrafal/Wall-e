@@ -66,6 +66,8 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Object Include="..\..\..\..\..\Desktop\untitled.obj" />
+    <Object Include="untitled.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
 </Project>
