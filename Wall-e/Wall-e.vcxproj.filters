@@ -65,4 +65,9 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="obiekt">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -362,7 +362,6 @@ int main(int argc, char * argv[])
 
 	// do³¹czenie funkcji wywo³ywanej przy zmianie rozmiaru okna
 	glutReshapeFunc(Reshape);
-
 	// do³¹czenie funkcji obs³ugi klawiatury
 	glutKeyboardFunc(Keyboard);
 
