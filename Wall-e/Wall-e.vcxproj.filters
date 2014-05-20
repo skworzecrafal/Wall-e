@@ -75,5 +75,8 @@
     <None Include="obiekt">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ob.ply">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

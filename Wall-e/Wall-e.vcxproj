@@ -107,6 +107,7 @@
     <ResourceCompile Include="Wall-e.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ob.ply" />
     <None Include="obiekt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
