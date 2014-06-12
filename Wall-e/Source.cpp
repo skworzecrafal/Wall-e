@@ -10,6 +10,7 @@
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "PMath.h"
+#include "LoadOBJ.h"
 
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
@@ -75,7 +76,47 @@ GLdouble centery = 0;
 GLdouble centerz = 0;
 
 // funkcja generuj¹ca scenê 3D
+WFObject model;
+void init()
+{
+	// Light values and coordinates
+	GLfloat  ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	GLfloat  diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+	GLfloat  specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat	 lightPos[] = { 0.0f, 30.0f, 70.0f, 0.0f };
+	GLfloat  specref[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+
+	glEnable(GL_DEPTH_TEST);	// Hidden surface removal
+	glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
+	glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
+
+	//Enable lighting
+	glEnable(GL_LIGHTING);
+
+	//Setup and enable light 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glEnable(GL_LIGHT0);
+
+	//Enable color tracking
+	glEnable(GL_COLOR_MATERIAL);
+
+	//Set Material properties to follow glColor values
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	// All materials hereafter have full specular reflectivity
+	// with a high shine
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, specref);
+	glMateriali(GL_FRONT, GL_SHININESS, 128);
+
+
+	// White background
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+}
 void Display()
 {
 	// kolor t³a - zawartoœæ bufora koloru
@@ -83,12 +124,12 @@ void Display()
 
 	// czyszczenie bufora koloru
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	// macierz modelowania = macierz jednostkowa
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
 	//glEnable(GL_CULL_FACE);
-
+	init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
 	glTranslatef(0, 0, -(Near + Far) / 2);
 
@@ -103,16 +144,17 @@ void Display()
 	
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
-
+	
+	
 	// utworzenie danych o wektorach normalnych i wspó³rzêdnych wierzcho³ków
-	glInterleavedArrays(GL_N3F_V3F, 0, glWrap::LoadModel("obiekt").GLNormal_Vertex);
-
+	//glInterleavedArrays(GL_V3F, 0, obiekt.vertices);
+	//glEnable(GL_LIGHTING);
 	// TU RYSOWAC::
 	glWrap::Axis();
-	if (glDrawRangeElementsEXT == NULL)
-		glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, glWrap::LoadModel("obiekt").GLFace);
-	else
-		glDrawRangeElementsEXT(GL_TRIANGLES, 0, 7, 12 * 3, GL_UNSIGNED_BYTE, glWrap::LoadModel("obiekt").GLFace);
+	glScalef(10, 10, 10);
+	model.draw();
+	//if (glDrawRangeElementsEXT == NULL)
+		//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, tab);
 	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
 	//a->Draw();
@@ -188,6 +230,7 @@ void Reshape(int width, int height)
 	}
 	else
 		glFrustum(Left, Right, bottom, top, Near, Far);
+
 	// wybór macierzy modelowania
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -350,6 +393,7 @@ void ActiveMouse(int x, int y)
 	old_x = x;
 	old_y = y;
 }
+
 int main(int argc, char * argv[])
 {
 	////////////////////
@@ -357,7 +401,7 @@ int main(int argc, char * argv[])
 	RobotSI1Initialize();*/
 	/////////////////////////////  
 	glWrap::LoadModel("obiekt");
-
+	model.load("ob");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
@@ -365,7 +409,7 @@ int main(int argc, char * argv[])
 	SetTimer(NULL, 1, 30, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
-
+	init();
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize(800, 600);
 	
@@ -395,6 +439,5 @@ int main(int argc, char * argv[])
 	//RobotSI1Terminate();
 	//mclTerminateApplication();
 	///////////////////////////
-	
 	return 0;
 }
