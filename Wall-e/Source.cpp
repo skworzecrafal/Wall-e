@@ -9,12 +9,13 @@
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "PMath.h"
+#include "Obstacle.h"
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
 
 Robot* a = new Robot();
-
+Obstacle* obst = new Obstacle();
 
 int obrotL = 0;
 int obrotR = 0;
@@ -98,6 +99,7 @@ void Display()
 	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
 	a->Draw();
+	obst->Draw();
 	
 
 	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());

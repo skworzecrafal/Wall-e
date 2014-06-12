@@ -103,8 +103,9 @@ void Sensor::Draw()
 	glVertex3d(Position.x + width, Position.y, Position.z - width);
 	glVertex3d(Position.x + width, Position.y, Position.z);
 	glEnd();
+
 	std::vector<Vector3f> points;
-	points = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2));
+	points = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2),30);
 	points = tmp*points;
 	glPopMatrix();
 	glWrap::Print(-60, 50, points[0].ToString());
