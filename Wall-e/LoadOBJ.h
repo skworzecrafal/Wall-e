@@ -5,7 +5,8 @@
 #include <fstream>
 #include <vector>
 #include <cstring>
-#include <GL/glut.h>
+#include <gl\glut.h>              // OpenGL
+#include <gl\glu.h>    
 using namespace std;
 
 
