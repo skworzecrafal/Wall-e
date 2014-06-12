@@ -1,8 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <GL\glut.h>
-#include <GL\gl.h>
 #include <GL/glext.h>
-#include <GL\glu.h>
 #include <Windows.h>
 #include "PMath.h"
 #include "robo.h"
@@ -125,11 +124,12 @@ void Display()
 	// czyszczenie bufora koloru
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glMatrixMode(GL_MODELVIEW);
 	// macierz modelowania = macierz jednostkowa
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
 	//glEnable(GL_CULL_FACE);
-	init();
+	//init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
 	glTranslatef(0, 0, -(Near + Far) / 2);
 
@@ -137,7 +137,18 @@ void Display()
 	glScalef(scale, scale, scale);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
+	// w³¹czenie oœwietlenia
+	glEnable(GL_LIGHTING);
+
+	// w³¹czenie œwiat³a GL_LIGHT0 z parametrami domyœlnymi
+	glEnable(GL_LIGHT0);
+
+	// w³¹czenie automatycznej normalizacji wektorów normalnych
+	glEnable(GL_NORMALIZE);
+
+	// w³¹czenie obs³ugi w³aœciwoœci materia³ów
+	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
 	glRotatef(rotatex, 1.0, 0, 0);
 	glRotatef(rotatey, 0, 1.0, 0);
@@ -152,6 +163,7 @@ void Display()
 	// TU RYSOWAC::
 	glWrap::Axis();
 	glScalef(10, 10, 10);
+	//glColor3f(0, 1, 0);
 	model.draw();
 	//if (glDrawRangeElementsEXT == NULL)
 		//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, tab);
@@ -393,7 +405,47 @@ void ActiveMouse(int x, int y)
 	old_x = x;
 	old_y = y;
 }
+void ExtensionSetup()
+{
+	// pobranie numeru wersji biblioteki OpenGL
+	const char * version = (char *)glGetString(GL_VERSION);
 
+	// odczyt wersji OpenGL
+	int major = 0, minor = 0;
+	if (sscanf(version, "%d.%d", &major, &minor) != 2)
+	{
+#ifdef WIN32
+		printf("B³êdny format wersji OpenGL\n");
+#else
+
+		printf("Bledny format wersji OpenGL\n");
+#endif
+
+		exit(0);
+	}
+
+	// sprawdzenie czy jest co najmniej wersja 1.2
+	if (major > 1 || minor >= 2)
+	{
+		// pobranie wskaŸników wybranych funkcji OpenGL 1.2
+		glDrawRangeElementsEXT =
+			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElements");
+	}
+	else
+
+		// sprawdzenie czy jest obs³ugiwane rozszerzenie EXT_draw_range_elements
+		if (glutExtensionSupported("GL_EXT_draw_range_elements"))
+		{
+		// pobranie wskaŸników wybranych funkcji rozszerzenia EXT_draw_range_elements
+		glDrawRangeElementsEXT =
+			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElementsEXT");
+		}
+		else
+		{
+			printf("Brak rozszerzenia EXT_draw_range_elements!\n");
+			glDrawRangeElementsEXT = NULL;
+		}
+}
 int main(int argc, char * argv[])
 {
 	////////////////////
@@ -401,7 +453,7 @@ int main(int argc, char * argv[])
 	RobotSI1Initialize();*/
 	/////////////////////////////  
 	glWrap::LoadModel("obiekt");
-	model.load("untitled.obj");
+	model.load("wall.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
@@ -409,7 +461,7 @@ int main(int argc, char * argv[])
 	SetTimer(NULL, 1, 30, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
-	init();
+	//init();
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize(800, 600);
 	
@@ -431,7 +483,7 @@ int main(int argc, char * argv[])
 	glutMotionFunc(ActiveMouse);
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
-
+	ExtensionSetup();
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
