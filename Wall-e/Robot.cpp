@@ -477,6 +477,7 @@ void Robot::Draw()
 	LeftWheel = tmp *lWheel;
 	RightWheel = tmp*rWheel;
 	Center = tmp*center;
+	laserPoints = tmp*Sensor1.laserPoints;
 	oldRot += Rotation.y;
 
 	Translation.x = 0;

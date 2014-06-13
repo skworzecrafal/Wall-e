@@ -12,6 +12,7 @@ public:
 	Vector3f LeftWheel;
 	Vector3f RightWheel;
 	Vector3f Center;
+	std::vector<Vector3f> laserPoints;
 	Matrixf tmp;
 	Sensor Sensor1;
 	float oldRot = 0;

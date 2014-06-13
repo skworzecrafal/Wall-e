@@ -104,14 +104,13 @@ void Sensor::Draw()
 	glVertex3d(Position.x + width, Position.y, Position.z);
 	glEnd();
 
-	std::vector<Vector3f> points;
-	points = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2),30);
-	points = tmp*points;
-	glPopMatrix();
-	glWrap::Print(-60, 50, points[0].ToString());
-	glWrap::Print(-60, 40, points[points.size() - 1].ToString());
-	float x = PMath::Plength(points[0], points[points.size() - 1]);
 	
-	glWrap::Print(-60, 30, std::to_string(PMath::GetEValue((float)60)));
+	laserPoints = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2), 30);
+	laserPoints = tmp*laserPoints;
+	glWrap::Print(-60, 50, laserPoints[0].ToString());
+	glWrap::Print(-60, 40, laserPoints[laserPoints.size() - 1].ToString());
+	glPopMatrix();
+	
+
 	
 }

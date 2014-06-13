@@ -12,6 +12,7 @@ public:
 	Vector3f rightDown;
 	Obstacle();
 	void Draw();
+	bool Contain(Vector3f point);
 	~Obstacle();
 };
 
