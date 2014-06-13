@@ -85,7 +85,7 @@ void init()
 	GLfloat	 lightPos[] = { 0.0f, 30.0f, 70.0f, 0.0f };
 	GLfloat  specref[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-
+	  
 	glEnable(GL_DEPTH_TEST);	// Hidden surface removal
 	glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
 	glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
