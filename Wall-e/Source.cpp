@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <GL\glut.h>
-#include <GL\gl.h>
-#include <GL\glu.h>
+#include <GL/glext.h>
 #include <Windows.h>
 #include "PMath.h"
 #include "robo.h"
@@ -9,6 +8,8 @@
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "PMath.h"
+#include "LoadOBJ.h"
+PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 #include "Obstacle.h"
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
@@ -61,7 +62,47 @@ GLdouble centery = 0;
 GLdouble centerz = 0;
 
 // funkcja generuj¹ca scenê 3D
+WFObject model;
+void init()
+{
+	// Light values and coordinates
+	GLfloat  ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	GLfloat  diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+	GLfloat  specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat	 lightPos[] = { 0.0f, 30.0f, 70.0f, 0.0f };
+	GLfloat  specref[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+
+	glEnable(GL_DEPTH_TEST);	// Hidden surface removal
+	glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
+	glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
+
+	//Enable lighting
+	glEnable(GL_LIGHTING);
+
+	//Setup and enable light 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glEnable(GL_LIGHT0);
+
+	//Enable color tracking
+	glEnable(GL_COLOR_MATERIAL);
+
+	//Set Material properties to follow glColor values
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	// All materials hereafter have full specular reflectivity
+	// with a high shine
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, specref);
+	glMateriali(GL_FRONT, GL_SHININESS, 128);
+
+
+	// White background
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+}
 void Display()
 {
 	// kolor t³a - zawartoœæ bufora koloru
@@ -69,7 +110,8 @@ void Display()
 
 	// czyszczenie bufora koloru
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glMatrixMode(GL_MODELVIEW);
 	// macierz modelowania = macierz jednostkowa
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
@@ -82,20 +124,33 @@ void Display()
 	glScalef(scale, scale, scale);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
+	// w³¹czenie oœwietlenia
+	glEnable(GL_LIGHTING);
+
+	// w³¹czenie œwiat³a GL_LIGHT0 z parametrami domyœlnymi
+	glEnable(GL_LIGHT0);
+
+	// w³¹czenie automatycznej normalizacji wektorów normalnych
+	glEnable(GL_NORMALIZE);
+
+	// w³¹czenie obs³ugi w³aœciwoœci materia³ów
+	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
 	glRotatef(rotatex, 1.0, 0, 0);
 	glRotatef(rotatey, 0, 1.0, 0);
-
+	
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
-
+	
 	//glPolygonMode(GL_BACK, GL_LINE);
 
-
+	
 	// TU RYSOWAC::
 	glWrap::Axis();
-
+	glScalef(10, 10, 10);
+	//glColor3f(0, 1, 0);
+	model.draw();
 	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
 	a->Draw();
@@ -341,7 +396,7 @@ int main(int argc, char * argv[])
 	RobotSI1Initialize();*/
 	/////////////////////////////  
 	glWrap::LoadModel("obiekt");
-
+	model.load("wall2.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
