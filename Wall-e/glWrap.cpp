@@ -122,12 +122,12 @@ Model glWrap::LoadModel(std::string filepath)
 	}
 	return tmp;
 }
-std::vector<Vector3f> glWrap::LineOfPoints(Vector3f A, Vector3f B)
+std::vector<Vector3f> glWrap::LineOfPoints(Vector3f A, Vector3f B,int length)
 {
 	glBegin(GL_POINTS);
 	glColor3b(100, 0, 100);
 	std::vector<Vector3f> vec;
-	for (float t = 0; t < 10; t = t + 10.0/60.0)
+	for (float t = 0; t < length; t = t + 10.0/60.0)
 	{
 		float x = (B.x - A.x) * t + A.x;
 		float y = (B.y - A.y) * t + A.y;
