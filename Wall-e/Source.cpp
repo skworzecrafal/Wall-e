@@ -1,7 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <GL\glut.h>
-#include <GL\gl.h>
-#include <GL\glu.h>
+#include <GL/glext.h>
 #include <Windows.h>
 #include "PMath.h"
 #include "robo.h"
@@ -9,10 +9,25 @@
 #include "Robo_AI.h"
 #include "glWrap.h"
 #include "PMath.h"
+#include "LoadOBJ.h"
+
+PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
+
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
-
+GLubyte test[12 * 3] = {1,2,3,
+7,6,5,
+0,4,5,
+1,5,6,
+6,7,3,
+0,3,7,
+0,1,3,
+4,7,5,
+1,0,5,
+2,1,6,
+2,6,3,
+4,0,7};
 Robot* a = new Robot();
 
 
@@ -60,7 +75,47 @@ GLdouble centery = 0;
 GLdouble centerz = 0;
 
 // funkcja generuj¹ca scenê 3D
+WFObject model;
+void init()
+{
+	// Light values and coordinates
+	GLfloat  ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	GLfloat  diffuseLight[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+	GLfloat  specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat	 lightPos[] = { 0.0f, 30.0f, 70.0f, 0.0f };
+	GLfloat  specref[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+
+	glEnable(GL_DEPTH_TEST);	// Hidden surface removal
+	glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
+	glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
+
+	//Enable lighting
+	glEnable(GL_LIGHTING);
+
+	//Setup and enable light 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glEnable(GL_LIGHT0);
+
+	//Enable color tracking
+	glEnable(GL_COLOR_MATERIAL);
+
+	//Set Material properties to follow glColor values
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	// All materials hereafter have full specular reflectivity
+	// with a high shine
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, specref);
+	glMateriali(GL_FRONT, GL_SHININESS, 128);
+
+
+	// White background
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+}
 void Display()
 {
 	// kolor t³a - zawartoœæ bufora koloru
@@ -68,12 +123,13 @@ void Display()
 
 	// czyszczenie bufora koloru
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glMatrixMode(GL_MODELVIEW);
 	// macierz modelowania = macierz jednostkowa
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
 	//glEnable(GL_CULL_FACE);
-
+	//init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
 	glTranslatef(0, 0, -(Near + Far) / 2);
 
@@ -81,23 +137,39 @@ void Display()
 	glScalef(scale, scale, scale);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
+	// w³¹czenie oœwietlenia
+	glEnable(GL_LIGHTING);
+
+	// w³¹czenie œwiat³a GL_LIGHT0 z parametrami domyœlnymi
+	glEnable(GL_LIGHT0);
+
+	// w³¹czenie automatycznej normalizacji wektorów normalnych
+	glEnable(GL_NORMALIZE);
+
+	// w³¹czenie obs³ugi w³aœciwoœci materia³ów
+	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
 	glRotatef(rotatex, 1.0, 0, 0);
 	glRotatef(rotatey, 0, 1.0, 0);
-
+	
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
-
-	//glPolygonMode(GL_BACK, GL_LINE);
-
-
+	
+	
+	// utworzenie danych o wektorach normalnych i wspó³rzêdnych wierzcho³ków
+	//glInterleavedArrays(GL_V3F, 0, obiekt.vertices);
+	//glEnable(GL_LIGHTING);
 	// TU RYSOWAC::
 	glWrap::Axis();
-
+	glScalef(10, 10, 10);
+	//glColor3f(0, 1, 0);
+	model.draw();
+	//if (glDrawRangeElementsEXT == NULL)
+		//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, tab);
 	//glTranslatef(transx, transy, transz);
 	//robot(obrotL, obrotR);
-	a->Draw();
+	//a->Draw();
 	
 
 	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());
@@ -170,6 +242,7 @@ void Reshape(int width, int height)
 	}
 	else
 		glFrustum(Left, Right, bottom, top, Near, Far);
+
 	// wybór macierzy modelowania
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -332,6 +405,47 @@ void ActiveMouse(int x, int y)
 	old_x = x;
 	old_y = y;
 }
+void ExtensionSetup()
+{
+	// pobranie numeru wersji biblioteki OpenGL
+	const char * version = (char *)glGetString(GL_VERSION);
+
+	// odczyt wersji OpenGL
+	int major = 0, minor = 0;
+	if (sscanf(version, "%d.%d", &major, &minor) != 2)
+	{
+#ifdef WIN32
+		printf("B³êdny format wersji OpenGL\n");
+#else
+
+		printf("Bledny format wersji OpenGL\n");
+#endif
+
+		exit(0);
+	}
+
+	// sprawdzenie czy jest co najmniej wersja 1.2
+	if (major > 1 || minor >= 2)
+	{
+		// pobranie wskaŸników wybranych funkcji OpenGL 1.2
+		glDrawRangeElementsEXT =
+			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElements");
+	}
+	else
+
+		// sprawdzenie czy jest obs³ugiwane rozszerzenie EXT_draw_range_elements
+		if (glutExtensionSupported("GL_EXT_draw_range_elements"))
+		{
+		// pobranie wskaŸników wybranych funkcji rozszerzenia EXT_draw_range_elements
+		glDrawRangeElementsEXT =
+			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElementsEXT");
+		}
+		else
+		{
+			printf("Brak rozszerzenia EXT_draw_range_elements!\n");
+			glDrawRangeElementsEXT = NULL;
+		}
+}
 int main(int argc, char * argv[])
 {
 	////////////////////
@@ -339,7 +453,7 @@ int main(int argc, char * argv[])
 	RobotSI1Initialize();*/
 	/////////////////////////////  
 	glWrap::LoadModel("obiekt");
-
+	model.load("wall2.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
@@ -347,7 +461,7 @@ int main(int argc, char * argv[])
 	SetTimer(NULL, 1, 30, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
-
+	//init();
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize(800, 600);
 	
@@ -369,7 +483,7 @@ int main(int argc, char * argv[])
 	glutMotionFunc(ActiveMouse);
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
-
+	ExtensionSetup();
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
@@ -377,6 +491,5 @@ int main(int argc, char * argv[])
 	//RobotSI1Terminate();
 	//mclTerminateApplication();
 	///////////////////////////
-	
 	return 0;
 }
