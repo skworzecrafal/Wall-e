@@ -453,7 +453,7 @@ int main(int argc, char * argv[])
 	RobotSI1Initialize();*/
 	/////////////////////////////  
 	glWrap::LoadModel("obiekt");
-	model.load("wall.obj");
+	model.load("wall2.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
