@@ -155,21 +155,25 @@ void Display()
 	//robot(obrotL, obrotR);
 	a->Draw();
 	obst->Draw();
+	int j = 0;
 
 	for (int i = 0; i < a->laserPoints.size(); i++)
 	{
+		if (i>j)
+			j = i;
+		
 		if (obst->Contain(a->laserPoints[i]))
 		{
 			float x = PMath::Plength(a->laserPoints[0], a->laserPoints[i]);
 			glWrap::Print(-10, 30, std::to_string(PMath::GetEValue((float)x)));
 			break;
 		}
-		else
+		if (i == a->laserPoints.size()-1)
 		{
 			glWrap::Print(-10, 30, std::to_string(PMath::GetEValue((float)60)));
 		}
 	}
-	//glWrap::Print(-10, 40, "punkt 0: " + a->laserPoints[10].ToString());
+	glWrap::Print(-10, 40, to_string( j));
 	glWrap::Print(10, 50, "LU " + obst->leftUp.ToString());
 	glWrap::Print(10, 40, "LD " + obst->leftDown.ToString());
 	glWrap::Print(10, 30, "RU " + obst->rightUp.ToString());
