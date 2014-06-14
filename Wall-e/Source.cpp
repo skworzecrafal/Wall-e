@@ -19,15 +19,15 @@ double *ret;
 Robot* a = new Robot();
 
 
-int Vl = 0;
-int Vr = 0;
+float Vl = 0;
+float Vr = 0;
 int Hkat = 0;
 int LhandV = 0;
 int LhandH = 0;
 int RhandV = 0;
 int RhandH = 0;
-int krokL = 0;
-int krokR = 0;
+float krokL = 0;
+float krokR = 0;
 
 
 // aspekt obrazu

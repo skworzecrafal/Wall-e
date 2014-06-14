@@ -585,7 +585,7 @@ void Robot::rArm(int lr, int ud)
 
 	glPopMatrix();
 }
-void Robot::naped(int vl, int vr)
+void Robot::naped(float vl, float vr)
 {
 	glPushMatrix();
 
@@ -658,7 +658,7 @@ void Robot::naped(int vl, int vr)
 
 	glPopMatrix(); 
 }
-void Robot::Rysuj(int vl, int vr, int heado, int llr, int lud, int rlr, int rud)
+void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int rud)
 {
 	//BODY
 	glColor3ub(209, 171, 20);
