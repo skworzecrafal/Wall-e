@@ -1,7 +1,7 @@
 # Blender MTL File: 'None'
 # Material Count: 4
 
-newmtl ArmsBarsWhite.002
+newmtl ArmsBarsWhite.000
 Ns 292.156863
 Ka 0.000000 0.000000 0.000000
 Kd 0.609007 0.609007 0.609007
@@ -10,7 +10,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl BlackArmsbars.002
+newmtl BlackArmsbars.000
 Ns 292.156863
 Ka 0.000000 0.000000 0.000000
 Kd 0.004483 0.004483 0.004483
@@ -19,7 +19,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl MainYellow.003
+newmtl MainYellow.000
 Ns 292.156863
 Ka 0.000000 0.000000 0.000000
 Kd 0.510608 0.349539 0.032051
@@ -28,7 +28,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl SilverCylinders.003
+newmtl SilverCylinders.000
 Ns 292.156863
 Ka 0.000000 0.000000 0.000000
 Kd 0.328744 0.328744 0.328744

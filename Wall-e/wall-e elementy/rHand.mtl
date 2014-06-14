@@ -1,7 +1,7 @@
 # Blender MTL File: 'None'
 # Material Count: 3
 
-newmtl Aluminum.002
+newmtl Aluminum.000
 Ns 292.156863
 Ka 0.000000 0.000000 0.000000
 Kd 0.439073 0.439073 0.439073
@@ -10,7 +10,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl Axis.004
+newmtl Axis.001
 Ns 586.274510
 Ka 0.000000 0.000000 0.000000
 Kd 0.152138 0.152138 0.152138
@@ -19,7 +19,7 @@ Ni 1.000000
 d 1.000000
 illum 2
 
-newmtl SilverCylinders.003
+newmtl SilverCylinders.000
 Ns 292.156863
 Ka 0.000000 0.000000 0.000000
 Kd 0.328744 0.328744 0.328744

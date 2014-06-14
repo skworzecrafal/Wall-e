@@ -30,5 +30,9 @@ private:
 	void figura1(float a, float b, float c);
 	void ramie(double r1, double r2, double h, double d);
 	void gasienica(int obrot);
+	void head();
+	void lArm();
+	void rArm();
+	void naped();
 };
 
