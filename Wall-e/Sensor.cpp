@@ -19,45 +19,7 @@ Sensor::~Sensor()
 void Sensor::Draw()
 {
 	glPushMatrix();		
-	switch (OriPosition)
-	{
-	case oLeftWheel:
-		Origin = lWheel;
-		glTranslatef(LeftWheel.x, LeftWheel.y, LeftWheel.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(LeftWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	case oRightWheel:
-		Origin = rWheel;
-		glTranslatef(RightWheel.x, RightWheel.y, RightWheel.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(RightWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	case oCenter:
-		Origin = center;
-		glTranslatef(Center.x, Center.y, Center.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(Center)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	}
-	LeftWheel = tmp *lWheel;
-	RightWheel = tmp*rWheel;
-	Center = tmp*center;
-	oldRot += Rotation.y;
-	
-	Translation.x = 0;
-	Translation.y = 0;
-	Translation.z = 0;
-	Rotation.y = 0;
+
 
 
 	glBegin(GL_QUADS);
@@ -106,9 +68,8 @@ void Sensor::Draw()
 
 	
 	laserPoints = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2), 30);
-	laserPoints = tmp*laserPoints;
-	glWrap::Print(-60, 50, laserPoints[0].ToString());
-	glWrap::Print(-60, 40, laserPoints[laserPoints.size() - 1].ToString());
+
+	
 	glPopMatrix();
 	
 

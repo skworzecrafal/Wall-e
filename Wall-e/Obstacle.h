@@ -10,7 +10,10 @@ public:
 	Vector3f leftDown;
 	Vector3f rightUp;
 	Vector3f rightDown;
-	Obstacle();
+	int xSize;
+	int zSize;
+
+	Obstacle(Vector3f leftDown, int xSize, int zSize);
 	void Draw();
 	bool Contain(Vector3f point);
 	~Obstacle();

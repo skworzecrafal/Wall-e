@@ -16,7 +16,7 @@ double *ret;
 
 
 Robot* a = new Robot();
-Obstacle* obst = new Obstacle();
+Obstacle* obst = new Obstacle( Vector3f(0,0,0),10,50);
 
 int obrotL = 0;
 int obrotR = 0;
@@ -161,15 +161,15 @@ void Display()
 		if (obst->Contain(a->laserPoints[i]))
 		{
 			float x = PMath::Plength(a->laserPoints[0], a->laserPoints[i]);
-			glWrap::Print(-60, 30, std::to_string(PMath::GetEValue((float)x)));
+			glWrap::Print(-10, 30, std::to_string(PMath::GetEValue((float)x)));
 			break;
 		}
 		else
 		{
-			glWrap::Print(-60, 30, std::to_string(PMath::GetEValue((float)60)));
+			glWrap::Print(-10, 30, std::to_string(PMath::GetEValue((float)60)));
 		}
 	}
-
+	//glWrap::Print(-10, 40, "punkt 0: " + a->laserPoints[10].ToString());
 	glWrap::Print(10, 50, "LU " + obst->leftUp.ToString());
 	glWrap::Print(10, 40, "LD " + obst->leftDown.ToString());
 	glWrap::Print(10, 30, "RU " + obst->rightUp.ToString());

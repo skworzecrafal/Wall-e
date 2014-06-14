@@ -477,6 +477,7 @@ void Robot::Draw()
 	LeftWheel = tmp *lWheel;
 	RightWheel = tmp*rWheel;
 	Center = tmp*center;
+	tmp = tmp*Matrixf(3, 10, -5);
 	laserPoints = tmp*Sensor1.laserPoints;
 	oldRot += Rotation.y;
 
@@ -487,5 +488,9 @@ void Robot::Draw()
 	 Draw(0, 0);
 	 glTranslatef(3, 10, -5);
 	 Sensor1.Draw();
+	 
+	 
 	 glPopMatrix();
+
+	 
 }
