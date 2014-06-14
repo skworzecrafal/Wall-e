@@ -1,6 +1,7 @@
 #pragma once
 #include "PMath.h"
 #include "Sensor.h"
+#include "LoadOBJ.h"
 class Robot
 {
 public:
@@ -14,9 +15,11 @@ public:
 	Vector3f Center;
 	Matrixf tmp;
 	Sensor Sensor1;
+	WFObject model[17];
 	float oldRot = 0;
 	void Draw(int obrotL, int obrotR);
 	void Draw();
+	void Rysuj();
 	Robot();
 	~Robot();
 private:

@@ -162,9 +162,9 @@ void Display()
 	//glEnable(GL_LIGHTING);
 	// TU RYSOWAC::
 	glWrap::Axis();
-	glScalef(10, 10, 10);
+	a->Rysuj();
 	//glColor3f(0, 1, 0);
-	model.draw();
+	//model.draw();
 	//if (glDrawRangeElementsEXT == NULL)
 		//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, tab);
 	//glTranslatef(transx, transy, transz);
@@ -452,15 +452,15 @@ int main(int argc, char * argv[])
 	/*mclInitializeApplication(NULL, 0);
 	RobotSI1Initialize();*/
 	/////////////////////////////  
-	glWrap::LoadModel("obiekt");
-	model.load("wall2.obj");
+	//glWrap::LoadModel("obiekt");
+	//model.load("wall-e elementy\\wallBody.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
 	// inicjalizacja bufora ramki
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	//init();
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize(800, 600);

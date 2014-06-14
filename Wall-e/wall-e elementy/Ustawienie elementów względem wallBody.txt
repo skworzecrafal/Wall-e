@@ -1,0 +1,70 @@
+Head pos:
+x=0.0003
+y=16.5224
+z=-1.3122
+
+l arm pivot:
+x=5.7539
+y=14.0014
+z=-0.6319
+
+r arm pivot:
+x=-5.7539
+y=14.0014
+z=-0.6319
+
+l arm:
+x=8.6253
+y=13.9892
+z=-0.6524
+
+r arm:
+x=-8.6254
+y=14.0009
+z=-0.6312
+
+napêd:
+x=0.7222
+y=5.0414
+z=-0.4206
+{
+L large wheel:
+x=9.3861
+y=-1.6844
+z=-4.5619
+
+R large wheel:
+x=-10.8307
+y=-1.6851
+z=-4.5609
+
+L medium wheel:
+x=9.3866
+y=-2.4126
+z=4.241
+
+R medium wheel:
+x=-10.831
+y=-2.413
+z=4.2445
+
+L front small wheel:
+x=9.3904
+y=0.8282
+z=2.1358
+
+R front small wheel:
+x=-10.8308
+y=0.8281
+z=2.1373
+
+L back small wheel:
+x=9.3864
+y=4.6568
+z=-1.7999
+
+R back small wheel:
+x=-10.8308
+y=4.6567
+z=-1.7983
+}

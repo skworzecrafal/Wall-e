@@ -4,12 +4,48 @@
 #define M_PI 3.14
 #define X 0
 #define Y 1
+enum {
+	BODY,
+	HEAD1,
+	HEAD2,
+	HEAD3,
+	HEAD4,
+	GASIENICA,
+	LARGE_WHEEL,
+	L_ARM,
+	L_ARM_PIVOT,
+	L_HAND,
+	MEDIUM_WHEEL,
+	NAPED_MOCOWANIE_1,
+	NAPED_MOCOWANIE_2,
+	R_ARM,
+	R_ARM_PIVOT,
+	R_HAND,
+	SMALL_WHEEL
+};
 Robot::Robot()
 {
 	width = 10;
 	lWheel = Vector3f(0, 0, -width / 2);
 	rWheel = Vector3f(width, 0, -width / 2);
 	center = Vector3f(width / 2, 0, -width / 2);
+	model[BODY].load("wall-e elementy\\wallBody.txt");
+	model[HEAD1].load("wall-e elementy\\wallHead1.txt");
+	model[HEAD2].load("wall-e elementy\\wallHead2.txt");
+	model[HEAD3].load("wall-e elementy\\wallHead3.txt");
+	model[HEAD4].load("wall-e elementy\\wallHead4.txt");
+	model[GASIENICA].load("wall-e elementy\\Gasienica.txt");
+	model[LARGE_WHEEL].load("wall-e elementy\\LargeWheel.txt");
+	model[L_ARM].load("wall-e elementy\\lArm.txt");
+	model[L_ARM_PIVOT].load("wall-e elementy\\lArmPivot.txt");
+	model[L_HAND].load("wall-e elementy\\lHand.txt");
+	model[MEDIUM_WHEEL].load("wall-e elementy\\MediumWheel.txt");
+	model[NAPED_MOCOWANIE_1].load("wall-e elementy\\NapedMocowanie1.txt");
+	model[NAPED_MOCOWANIE_2].load("wall-e elementy\\NapedMocowanie2.txt");
+	model[R_ARM].load("wall-e elementy\\rArm.txt");
+	model[R_ARM_PIVOT].load("wall-e elementy\\rArmPivot.txt");
+	model[R_HAND].load("wall-e elementy\\rHand.txt");
+	model[SMALL_WHEEL].load("wall-e elementy\\SmallWheel.txt");
 }
 Robot::~Robot()
 {
@@ -487,4 +523,30 @@ void Robot::Draw()
 	 glTranslatef(3, 10, -5);
 	 Sensor1.Draw();
 	 glPopMatrix();
+}
+void Robot::Rysuj()
+{
+	glColor3ub(209, 171, 20);
+	model[BODY].draw();
+	glPushMatrix();
+	glTranslatef(0.0003, 16.5224, -1.3122);
+	model[HEAD1].draw();
+	glColor3ub(164, 164, 164);
+	model[HEAD2].draw();
+	glColor3ub(25,25,25);
+	model[HEAD3].draw();
+	//W³¹czenie ³¹czenia kolorów :
+	glEnable(GL_BLEND);
+	//Ustawienie bufora g³êbokoœci w tryb odczytu :
+	glDepthMask(GL_FALSE);
+	//Skonfigurowanie sposobu ³¹czenia kolorów :
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Okreœlenie koloru obiektu przezroczystego :
+	glColor4ub(44, 54, 41, 180);
+	model[HEAD4].draw();
+	//Przywrócenie bufora g³êbokoœci w pe³ny tryb zapisu / odczytu:
+	glDepthMask(GL_TRUE);
+	//Wy³¹czenie ³¹czenia kolorów :
+	glDisable(GL_BLEND);
+	glPopMatrix();
 }
