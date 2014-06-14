@@ -1,6 +1,7 @@
 #pragma once
 #include "PMath.h"
 #include "Sensor.h"
+#include "LoadOBJ.h"
 class Robot
 {
 public:
@@ -15,9 +16,11 @@ public:
 	std::vector<Vector3f> laserPoints;
 	Matrixf tmp;
 	Sensor Sensor1;
+	WFObject model[17];
 	float oldRot = 0;
 	void Draw(int obrotL, int obrotR);
 	void Draw();
+	void Rysuj(int vl, int vr, int heado, int llr, int lud, int rlr, int rud);
 	Robot();
 	~Robot();
 private:
@@ -28,5 +31,9 @@ private:
 	void figura1(float a, float b, float c);
 	void ramie(double r1, double r2, double h, double d);
 	void gasienica(int obrot);
+	void head(int obrot);
+	void lArm(int lr, int ud);
+	void rArm(int lr, int ud);
+	void naped(int vl, int vr);
 };
 

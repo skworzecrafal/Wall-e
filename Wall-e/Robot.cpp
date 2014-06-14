@@ -4,12 +4,48 @@
 #define M_PI 3.14
 #define X 0
 #define Y 1
+enum {
+	BODY,
+	HEAD1,
+	HEAD2,
+	HEAD3,
+	HEAD4,
+	GASIENICA,
+	LARGE_WHEEL,
+	L_ARM,
+	L_ARM_PIVOT,
+	L_HAND,
+	MEDIUM_WHEEL,
+	NAPED_MOCOWANIE_1,
+	NAPED_MOCOWANIE_2,
+	R_ARM,
+	R_ARM_PIVOT,
+	R_HAND,
+	SMALL_WHEEL
+};
 Robot::Robot()
 {
 	width = 10;
 	lWheel = Vector3f(0, 0, -width / 2);
 	rWheel = Vector3f(width, 0, -width / 2);
 	center = Vector3f(width / 2, 0, -width / 2);
+	model[BODY].load("wall-e elementy\\wallBody.txt");
+	model[HEAD1].load("wall-e elementy\\wallHead1.txt");
+	model[HEAD2].load("wall-e elementy\\wallHead2.txt");
+	model[HEAD3].load("wall-e elementy\\wallHead3.txt");
+	model[HEAD4].load("wall-e elementy\\wallHead4.txt");
+	model[GASIENICA].load("wall-e elementy\\Gasienica.txt");
+	model[LARGE_WHEEL].load("wall-e elementy\\LargeWheel.txt");
+	model[L_ARM].load("wall-e elementy\\lArm.txt");
+	model[L_ARM_PIVOT].load("wall-e elementy\\lArmPivot.txt");
+	model[L_HAND].load("wall-e elementy\\lHand.txt");
+	model[MEDIUM_WHEEL].load("wall-e elementy\\MediumWheel.txt");
+	model[NAPED_MOCOWANIE_1].load("wall-e elementy\\NapedMocowanie1.txt");
+	model[NAPED_MOCOWANIE_2].load("wall-e elementy\\NapedMocowanie2.txt");
+	model[R_ARM].load("wall-e elementy\\rArm.txt");
+	model[R_ARM_PIVOT].load("wall-e elementy\\rArmPivot.txt");
+	model[R_HAND].load("wall-e elementy\\rHand.txt");
+	model[SMALL_WHEEL].load("wall-e elementy\\SmallWheel.txt");
 }
 Robot::~Robot()
 {
@@ -493,4 +529,157 @@ void Robot::Draw()
 	 glPopMatrix();
 
 	 
+}
+void Robot::head(int obrot)
+{
+	glPushMatrix();
+	glTranslatef(0.0003, 16.5224, -1.3122);
+	glRotatef(obrot, 1, 0, 0);
+	model[HEAD1].draw();
+	glColor3ub(164, 164, 164);
+	model[HEAD2].draw();
+	glColor3ub(25, 25, 25);
+	model[HEAD3].draw();
+	//W³¹czenie ³¹czenia kolorów :
+	glEnable(GL_BLEND);
+	//Ustawienie bufora g³êbokoœci w tryb odczytu :
+	glDepthMask(GL_FALSE);
+	//Skonfigurowanie sposobu ³¹czenia kolorów :
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Okreœlenie koloru obiektu przezroczystego :
+	glColor4ub(44, 54, 41, 180);
+	model[HEAD4].draw();
+	//Przywrócenie bufora g³êbokoœci w pe³ny tryb zapisu / odczytu:
+	glDepthMask(GL_TRUE);
+	//Wy³¹czenie ³¹czenia kolorów :
+	glDisable(GL_BLEND);
+	glPopMatrix();
+}
+void Robot::lArm(int lr, int ud)
+{
+	glPushMatrix();
+
+	glColor3ub(92, 92, 92);
+	glTranslatef(5.7539, 14.0014, -0.6319);
+	glRotatef(ud, 1, 0, 0);
+	model[L_ARM_PIVOT].draw();
+
+	glColor3ub(209, 171, 20);
+	glTranslatef(2.8714, 0, 0);
+	glRotatef(lr, 0, 1, 0);
+	model[L_ARM].draw();
+	glColor3ub(164, 164, 164);
+	model[L_HAND].draw();
+
+	glPopMatrix();
+}
+void Robot::rArm(int lr, int ud)
+{
+	glPushMatrix();
+
+	glColor3ub(92, 92, 92);
+	glTranslatef(-5.7539, 14.0014, -0.6319);
+	glRotatef(ud, 1, 0, 0);
+	model[R_ARM_PIVOT].draw();
+
+	glColor3ub(209, 171, 20);
+	glTranslatef(-2.8714, 0, 0);
+	glRotatef(lr, 0, 1, 0);
+	model[R_ARM].draw();
+	glColor3ub(164, 164, 164);
+	model[R_HAND].draw();
+
+	glPopMatrix();
+}
+void Robot::naped(int vl, int vr)
+{
+	glPushMatrix();
+
+	glTranslatef(0.7222, 5.0414, -0.4206);
+
+	glColor3ub(106, 87, 79);
+	model[NAPED_MOCOWANIE_1].draw();
+
+	glColor3ub(134, 44, 17);
+	model[NAPED_MOCOWANIE_2].draw();
+
+	glColor3ub(80, 80, 80);
+	model[GASIENICA].draw();
+	//L
+	glColor3ub(106, 87, 79);
+	glPushMatrix();
+	glTranslatef(9.3861, -1.6844, -4.5619);
+	glRotatef(vl, 1, 0, 0);
+	model[LARGE_WHEEL].draw();
+	glPopMatrix();
+	//R
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(-10.8307, -1.6851, -4.5609);
+	glRotatef(vr, 1, 0, 0);
+	model[LARGE_WHEEL].draw();
+	glPopMatrix();
+	//L
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(9.3866, -2.4126, 4.241);
+	glRotatef(vl*1.2, 1, 0, 0);
+	model[MEDIUM_WHEEL].draw();
+	glPopMatrix();
+	//R
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(-10.831, -2.413, 4.2445);
+	glRotatef(vr*1.2, 1, 0, 0);
+	model[MEDIUM_WHEEL].draw();
+	glPopMatrix();
+	//L
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(9.3904, 0.8282, 2.1358);
+	glRotatef(vl*1.5, 1, 0, 0);
+	model[SMALL_WHEEL].draw();
+	glPopMatrix();
+	//R
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(-10.8308, 0.8281, 2.1373);
+	glRotatef(vr*1.5, 1, 0, 0);
+	model[SMALL_WHEEL].draw();
+	glPopMatrix();
+	//L
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(9.3864, 4.6568, -1.7999);
+	glRotatef(vl*1.5, 1, 0, 0);
+	model[SMALL_WHEEL].draw();
+	glPopMatrix();
+	//R
+	glPushMatrix();
+	glPushMatrix();
+	glTranslatef(-10.8308, 4.6567, -1.7983);
+	glRotatef(vr*1.5, 1, 0, 0);
+	model[SMALL_WHEEL].draw();
+	glPopMatrix();
+
+	glPopMatrix(); 
+}
+void Robot::Rysuj(int vl, int vr, int heado, int llr, int lud, int rlr, int rud)
+{
+	//BODY
+	glColor3ub(209, 171, 20);
+	model[BODY].draw();
+
+	//HEAD
+	head(heado);
+
+	//LEFT ARM
+	lArm(llr, lud);
+
+	//RIGHT ARM
+	rArm(rlr,rud);
+
+	//NAPED
+	naped(vl,vr);
+
 }

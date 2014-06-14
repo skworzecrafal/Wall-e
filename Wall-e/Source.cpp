@@ -1,6 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <GL\glut.h>
-#include <GL\glext.h>
+#include <GL/glext.h>
 #include <Windows.h>
 #include "PMath.h"
 #include "robo.h"
@@ -9,20 +10,26 @@
 #include "glWrap.h"
 #include "PMath.h"
 #include "LoadOBJ.h"
+
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
-#include "Obstacle.h"
+
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
-
 Robot* a = new Robot();
-Obstacle* obst = new Obstacle( Vector3f(0,0,0),10,50);
 
-int obrotL = 0;
-int obrotR = 0;
-int kierunek = 0;
+
+int Vl = 0;
+int Vr = 0;
+int Hkat = 0;
+int LhandV = 0;
+int LhandH = 0;
+int RhandV = 0;
+int RhandH = 0;
 int krokL = 0;
 int krokR = 0;
+
+
 // aspekt obrazu
 
 int aspect = 1;
@@ -72,7 +79,7 @@ void init()
 	GLfloat	 lightPos[] = { 0.0f, 30.0f, 70.0f, 0.0f };
 	GLfloat  specref[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-
+	  
 	glEnable(GL_DEPTH_TEST);	// Hidden surface removal
 	glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
 	glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
@@ -116,7 +123,7 @@ void Display()
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
 	//glEnable(GL_CULL_FACE);
-
+	//init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
 	glTranslatef(0, 0, -(Near + Far) / 2);
 
@@ -143,41 +150,15 @@ void Display()
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
 	
-	//glPolygonMode(GL_BACK, GL_LINE);
-
-	
 	// TU RYSOWAC::
 	glWrap::Axis();
-	glScalef(10, 10, 10);
-	//glColor3f(0, 1, 0);
-	model.draw();
-	//glTranslatef(transx, transy, transz);
-	//robot(obrotL, obrotR);
-	a->Draw();
-	obst->Draw();
-	int j = 0;
+	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
+	
+	
 
-	for (int i = 0; i < a->laserPoints.size(); i++)
-	{
-		if (i>j)
-			j = i;
-		
-		if (obst->Contain(a->laserPoints[i]))
-		{
-			float x = PMath::Plength(a->laserPoints[0], a->laserPoints[i]);
-			glWrap::Print(-10, 30, std::to_string(PMath::GetEValue((float)x)));
-			break;
-		}
-		if (i == a->laserPoints.size()-1)
-		{
-			glWrap::Print(-10, 30, std::to_string(PMath::GetEValue((float)60)));
-		}
-	}
-	glWrap::Print(-10, 40, to_string( j));
-	glWrap::Print(10, 50, "LU " + obst->leftUp.ToString());
-	glWrap::Print(10, 40, "LD " + obst->leftDown.ToString());
-	glWrap::Print(10, 30, "RU " + obst->rightUp.ToString());
-	glWrap::Print(10, 20, "RD " + obst->rightDown.ToString());
+	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());
+	glWrap::Print(10, 40, "RW " + a->RightWheel.ToString());
+	glWrap::Print(10, 30, "C " + a->Center.ToString());
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
@@ -191,30 +172,8 @@ void Display()
 
 void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 {
-	if (krokL >= 0)
-	{
-		obrotL += krokL;
-		if (obrotL > 31)
-			obrotL = obrotL % 32;
-	}
-	else
-	{
-		obrotL += krokL;
-		if (obrotL < 0)
-			obrotL = 31 + obrotL;
-	}
-	if (krokR >= 0)
-	{
-		obrotR += krokR;
-		if (obrotR > 31)
-			obrotR = obrotR % 32;
-	}
-	else
-	{
-		obrotR += krokR;
-		if (obrotR < 0)
-			obrotR = 31 + obrotR;
-	}
+	Vl += krokL;
+	Vr += krokR;
 	Display();
 }
 // zmiana wielkoœci okna
@@ -245,6 +204,7 @@ void Reshape(int width, int height)
 	}
 	else
 		glFrustum(Left, Right, bottom, top, Near, Far);
+
 	// wybór macierzy modelowania
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -260,56 +220,6 @@ void Keyboard(unsigned char key, int x, int y)
 		// klawisz -
 	if (key == '-' && scale > 0.1)
 		scale -= 0.1;
-
-	/*if (key == 'q')
-	{
-		if (krokL != 10)
-		{
-			krokL ++;
-		}
-	}
-
-	if (key == 'a')
-	{
-		if (krokL !=-10)
-		{
-			krokL--;
-		}
-		
-	}
-
-	if (key == 'z')
-	{
-		if (krokL > 0)
-			krokL--;
-		if (krokL < 0)
-			krokL++;
-	}
-	if (key == 'w')
-	{
-		if (krokR != 10)
-		{
-			krokR++;
-		}
-	}
-
-	if (key == 's')
-	{
-		if (krokR != -10)
-		{
-			krokR--;
-		}
-
-	}
-
-	if (key == 'x')
-	{
-		if (krokR > 0)
-			krokR--;
-		if (krokR < 0)
-			krokR++;
-	}
-		*/
 
 	switch (key)
 	{
@@ -330,6 +240,62 @@ void Keyboard(unsigned char key, int x, int y)
 		break;
 	case 'e':
 		a->Rotation.y -= 1;
+		break;
+	case 'r':
+		if (krokL < 15)
+			krokL += 1;
+		break;
+	case 'f':
+		if (krokL > -15)
+			krokL -= 1;
+		break;
+	case 't':
+		if (krokR < 15)
+			krokR += 1;
+		break;
+	case 'g':
+		if (krokR > -15)
+			krokR -= 1;
+		break;
+	case 'y':
+		if (LhandV > -90)
+			LhandV -= 1;
+		break;
+	case 'h':
+		if (LhandV < 35)
+			LhandV += 1;
+		break;
+	case 'u':
+		if (RhandV > -90)
+			RhandV -= 1;
+		break;
+	case 'j':
+		if (RhandV < 35)
+			RhandV += 1;
+		break;
+	case 'v':
+		if (LhandH > -3)
+			LhandH -= 1;
+		break;
+	case 'b':
+		if (LhandH < 90)
+			LhandH += 1;
+		break;
+	case 'n':
+		if (RhandH > -90)
+			RhandH -= 1;
+		break;
+	case 'm':
+		if (RhandH < 3)
+			RhandH += 1;
+		break;
+	case 'i':
+		if (Hkat > -20)
+			Hkat -= 1;
+		break;
+	case 'k':
+		if (Hkat < 8)
+			Hkat += 1;
 		break;
 	case 27 :
 		exit(0);
@@ -407,22 +373,63 @@ void ActiveMouse(int x, int y)
 	old_x = x;
 	old_y = y;
 }
+void ExtensionSetup()
+{
+	// pobranie numeru wersji biblioteki OpenGL
+	const char * version = (char *)glGetString(GL_VERSION);
+
+	// odczyt wersji OpenGL
+	int major = 0, minor = 0;
+	if (sscanf(version, "%d.%d", &major, &minor) != 2)
+	{
+#ifdef WIN32
+		printf("B³êdny format wersji OpenGL\n");
+#else
+
+		printf("Bledny format wersji OpenGL\n");
+#endif
+
+		exit(0);
+	}
+
+	// sprawdzenie czy jest co najmniej wersja 1.2
+	if (major > 1 || minor >= 2)
+	{
+		// pobranie wskaŸników wybranych funkcji OpenGL 1.2
+		glDrawRangeElementsEXT =
+			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElements");
+	}
+	else
+
+		// sprawdzenie czy jest obs³ugiwane rozszerzenie EXT_draw_range_elements
+		if (glutExtensionSupported("GL_EXT_draw_range_elements"))
+		{
+		// pobranie wskaŸników wybranych funkcji rozszerzenia EXT_draw_range_elements
+		glDrawRangeElementsEXT =
+			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElementsEXT");
+		}
+		else
+		{
+			printf("Brak rozszerzenia EXT_draw_range_elements!\n");
+			glDrawRangeElementsEXT = NULL;
+		}
+}
 int main(int argc, char * argv[])
 {
 	////////////////////
 	/*mclInitializeApplication(NULL, 0);
 	RobotSI1Initialize();*/
 	/////////////////////////////  
-	glWrap::LoadModel("obiekt");
-	model.load("wall2.obj");
+	//glWrap::LoadModel("obiekt");
+	//model.load("wall-e elementy\\wallBody.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
 	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
 	// inicjalizacja bufora ramki
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGB);
-
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	//init();
 	// rozmiary g³ównego okna programu
 	glutInitWindowSize(800, 600);
 	
@@ -444,7 +451,7 @@ int main(int argc, char * argv[])
 	glutMotionFunc(ActiveMouse);
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
-
+	ExtensionSetup();
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
@@ -452,6 +459,6 @@ int main(int argc, char * argv[])
 	//RobotSI1Terminate();
 	//mclTerminateApplication();
 	///////////////////////////
-	
+	delete a;
 	return 0;
 }
