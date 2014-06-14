@@ -524,10 +524,11 @@ void Robot::Draw()
 	 Sensor1.Draw();
 	 glPopMatrix();
 }
-void Robot::head()
+void Robot::head(int obrot)
 {
 	glPushMatrix();
 	glTranslatef(0.0003, 16.5224, -1.3122);
+	glRotatef(obrot, 1, 0, 0);
 	model[HEAD1].draw();
 	glColor3ub(164, 164, 164);
 	model[HEAD2].draw();
@@ -548,47 +549,43 @@ void Robot::head()
 	glDisable(GL_BLEND);
 	glPopMatrix();
 }
-void Robot::lArm()
+void Robot::lArm(int lr, int ud)
 {
 	glPushMatrix();
 
-	glPushMatrix();
 	glColor3ub(92, 92, 92);
 	glTranslatef(5.7539, 14.0014, -0.6319);
+	glRotatef(ud, 1, 0, 0);
 	model[L_ARM_PIVOT].draw();
-	glPopMatrix();
 
-	glPushMatrix();
 	glColor3ub(209, 171, 20);
-	glTranslatef(8.6253, 13.9892, -0.6524);
+	glTranslatef(2.8714, 0, 0);
+	glRotatef(lr, 0, 1, 0);
 	model[L_ARM].draw();
 	glColor3ub(164, 164, 164);
 	model[L_HAND].draw();
-	glPopMatrix();
 
 	glPopMatrix();
 }
-void Robot::rArm()
+void Robot::rArm(int lr, int ud)
 {
 	glPushMatrix();
 
-	glPushMatrix();
 	glColor3ub(92, 92, 92);
 	glTranslatef(-5.7539, 14.0014, -0.6319);
+	glRotatef(ud, 1, 0, 0);
 	model[R_ARM_PIVOT].draw();
-	glPopMatrix();
 
-	glPushMatrix();
 	glColor3ub(209, 171, 20);
-	glTranslatef(-8.6254, 14.0009, -0.6312);
+	glTranslatef(-2.8714, 0, 0);
+	glRotatef(lr, 0, 1, 0);
 	model[R_ARM].draw();
 	glColor3ub(164, 164, 164);
 	model[R_HAND].draw();
-	glPopMatrix();
 
 	glPopMatrix();
 }
-void Robot::naped()
+void Robot::naped(int vl, int vr)
 {
 	glPushMatrix();
 
@@ -606,69 +603,77 @@ void Robot::naped()
 	glColor3ub(106, 87, 79);
 	glPushMatrix();
 	glTranslatef(9.3861, -1.6844, -4.5619);
+	glRotatef(vl, 1, 0, 0);
 	model[LARGE_WHEEL].draw();
 	glPopMatrix();
 	//R
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(-10.8307, -1.6851, -4.5609);
+	glRotatef(vr, 1, 0, 0);
 	model[LARGE_WHEEL].draw();
 	glPopMatrix();
 	//L
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(9.3866, -2.4126, 4.241);
+	glRotatef(vl*1.2, 1, 0, 0);
 	model[MEDIUM_WHEEL].draw();
 	glPopMatrix();
 	//R
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(-10.831, -2.413, 4.2445);
+	glRotatef(vr*1.2, 1, 0, 0);
 	model[MEDIUM_WHEEL].draw();
 	glPopMatrix();
 	//L
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(9.3904, 0.8282, 2.1358);
+	glRotatef(vl*1.5, 1, 0, 0);
 	model[SMALL_WHEEL].draw();
 	glPopMatrix();
 	//R
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(-10.8308, 0.8281, 2.1373);
+	glRotatef(vr*1.5, 1, 0, 0);
 	model[SMALL_WHEEL].draw();
 	glPopMatrix();
 	//L
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(9.3864, 4.6568, -1.7999);
+	glRotatef(vl*1.5, 1, 0, 0);
 	model[SMALL_WHEEL].draw();
 	glPopMatrix();
 	//R
 	glPushMatrix();
 	glPushMatrix();
 	glTranslatef(-10.8308, 4.6567, -1.7983);
+	glRotatef(vr*1.5, 1, 0, 0);
 	model[SMALL_WHEEL].draw();
 	glPopMatrix();
 
 	glPopMatrix(); 
 }
-void Robot::Rysuj()
+void Robot::Rysuj(int vl, int vr, int heado, int llr, int lud, int rlr, int rud)
 {
 	//BODY
 	glColor3ub(209, 171, 20);
 	model[BODY].draw();
 
 	//HEAD
-	head();
+	head(heado);
 
 	//LEFT ARM
-	lArm();
+	lArm(llr, lud);
 
 	//RIGHT ARM
-	rArm();
+	rArm(rlr,rud);
 
 	//NAPED
-	naped();
+	naped(vl,vr);
 
 }

@@ -16,26 +16,20 @@ PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
 double *ret;
 
-GLubyte test[12 * 3] = {1,2,3,
-7,6,5,
-0,4,5,
-1,5,6,
-6,7,3,
-0,3,7,
-0,1,3,
-4,7,5,
-1,0,5,
-2,1,6,
-2,6,3,
-4,0,7};
 Robot* a = new Robot();
 
 
-int obrotL = 0;
-int obrotR = 0;
-int kierunek = 0;
+int Vl = 0;
+int Vr = 0;
+int Hkat = 0;
+int LhandV = 0;
+int LhandH = 0;
+int RhandV = 0;
+int RhandH = 0;
 int krokL = 0;
 int krokR = 0;
+
+
 // aspekt obrazu
 
 int aspect = 1;
@@ -156,20 +150,10 @@ void Display()
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
 	
-	
-	// utworzenie danych o wektorach normalnych i wspó³rzêdnych wierzcho³ków
-	//glInterleavedArrays(GL_V3F, 0, obiekt.vertices);
-	//glEnable(GL_LIGHTING);
 	// TU RYSOWAC::
 	glWrap::Axis();
-	a->Rysuj();
-	//glColor3f(0, 1, 0);
-	//model.draw();
-	//if (glDrawRangeElementsEXT == NULL)
-		//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_BYTE, tab);
-	//glTranslatef(transx, transy, transz);
-	//robot(obrotL, obrotR);
-	//a->Draw();
+	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
+	
 	
 
 	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());
@@ -188,30 +172,8 @@ void Display()
 
 void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 {
-	if (krokL >= 0)
-	{
-		obrotL += krokL;
-		if (obrotL > 31)
-			obrotL = obrotL % 32;
-	}
-	else
-	{
-		obrotL += krokL;
-		if (obrotL < 0)
-			obrotL = 31 + obrotL;
-	}
-	if (krokR >= 0)
-	{
-		obrotR += krokR;
-		if (obrotR > 31)
-			obrotR = obrotR % 32;
-	}
-	else
-	{
-		obrotR += krokR;
-		if (obrotR < 0)
-			obrotR = 31 + obrotR;
-	}
+	Vl += krokL;
+	Vr += krokR;
 	Display();
 }
 // zmiana wielkoœci okna
@@ -259,56 +221,6 @@ void Keyboard(unsigned char key, int x, int y)
 	if (key == '-' && scale > 0.1)
 		scale -= 0.1;
 
-	/*if (key == 'q')
-	{
-		if (krokL != 10)
-		{
-			krokL ++;
-		}
-	}
-
-	if (key == 'a')
-	{
-		if (krokL !=-10)
-		{
-			krokL--;
-		}
-		
-	}
-
-	if (key == 'z')
-	{
-		if (krokL > 0)
-			krokL--;
-		if (krokL < 0)
-			krokL++;
-	}
-	if (key == 'w')
-	{
-		if (krokR != 10)
-		{
-			krokR++;
-		}
-	}
-
-	if (key == 's')
-	{
-		if (krokR != -10)
-		{
-			krokR--;
-		}
-
-	}
-
-	if (key == 'x')
-	{
-		if (krokR > 0)
-			krokR--;
-		if (krokR < 0)
-			krokR++;
-	}
-		*/
-
 	switch (key)
 	{
 	case 'w':
@@ -328,6 +240,62 @@ void Keyboard(unsigned char key, int x, int y)
 		break;
 	case 'e':
 		a->Rotation.y -= 1;
+		break;
+	case 'r':
+		if (krokL < 15)
+			krokL += 1;
+		break;
+	case 'f':
+		if (krokL > -15)
+			krokL -= 1;
+		break;
+	case 't':
+		if (krokR < 15)
+			krokR += 1;
+		break;
+	case 'g':
+		if (krokR > -15)
+			krokR -= 1;
+		break;
+	case 'y':
+		if (LhandV > -90)
+			LhandV -= 1;
+		break;
+	case 'h':
+		if (LhandV < 35)
+			LhandV += 1;
+		break;
+	case 'u':
+		if (RhandV > -90)
+			RhandV -= 1;
+		break;
+	case 'j':
+		if (RhandV < 35)
+			RhandV += 1;
+		break;
+	case 'v':
+		if (LhandH > -3)
+			LhandH -= 1;
+		break;
+	case 'b':
+		if (LhandH < 90)
+			LhandH += 1;
+		break;
+	case 'n':
+		if (RhandH > -90)
+			RhandH -= 1;
+		break;
+	case 'm':
+		if (RhandH < 3)
+			RhandH += 1;
+		break;
+	case 'i':
+		if (Hkat > -20)
+			Hkat -= 1;
+		break;
+	case 'k':
+		if (Hkat < 8)
+			Hkat += 1;
 		break;
 	case 27 :
 		exit(0);
@@ -491,5 +459,6 @@ int main(int argc, char * argv[])
 	//RobotSI1Terminate();
 	//mclTerminateApplication();
 	///////////////////////////
+	delete a;
 	return 0;
 }
