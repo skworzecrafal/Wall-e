@@ -20,7 +20,7 @@ public:
 	float oldRot = 0;
 	void Draw(int obrotL, int obrotR);
 	void Draw();
-	void Rysuj(int vl, int vr, int heado, int llr, int lud, int rlr, int rud);
+	void Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int rud);
 	Robot();
 	~Robot();
 private:
@@ -34,6 +34,6 @@ private:
 	void head(int obrot);
 	void lArm(int lr, int ud);
 	void rArm(int lr, int ud);
-	void naped(int vl, int vr);
+	void naped(float vl, float vr);
 };
 
