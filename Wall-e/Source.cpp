@@ -13,7 +13,7 @@
 #include "Obstacle.h"
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
-char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
+char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
 double *ret;
 
 Robot* a = new Robot();
@@ -154,6 +154,8 @@ void Display()
 #pragma endregion rozne roznosci
 	// TU RYSOWAC::
 	glWrap::Axis();
+	glPushMatrix();
+	//glRotatef(180, 0, 1, 0);
 #pragma region
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
@@ -221,14 +223,14 @@ void Display()
 		}
 	}
 #pragma endregion frontSensor
-	//vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
-	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
-	//Robo_AI::Movement(a, (float)ret[0]/10, (float)ret[1]/10);
+	vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
+	glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
+	Robo_AI::Movement(a, (float)ret[0]/10, (float)ret[1]/10);
 
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
 	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
-	
+	glPopMatrix();
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
@@ -306,10 +308,10 @@ void Keyboard(unsigned char key, int x, int y)
 		a->Translation.x += 1;
 		break;
 	case 'q':
-		a->Rotation.y -= 1;
+		a->Rotation.y += 1;
 		break;
 	case 'e':
-		a->Rotation.y += 1;
+		a->Rotation.y -= 1;
 		break;
 	case 'r':
 		if (krokL < 15)
