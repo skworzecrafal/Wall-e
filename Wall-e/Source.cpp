@@ -13,8 +13,8 @@
 #include "Obstacle.h"
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
-//char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
-char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
+char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
+//char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
 double *ret;
 
 Robot* a = new Robot();
@@ -43,7 +43,7 @@ const GLdouble Left = -50.0;
 const GLdouble Right = 50.0;
 const GLdouble bottom = -50.0;
 const GLdouble top = 50.0;
-const GLdouble Near = 250.0;
+const GLdouble Near =100.0;
 const GLdouble Far = 1000.0;
 
 // wspó³czynnik skalowania
@@ -62,13 +62,13 @@ int valid =0;
 
 GLdouble eyex = 0;
 GLdouble eyey = 0;
-GLdouble eyez = 3;
+GLdouble eyez = 0;
 
 // wspó³rzêdne punktu w którego kierunku jest zwrócony obserwator,
 
 GLdouble centerx = 0;
 GLdouble centery = 0;
-GLdouble centerz = 0;
+GLdouble centerz = -100;
 
 // funkcja generuj¹ca scenê 3D
 WFObject model;
@@ -122,14 +122,19 @@ void Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glMatrixMode(GL_MODELVIEW);
+	
 	// macierz modelowania = macierz jednostkowa
 	glLoadIdentity();
-	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
+	
 	//glEnable(GL_CULL_FACE);
 	//init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
-	glTranslatef(0, 0, -(Near + Far) / 2);
-
+	glTranslatef(0, 0, -(Near +Far) / 2);
+	glTranslatef(0, 0, (Near + Far) / 2 - 150);
+	glRotatef(rotatex, 1.0, 0, 0);
+	glRotatef(rotatey, 0, 1.0, 0);
+	
+	glTranslatef(-a->Center.x,-30, -a->Center.z);
 	// skalowanie obiektu - klawisze "+" i "-"
 	glScalef(scale, scale, scale);
 
@@ -147,8 +152,7 @@ void Display()
 	// w³¹czenie obs³ugi w³aœciwoœci materia³ów
 	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
-	glRotatef(rotatex, 1.0, 0, 0);
-	glRotatef(rotatey, 0, 1.0, 0);
+	
 	
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
@@ -295,7 +299,7 @@ void Reshape(int width, int height)
 	}
 	else
 		glFrustum(Left, Right, bottom, top, Near, Far);
-
+	
 	// wybór macierzy modelowania
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -333,61 +337,52 @@ void Keyboard(unsigned char key, int x, int y)
 		a->Rotation.y -= 1;
 		break;
 	case 'r':
-		if (krokL < 15)
-			krokL += 1;
+		RhandH += 5;
 		break;
 	case 'f':
-		if (krokL > -15)
-			krokL -= 1;
+		RhandH -= 5;
 		break;
 	case 't':
-		if (krokR < 15)
-			krokR += 1;
+		if (eyey < 15)
+			eyey += 1;
 		break;
 	case 'g':
-		if (krokR > -15)
-			krokR -= 1;
+		if (eyey > -15)
+			eyey -= 1;
 		break;
 	case 'y':
-		if (LhandV > -90)
-			LhandV -= 1;
+		if (eyez < 15)
+			eyez += 1;
 		break;
 	case 'h':
-		if (LhandV < 35)
-			LhandV += 1;
+		if (eyez > -15)
+			eyez -= 1;
 		break;
 	case 'u':
-		if (RhandV > -90)
-			RhandV -= 1;
+		if (centerx < 15)
+			centerx += 1;
 		break;
 	case 'j':
-		if (RhandV < 35)
-			RhandV += 1;
-		break;
-	case 'v':
-		if (LhandH > -3)
-			LhandH -= 1;
-		break;
-	case 'b':
-		if (LhandH < 90)
-			LhandH += 1;
-		break;
-	case 'n':
-		if (RhandH > -90)
-			RhandH -= 1;
-		break;
-	case 'm':
-		if (RhandH < 3)
-			RhandH += 1;
+		if (centerx > -15)
+			centerx -= 1;
 		break;
 	case 'i':
-		if (Hkat > -20)
-			Hkat -= 1;
+		if (centery < 15)
+			centery += 1;
 		break;
 	case 'k':
-		if (Hkat < 8)
-			Hkat += 1;
+		if (centery > -15)
+			centery -= 1;
 		break;
+	case 'o':
+		if (centerz < 120)
+			centerz += 1;
+		break;
+	case 'l':
+		if (centerz > 80)
+			centerz -= 1;
+		break;
+	
 	case 27 :
 		exit(0);
 	default:
