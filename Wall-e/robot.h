@@ -13,9 +13,13 @@ public:
 	Vector3f LeftWheel;
 	Vector3f RightWheel;
 	Vector3f Center;
-	std::vector<Vector3f> laserPoints;
+	std::vector<Vector3f> laserPointsLeft;
+	std::vector<Vector3f> laserPointsRight;
+	std::vector<Vector3f> laserPointsForward;
 	Matrixf tmp;
-	Sensor Sensor1;
+	Sensor SensorLeft;
+	Sensor SensorForward;
+	Sensor SensorRight;
 	WFObject model[17];
 	float oldRot = 0;
 	void Draw(int obrotL, int obrotR);
