@@ -157,6 +157,12 @@ void Display()
 	glWrap::Axis();
 	glPushMatrix();
 	//glRotatef(180, 0, 1, 0);
+	if (a->OriPosition==oCenter)
+	glWrap::Print(-30, 60, "OriPosition: center");
+	if (a->OriPosition == oLeftWheel)
+		glWrap::Print(-30, 60, "OriPosition: left");
+	if (a->OriPosition == oRightWheel)
+		glWrap::Print(-30, 60, "OriPosition: right");
 #pragma region
 	bool iSeeL = false;
 	for (int i = 0; i < Obstancles.size(); i++)
@@ -237,8 +243,8 @@ void Display()
 	}
 #pragma endregion frontSensor
 	vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
-	glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
-	Robo_AI::Movement(a, (float)ret[0]/10, (float)ret[1]/10);
+	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
+	Robo_AI::Movement(a, (float)ret[0]/5, (float)ret[1]/5);
 
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
@@ -411,11 +417,12 @@ void SpecialKeys(int key, int x, int y)
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:
-		Robo_AI::Movement(a, 1, 3);
+	//	Robo_AI::Movement(a, 0.827/4, 9.16/4);
+		Robo_AI::Movement(a, -3,1);
 		break;
 		// kursor w dó³
 	case GLUT_KEY_DOWN:
-		a->OriPosition = oCenter;
+		Robo_AI::Movement(a, 3,3);
 		break;
 	}
 	// odrysowanie okna

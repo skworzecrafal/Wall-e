@@ -28,48 +28,58 @@ vector<double> Robo_AI::Dodge(short left, short front, short right, const char* 
 }
 void Robo_AI::Movement(Robot* object, float Left, float Right)
 {
+	
 	if (Left == Right)
 	{
+		cout << "rowne\n";
 		object->Translation.z -= Left;
+		return;
 	}
-	else if (Left + Right <= 0.01)
+	else if (Right == -Left)
 	{
-		object->Rotation.y -= (int)Left;
-		if ((int)Left == 0 && Left < 0)
+		cout << "zero\n";
+		object->Rotation.y -= Left;
+		/*if ((int)Left == 0 && Left < 0)
 			object->Rotation.y -= -1;
 		if ((int)Left == 0 && Left > 0)
-			object->Rotation.y -= 1;
+			object->Rotation.y -= 1;*/
+		return;
 	}
-	else if (Left > 0 && Right > 0)
+	else if (Left >= 0 && Right >= 0)
 	{
-		object->Translation.z -= (Right > Left) ? (float)Left : (float)Right;
+		cout << "wieksze \n";
+		object->Translation.z -= (Right > Left) ? Left : Right;
 		object->Origin = (Right > Left) ? object->RightWheel : object->LeftWheel;
-		object->Rotation.y -= (Right > Left) ? -(int)(Right - Left) : (int)(Left - Right);
+		object->OriPosition = (Right > Left) ? oLeftWheel : oRightWheel;
+		object->Rotation.y -= (Right > Left) ? -(Right - Left) : (Left - Right);
 		object->Origin = object->Center;
+		return;
 	}
-	else if ((Left > 0 && Right < 0) || (Right > 0 && Left < 0))
+	else if ((Left >= 0 && Right <= 0) || (Right >= 0 && Left <= 0))
 	{
+		cout << "rozne\n";
 		if (abs(Left) < abs(Right))
 		{
 			
-			object->Rotation.y -= (int)Left;
-			if ((int)Left == 0 && Left < 0)
+			object->Rotation.y -= Left;
+		/*	if ((int)Left == 0 && Left < 0)
 				object->Rotation.y -= -1;
 			if ((int)Left == 0 && Left > 0)
-				object->Rotation.y -= 1;
+				object->Rotation.y -= 1;*/
 		}
 		if (abs(Left) > abs(Right))
 		{
-			object->Rotation.y += (int)Right;
-			if ((int)Right == 0 && Right < 0)
-				object->Rotation.y += -1;
-			if ((int)Right == 0 && Right > 0)
-				object->Rotation.y += 1;
+			object->Rotation.y += Right;
+			//if ((int)Right == 0 && Right < 0)
+			//	object->Rotation.y += -1;
+			//if ((int)Right == 0 && Right > 0)
+			//	object->Rotation.y += 1;
 		}
-		object->Origin = (abs(Right) > abs(Left)) ? object->LeftWheel : object->RightWheel;
-		object->Rotation.y -= (abs(Right) > abs(Left)) ? -(int)(Right - Left) : (int)(Left - Right);
+		object->Origin = (abs(Right) >= abs(Left)) ? object->LeftWheel : object->RightWheel;
+		object->OriPosition = (abs(Right) >= abs(Left)) ? oLeftWheel : oRightWheel;
+		object->Rotation.y -= (abs(Right) >= abs(Left)) ? -(Right - Left) : (Left - Right);
 		object->Origin = object->Center;
-
+		return;
 	}
 }
 
