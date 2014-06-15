@@ -9,7 +9,7 @@ public:
 	Robo_AI();
 	~Robo_AI();
 	//return double[2] [0]-left move Vector [1]-right move Vector
-	static double* Dodge(short left, short front, short right, const char* path);
+	static vector<double> Dodge(short left, short front, short right, const char* path);
 	static void Movement(Robot* object, float left, float right);
 
 };

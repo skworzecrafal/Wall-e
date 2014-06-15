@@ -4,12 +4,9 @@
 Robo_AI::Robo_AI()
 {
 }
-double* Robo_AI::Dodge(short left, short front, short right, const char* path)
+vector<double> Robo_AI::Dodge(short left, short front, short right, const char* path)
 {
-
-
 	double data[] = { 0 };
-
 	mwArray mLeft(1, 1, mxDOUBLE_CLASS, mxREAL);
 	mwArray mFront(1, 1, mxDOUBLE_CLASS, mxREAL);
 	mwArray mRight(1, 1, mxDOUBLE_CLASS, mxREAL);
@@ -23,7 +20,10 @@ double* Robo_AI::Dodge(short left, short front, short right, const char* path)
 	mRight.SetData(data, 1);
 	mwArray out;
 	robot1(1, out, mLeft, mFront, mRight, mPath);
-	double ret[] = { out(1, 1), out(1, 2) };
+	vector<double> ret;
+	ret.push_back(out(1, 1));
+	ret.push_back(out(1, 2));
+	std::cout << "left" << ret[0];
 	return ret;
 }
 void Robo_AI::Movement(Robot* object, float Left, float Right)

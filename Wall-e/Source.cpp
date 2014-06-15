@@ -13,7 +13,7 @@
 #include "Obstacle.h"
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
-char path[] = "C:\\Users\\marci_000\\Desktop\robotSugeno.fis";
+char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
 double *ret;
 
 Robot* a = new Robot();
@@ -221,8 +221,9 @@ void Display()
 		}
 	}
 #pragma endregion frontSensor
-	double velocity[] = { Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path)[0], Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path)[1] };
-	Robo_AI::Movement(a, velocity[0], velocity[1]);
+	//vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
+	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
+	//Robo_AI::Movement(a, (float)ret[0]/10, (float)ret[1]/10);
 
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
@@ -293,22 +294,22 @@ void Keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'w':
-		a->Translation.z += 1;
-		break;
-	case 's':
 		a->Translation.z -= 1;
 		break;
-	case 'a':
-		a->Translation.x += 1;
+	case 's':
+		a->Translation.z += 1;
 		break;
-	case 'd':
+	case 'a':
 		a->Translation.x -= 1;
 		break;
+	case 'd':
+		a->Translation.x += 1;
+		break;
 	case 'q':
-		a->Rotation.y += 1;
+		a->Rotation.y -= 1;
 		break;
 	case 'e':
-		a->Rotation.y -= 1;
+		a->Rotation.y += 1;
 		break;
 	case 'r':
 		if (krokL < 15)
@@ -500,8 +501,11 @@ int main(int argc, char * argv[])
 
 	//glWrap::LoadModel("obiekt");
 	//model.load("wall-e elementy\\wallBody.obj");
-	//ret = Robo_AI::Dodge(0, 1023, 0, path);
-	//std::cout << "left" << ret[0] << "right" << ret[1] << std::endl;
+
+	//double left =  Robo_AI::Dodge(0, 1023, 0, path)[0];
+	//double right = Robo_AI::Dodge(0, 1023, 0, path)[1];
+	//
+	//std::cout << "left" << left << "right" << right << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
 	SetTimer(NULL, 1, 30, &Projekcja);
