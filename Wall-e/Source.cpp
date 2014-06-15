@@ -236,10 +236,10 @@ void Keyboard(unsigned char key, int x, int y)
 		a->Translation.x -= 1;
 		break;
 	case 'q':
-		a->Rotation.y -= 1;
+		a->Rotation.y += 1;
 		break;
 	case 'e':
-		a->Rotation.y += 1;
+		a->Rotation.y -= 1;
 		break;
 	case 'r':
 		if (krokL < 15)
@@ -318,11 +318,11 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		a->OriPosition = oLeftWheel;
+		a->OriPosition = oRightWheel;
 		break;
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		a->OriPosition = oRightWheel;
+		a->OriPosition = oLeftWheel;
 		break;
 		// kursor w górê
 	case GLUT_KEY_UP:

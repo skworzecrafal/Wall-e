@@ -25,10 +25,9 @@ enum {
 };
 Robot::Robot()
 {
-	width = 10;
-	lWheel = Vector3f(0, 0, -width / 2);
-	rWheel = Vector3f(width, 0, -width / 2);
-	center = Vector3f(width / 2, 0, -width / 2);
+	lWheel = Vector3f(-11, 0, 0);
+	rWheel = Vector3f(11, 0, 0);
+	center = Vector3f(0, 0, 0);
 	model[BODY].load("wall-e elementy\\wallBody.txt");
 	model[HEAD1].load("wall-e elementy\\wallHead1.txt");
 	model[HEAD2].load("wall-e elementy\\wallHead2.txt");
@@ -722,5 +721,9 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 	rArm(rlr,rud);
 	//NAPED
 	naped(vl,vr);
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(0, 10, 0);
+	SensorLeft.Draw();
+	laserPointsLeft = tmp*SensorLeft.laserPoints;
 	glPopMatrix();
 }
