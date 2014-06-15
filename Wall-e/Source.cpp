@@ -18,8 +18,11 @@ char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
 double *ret;
 
 Robot* a = new Robot();
-
-
+enum{
+	KAMERA_WIDOK_OGOLNY,
+	KAMERA_PODARZANIE
+};
+int kamera = KAMERA_PODARZANIE;
 vector<Obstacle> Obstancles;
 float Vl = 0;
 float Vr = 0;
@@ -52,7 +55,7 @@ GLfloat scale = 1.0;
 
 // k¹ty obrotu
 
-GLfloat rotatex = 0.0;
+GLfloat rotatex = 20.0;
 GLfloat rotatey = 0.0;
 //GLfloat transx=0, transy=0, transz=0;
 int old_x=0;
@@ -130,11 +133,20 @@ void Display()
 	//init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
 	glTranslatef(0, 0, -(Near +Far) / 2);
-	glTranslatef(0, 0, (Near + Far) / 2 - 150);
-	glRotatef(rotatex, 1.0, 0, 0);
-	glRotatef(rotatey, 0, 1.0, 0);
 	
-	glTranslatef(-a->Center.x,-30, -a->Center.z);
+	if (kamera == KAMERA_PODARZANIE)
+	{
+		glTranslatef(0, 0, (Near + Far) / 2 - 150);
+		glRotatef(rotatex, 1.0, 0, 0);
+		glRotatef(rotatey, 0, 1.0, 0);
+		glRotatef(-a->oldRot, 0, 1, 0);
+		glTranslatef(-a->Center.x, -30, -a->Center.z);
+	}
+	if (kamera == KAMERA_WIDOK_OGOLNY)
+	{
+		glRotatef(rotatex, 1.0, 0, 0);
+		glRotatef(rotatey, 0, 1.0, 0);
+	}
 	// skalowanie obiektu - klawisze "+" i "-"
 	glScalef(scale, scale, scale);
 
@@ -382,7 +394,16 @@ void Keyboard(unsigned char key, int x, int y)
 		if (centerz > 80)
 			centerz -= 1;
 		break;
-	
+	case '1':
+		kamera = KAMERA_PODARZANIE;
+		rotatex = 20;
+		rotatey = 0;
+		break;
+	case '2':
+		kamera = KAMERA_WIDOK_OGOLNY;
+		rotatex = 30;
+		rotatey -= 45;
+		break;
 	case 27 :
 		exit(0);
 	default:
