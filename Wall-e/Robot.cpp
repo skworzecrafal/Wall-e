@@ -702,9 +702,9 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 	LeftWheel = tmp *lWheel;
 	RightWheel = tmp*rWheel;
 	Center = tmp*center;
-	leftSensorTranslation = tmp*Matrixf(225)*Matrixf(0,10,0);
+	leftSensorTranslation = tmp*Matrixf(180+45)*Matrixf(0,10,0);
 	frontSensorTranslation = tmp*Matrixf(180)*Matrixf(0,10,0);
-	rightSensorTranslation  = tmp*Matrixf(135)*Matrixf(0,10,0);
+	rightSensorTranslation  = tmp*Matrixf(180-45)*Matrixf(0,10,0);
 	laserPointsLeft = leftSensorTranslation*SensorLeft.laserPoints;
 	laserPointsFront = frontSensorTranslation*SensorFront.laserPoints;
 	laserPointsRight = rightSensorTranslation*SensorRight.laserPoints;
@@ -728,13 +728,13 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 	//NAPED
 	naped(vl,vr);
 	glPushMatrix();
-	glRotatef(225, 0, 1, 0);
+	glRotatef(180+45, 0, 1, 0);
 	glTranslatef(0, 10, 0);
 	SensorLeft.Draw();
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotatef(135, 0, 1, 0);
+	glRotatef(180-45, 0, 1, 0);
 	glTranslatef(0, 10, 0);
 	SensorRight.Draw();
 	glPopMatrix();

@@ -13,7 +13,7 @@
 #include "Obstacle.h"
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
-char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
+char path[] = "C:\\Users\\marci_000\\Desktop\robotSugeno.fis";
 double *ret;
 
 Robot* a = new Robot();
@@ -221,7 +221,8 @@ void Display()
 		}
 	}
 #pragma endregion frontSensor
-
+	double velocity[] = { Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path)[0], Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path)[1] };
+	Robo_AI::Movement(a, velocity[0], velocity[1]);
 
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
@@ -489,10 +490,14 @@ int main(int argc, char * argv[])
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
+
+
 	////////////////////
-	/*mclInitializeApplication(NULL, 0);
-	RobotSI1Initialize();*/
+	mclInitializeApplication(NULL, 0);
+	RobotSI1Initialize();
 	/////////////////////////////  
+
+
 	//glWrap::LoadModel("obiekt");
 	//model.load("wall-e elementy\\wallBody.obj");
 	//ret = Robo_AI::Dodge(0, 1023, 0, path);
@@ -528,9 +533,11 @@ int main(int argc, char * argv[])
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
+
+
 	///////////////////////////
-	//RobotSI1Terminate();
-	//mclTerminateApplication();
+	RobotSI1Terminate();
+	mclTerminateApplication();
 	///////////////////////////
 	delete a;
 	return 0;
