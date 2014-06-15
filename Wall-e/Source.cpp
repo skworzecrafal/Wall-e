@@ -224,22 +224,22 @@ void Keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case 'w':
-		a->Translation.z -= 1;
-		break;
-	case 's':
 		a->Translation.z += 1;
 		break;
-	case 'a':
-		a->Translation.x -= 1;
+	case 's':
+		a->Translation.z -= 1;
 		break;
-	case 'd':
+	case 'a':
 		a->Translation.x += 1;
 		break;
+	case 'd':
+		a->Translation.x -= 1;
+		break;
 	case 'q':
-		a->Rotation.y += 1;
+		a->Rotation.y -= 1;
 		break;
 	case 'e':
-		a->Rotation.y -= 1;
+		a->Rotation.y += 1;
 		break;
 	case 'r':
 		if (krokL < 15)
