@@ -529,6 +529,10 @@ int main(int argc, char * argv[])
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
+	Obstancles.push_back(Obstacle(Vector3f(115, 0, 35), 50, 30));
+	Obstancles.push_back(Obstacle(Vector3f(-80, 0, -130), 20, 50));
+	Obstancles.push_back(Obstacle(Vector3f(65, 0, 211), 50, 30));
+	Obstancles.push_back(Obstacle(Vector3f(-150, 0, 98), 20, 50));
 
 
 	////////////////////
