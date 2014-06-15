@@ -697,18 +697,24 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 		tmp = Matrixf(Center)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
 		break;
 	}
+#pragma endregion  sterowanie srodkiem
+
 	LeftWheel = tmp *lWheel;
 	RightWheel = tmp*rWheel;
 	Center = tmp*center;
-	//tmp = tmp*Matrixf(3, 10, -5);
-
+	leftSensorTranslation = tmp*Matrixf(225)*Matrixf(0,10,0);
+	frontSensorTranslation = tmp*Matrixf(180)*Matrixf(0,10,0);
+	rightSensorTranslation  = tmp*Matrixf(135)*Matrixf(0,10,0);
+	laserPointsLeft = leftSensorTranslation*SensorLeft.laserPoints;
+	laserPointsFront = frontSensorTranslation*SensorFront.laserPoints;
+	laserPointsRight = rightSensorTranslation*SensorRight.laserPoints;
 	oldRot += Rotation.y;
 
 	Translation.x = 0;
 	Translation.y = 0;
 	Translation.z = 0;
 	Rotation.y = 0;
-#pragma endregion  sterowanie srodkiem
+
 
 	//BODY
 	glColor3ub(209, 171, 20);
@@ -721,9 +727,24 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 	rArm(rlr,rud);
 	//NAPED
 	naped(vl,vr);
-	glRotatef(180, 0, 1, 0);
+	glPushMatrix();
+	glRotatef(225, 0, 1, 0);
 	glTranslatef(0, 10, 0);
 	SensorLeft.Draw();
-	laserPointsLeft = tmp*SensorLeft.laserPoints;
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(135, 0, 1, 0);
+	glTranslatef(0, 10, 0);
+	SensorRight.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(180, 0, 1, 0);
+	glTranslatef(0, 10, 0);
+	SensorFront.Draw();
+	glPopMatrix();
+
+
 	glPopMatrix();
 }

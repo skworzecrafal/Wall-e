@@ -10,7 +10,7 @@
 #include "glWrap.h"
 #include "PMath.h"
 #include "LoadOBJ.h"
-
+#include "Obstacle.h"
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
 char path[] = "C:\\Users\\marci_000\\Desktop\\MATLAB\\Robot Scripts\\DodgeSug.fis";
@@ -19,6 +19,7 @@ double *ret;
 Robot* a = new Robot();
 
 
+vector<Obstacle> Obstancles;
 float Vl = 0;
 float Vr = 0;
 int Hkat = 0;
@@ -42,7 +43,7 @@ const GLdouble Right = 50.0;
 const GLdouble bottom = -50.0;
 const GLdouble top = 50.0;
 const GLdouble Near = 250.0;
-const GLdouble Far = 550.0;
+const GLdouble Far = 1000.0;
 
 // wspó³czynnik skalowania
 
@@ -112,6 +113,7 @@ void init()
 }
 void Display()
 {
+	#pragma region
 	// kolor t³a - zawartoœæ bufora koloru
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -149,16 +151,82 @@ void Display()
 	
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
-	
+#pragma endregion rozne roznosci
 	// TU RYSOWAC::
 	glWrap::Axis();
+#pragma region
+	for (int i = 0; i < Obstancles.size(); i++)
+	{
+		for (int j = 0; j < a->laserPointsLeft.size(); j++)
+		{
+			if (Obstancles[i].Contain(a->laserPointsLeft[j]))
+			{
+				float x = PMath::Plength(a->laserPointsLeft[0], a->laserPointsLeft[j]);
+				a->leftValue = PMath::GetEValue((float)x);
+				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				
+				break;
+
+			}
+			if (j == a->laserPointsLeft.size() - 1 && i == Obstancles.size() - 1)
+			{
+				a->leftValue = PMath::GetEValue((float)60);
+				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				
+			}
+		}
+	}
+#pragma endregion leftSensor
+#pragma region
+	for (int i = 0; i < Obstancles.size(); i++)
+	{
+		for (int j = 0; j < a->laserPointsRight.size(); j++)
+		{
+			if (Obstancles[i].Contain(a->laserPointsRight[j]))
+			{
+				float x = PMath::Plength(a->laserPointsRight[0], a->laserPointsRight[j]);
+				a->rightValue = PMath::GetEValue((float)x);
+				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+				
+				break;
+
+			}
+			if (j == a->laserPointsRight.size() - 1 && i == Obstancles.size() - 1)
+			{
+				a->rightValue = PMath::GetEValue((float)60);
+				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+			}
+		}
+	}
+#pragma endregion rightSensor
+#pragma region 
+	for (int i = 0; i < Obstancles.size(); i++)
+	{
+		for (int j = 0; j < a->laserPointsFront.size(); j++)
+		{
+			if (Obstancles[i].Contain(a->laserPointsFront[j]))
+			{
+				
+				float x = PMath::Plength(a->laserPointsFront[0], a->laserPointsFront[j]);
+				a->frontValue = PMath::GetEValue((float)x);
+				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				break;
+
+			}
+			if (j == a->laserPointsFront.size() - 1 && i == Obstancles.size() - 1)
+			{
+				a->frontValue = PMath::GetEValue((float)60);
+				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+			}
+		}
+	}
+#pragma endregion frontSensor
+
+
+	for (int i = 0; i < Obstancles.size(); i++)
+		Obstancles[i].Draw();
 	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
 	
-	
-
-	glWrap::Print(10, 50, "LW " + a->LeftWheel.ToString());
-	glWrap::Print(10, 40, "RW " + a->RightWheel.ToString());
-	glWrap::Print(10, 30, "C " + a->Center.ToString());
 	//glutPostRedisplay();
 
 	 //skierowanie poleceñ do wykonania
@@ -416,6 +484,11 @@ void ExtensionSetup()
 }
 int main(int argc, char * argv[])
 {
+	Obstancles.push_back(Obstacle(Vector3f(-210, 0, -300), 10, 600));
+	Obstancles.push_back(Obstacle(Vector3f(200, 0, -300), 10, 600));
+	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
+	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
+	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
 	////////////////////
 	/*mclInitializeApplication(NULL, 0);
 	RobotSI1Initialize();*/

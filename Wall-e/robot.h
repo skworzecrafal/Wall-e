@@ -15,10 +15,17 @@ public:
 	Vector3f Center;
 	std::vector<Vector3f> laserPointsLeft;
 	std::vector<Vector3f> laserPointsRight;
-	std::vector<Vector3f> laserPointsForward;
+	std::vector<Vector3f> laserPointsFront;
+	Matrixf leftSensorTranslation;
+	Matrixf frontSensorTranslation;
+	Matrixf rightSensorTranslation;
 	Matrixf tmp;
+	
+	int leftValue;
+	int frontValue;
+	int rightValue;
 	Sensor SensorLeft;
-	Sensor SensorForward;
+	Sensor SensorFront;
 	Sensor SensorRight;
 	WFObject model[17];
 	float oldRot = 0;

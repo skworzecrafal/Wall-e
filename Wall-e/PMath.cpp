@@ -13,7 +13,7 @@ PMath::PMath()
 	for (int i = 0; i < 1024; i++)
 	{
 		Evalues.push_back(exp((6.93049 / 1023) * i));
-		values.push_back((double)((40.0 / 1023.0)*i) + 15);
+		values.push_back((double)((40.0 / 1023.0)*i) + 25);
 	}
 	std::reverse(Evalues.begin(), Evalues.end());
 }

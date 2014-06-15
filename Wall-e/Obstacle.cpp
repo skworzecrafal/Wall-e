@@ -10,34 +10,34 @@ Obstacle::Obstacle(Vector3f leftDown, int xSize, int zSize)
 
 void Obstacle::Draw()
 {
-	leftUp.x = 0;
+	leftUp.x = leftDown.x;
 	leftUp.y = 0;
-	leftUp.z = zSize;
+	leftUp.z = zSize+leftDown.z;
 
-	rightUp.x = xSize;
+	rightUp.x = xSize+leftDown.x;
 	rightUp.y = 0;
-	rightUp.x = zSize;
+	rightUp.x = zSize + leftDown.z;
 
-	rightDown.x = xSize;
+	rightDown.x = xSize + leftDown.x;
 	rightDown.y = 0;
-	rightDown.z = 0;
-
+	rightDown.z = 0 + leftDown.z;
+	int height = 40;
 	glBegin(GL_QUAD_STRIP);
 	glColor3f(1, 0, 0);
 
-	glVertex3f(0.0f, 10, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(xSize, 10, 0.0f);
-	glVertex3f(xSize, 0.0f, 0.0f);
+	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+	glVertex3f(leftDown.x, leftDown.y, leftDown.z);
+	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
+	glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
 
-	glVertex3f(xSize, 10, zSize);
-	glVertex3f(xSize, 0.0f, zSize);
+	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z+ zSize);
+	glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z+zSize);
 
-	glVertex3f(0.0f, 10, zSize);
-	glVertex3f(0.0f, 0.0f, zSize);
+	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z+ zSize);
+	glVertex3f(leftDown.x, leftDown.y, leftDown.z+zSize);
 
-	glVertex3f(0.0f, 10, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+	glVertex3f(leftDown.x, leftDown.y, leftDown.z);
 
 	glEnd();
 }
