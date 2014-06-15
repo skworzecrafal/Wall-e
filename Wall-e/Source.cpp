@@ -13,7 +13,8 @@
 #include "Obstacle.h"
 PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
 
-char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
+//char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
+char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
 double *ret;
 
 Robot* a = new Robot();
@@ -157,6 +158,7 @@ void Display()
 	glPushMatrix();
 	//glRotatef(180, 0, 1, 0);
 #pragma region
+	bool iSeeL = false;
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
 		for (int j = 0; j < a->laserPointsLeft.size(); j++)
@@ -166,7 +168,7 @@ void Display()
 				float x = PMath::Plength(a->laserPointsLeft[0], a->laserPointsLeft[j]);
 				a->leftValue = PMath::GetEValue((float)x);
 				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
-				
+				iSeeL = true;
 				break;
 
 			}
@@ -174,12 +176,15 @@ void Display()
 			{
 				a->leftValue = PMath::GetEValue((float)60);
 				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
-				
+				iSeeL = false;
 			}
 		}
+		if (iSeeL)
+			break;
 	}
 #pragma endregion leftSensor
 #pragma region
+	bool iSeeR = false;
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
 		for (int j = 0; j < a->laserPointsRight.size(); j++)
@@ -189,7 +194,7 @@ void Display()
 				float x = PMath::Plength(a->laserPointsRight[0], a->laserPointsRight[j]);
 				a->rightValue = PMath::GetEValue((float)x);
 				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
-				
+				iSeeR = true;
 				break;
 
 			}
@@ -197,11 +202,15 @@ void Display()
 			{
 				a->rightValue = PMath::GetEValue((float)60);
 				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+				iSeeR = false;
 			}
+			if (iSeeR)
+				break;
 		}
 	}
 #pragma endregion rightSensor
 #pragma region 
+	bool iSeeF = false;
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
 		for (int j = 0; j < a->laserPointsFront.size(); j++)
@@ -212,6 +221,7 @@ void Display()
 				float x = PMath::Plength(a->laserPointsFront[0], a->laserPointsFront[j]);
 				a->frontValue = PMath::GetEValue((float)x);
 				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				iSeeF = true;
 				break;
 
 			}
@@ -219,7 +229,10 @@ void Display()
 			{
 				a->frontValue = PMath::GetEValue((float)60);
 				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				iSeeF = false;
 			}
+			if (iSeeF)
+				break;
 		}
 	}
 #pragma endregion frontSensor
