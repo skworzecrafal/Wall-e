@@ -27,8 +27,7 @@ vector<double> Robo_AI::Dodge(short left, short front, short right, const char* 
 	return ret;
 }
 void Robo_AI::Movement(Robot* object, float Left, float Right)
-{
-	
+{	
 	if (Left == Right)
 	{
 		cout << "rowne\n";
@@ -37,12 +36,10 @@ void Robo_AI::Movement(Robot* object, float Left, float Right)
 	}
 	else if (Right == -Left)
 	{
+		object->OriPosition = oCenter;
 		cout << "zero\n";
 		object->Rotation.y -= Left;
-		/*if ((int)Left == 0 && Left < 0)
-			object->Rotation.y -= -1;
-		if ((int)Left == 0 && Left > 0)
-			object->Rotation.y -= 1;*/
+
 		return;
 	}
 	else if (Left >= 0 && Right >= 0)
@@ -59,21 +56,14 @@ void Robo_AI::Movement(Robot* object, float Left, float Right)
 	{
 		cout << "rozne\n";
 		if (abs(Left) < abs(Right))
-		{
-			
+		{			
+			object->OriPosition = oCenter;
 			object->Rotation.y -= Left;
-		/*	if ((int)Left == 0 && Left < 0)
-				object->Rotation.y -= -1;
-			if ((int)Left == 0 && Left > 0)
-				object->Rotation.y -= 1;*/
 		}
 		if (abs(Left) > abs(Right))
 		{
+			object->OriPosition = oCenter;
 			object->Rotation.y += Right;
-			//if ((int)Right == 0 && Right < 0)
-			//	object->Rotation.y += -1;
-			//if ((int)Right == 0 && Right > 0)
-			//	object->Rotation.y += 1;
 		}
 		object->Origin = (abs(Right) >= abs(Left)) ? object->LeftWheel : object->RightWheel;
 		object->OriPosition = (abs(Right) >= abs(Left)) ? oLeftWheel : oRightWheel;

@@ -157,12 +157,7 @@ void Display()
 	glWrap::Axis();
 	glPushMatrix();
 	//glRotatef(180, 0, 1, 0);
-	if (a->OriPosition==oCenter)
-	glWrap::Print(-30, 60, "OriPosition: center");
-	if (a->OriPosition == oLeftWheel)
-		glWrap::Print(-30, 60, "OriPosition: left");
-	if (a->OriPosition == oRightWheel)
-		glWrap::Print(-30, 60, "OriPosition: right");
+	
 #pragma region
 	bool iSeeL = false;
 	for (int i = 0; i < Obstancles.size(); i++)
@@ -173,7 +168,7 @@ void Display()
 			{
 				float x = PMath::Plength(a->laserPointsLeft[0], a->laserPointsLeft[j]);
 				a->leftValue = PMath::GetEValue((float)x);
-				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
 				iSeeL = true;
 				break;
 
@@ -181,7 +176,7 @@ void Display()
 			if (j == a->laserPointsLeft.size() - 1 && i == Obstancles.size() - 1)
 			{
 				a->leftValue = PMath::GetEValue((float)60);
-				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
 				iSeeL = false;
 			}
 		}
@@ -199,7 +194,7 @@ void Display()
 			{
 				float x = PMath::Plength(a->laserPointsRight[0], a->laserPointsRight[j]);
 				a->rightValue = PMath::GetEValue((float)x);
-				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+			//	glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
 				iSeeR = true;
 				break;
 
@@ -207,7 +202,7 @@ void Display()
 			if (j == a->laserPointsRight.size() - 1 && i == Obstancles.size() - 1)
 			{
 				a->rightValue = PMath::GetEValue((float)60);
-				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+			//	glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
 				iSeeR = false;
 			}
 			if (iSeeR)
@@ -226,7 +221,7 @@ void Display()
 				
 				float x = PMath::Plength(a->laserPointsFront[0], a->laserPointsFront[j]);
 				a->frontValue = PMath::GetEValue((float)x);
-				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
 				iSeeF = true;
 				break;
 
@@ -234,7 +229,7 @@ void Display()
 			if (j == a->laserPointsFront.size() - 1 && i == Obstancles.size() - 1)
 			{
 				a->frontValue = PMath::GetEValue((float)60);
-				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
 				iSeeF = false;
 			}
 			if (iSeeF)
@@ -513,7 +508,10 @@ int main(int argc, char * argv[])
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
-
+	Obstancles.push_back(Obstacle(Vector3f(115, 0, 35), 50, 30));
+	Obstancles.push_back(Obstacle(Vector3f(-80, 0, -130), 20, 50));
+	Obstancles.push_back(Obstacle(Vector3f(65, 0, 211), 50, 30));
+	Obstancles.push_back(Obstacle(Vector3f(-150, 0, 98), 20, 50));
 
 	////////////////////
 	mclInitializeApplication(NULL, 0);
