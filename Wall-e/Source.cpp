@@ -22,6 +22,7 @@ GLuint textures[2];
 Robot* a = new Robot();
 enum{
 	KAMERA_WIDOK_OGOLNY,
+	KAMERA_OCZY,
 	KAMERA_PODAZANIE
 };
 int kamera = KAMERA_PODAZANIE;
@@ -46,9 +47,9 @@ int aspect = 1;
 
 const GLdouble Left = -50.0;
 const GLdouble Right = 50.0;
-const GLdouble bottom = -50.0;
-const GLdouble top = 50.0;
-const GLdouble Near =100.0;
+const GLdouble bottom = -60.0;
+const GLdouble top = 60.0;
+const GLdouble Near =30.0;
 const GLdouble Far = 1000.0;
 
 // wspó³czynnik skalowania
@@ -283,7 +284,15 @@ void Display()
 	
 	if (kamera == KAMERA_PODAZANIE)
 	{
-		glTranslatef(0, 0, (Near + Far) / 2 - 150);
+		glTranslatef(0, 0, (Near + Far) / 2 - 120);
+		glRotatef(rotatex, 1.0, 0, 0);
+		glRotatef(rotatey, 0, 1.0, 0);
+		glRotatef(-a->oldRot, 0, 1, 0);
+		glTranslatef(-a->Center.x, -30, -a->Center.z);
+	}
+	if (kamera == KAMERA_OCZY)
+	{
+		glTranslatef(0, 0, (Near + Far) / 2 -15);
 		glRotatef(rotatex, 1.0, 0, 0);
 		glRotatef(rotatey, 0, 1.0, 0);
 		glRotatef(-a->oldRot, 0, 1, 0);
@@ -572,6 +581,12 @@ void Keyboard(unsigned char key, int x, int y)
 		scale = 1;
 		break;
 	case '2':
+		kamera = KAMERA_OCZY;
+		rotatex = 0;
+		rotatey = 0;
+		scale = 1;
+		break;
+	case '3':
 		kamera = KAMERA_WIDOK_OGOLNY;
 		rotatex = 30;
 		rotatey -= 45;
