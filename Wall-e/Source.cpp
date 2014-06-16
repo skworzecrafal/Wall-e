@@ -468,15 +468,17 @@ void Reshape(int width, int height)
 	// parametry bry³y obcinania
 	if (aspect == 1)
 	{
+		
 		// wysokoœæ okna wiêksza od wysokoœci okna
 		if (width < height && width > 0)
-			glFrustum(Left, Right, bottom * height / width, top * height / width, Near, Far);
+		//	glFrustum(Left, Right, bottom * height / width, top * height / width, Near, Far);
+		gluPerspective(30, (-Left + Right) / (top * height / width - bottom * height / width), Near, Far);
 		else
 
-			// szerokoœæ okna wiêksza lub równa wysokoœci okna
+		//	// szerokoœæ okna wiêksza lub równa wysokoœci okna
 		if (width >= height && height > 0)
-			glFrustum(Left * width / height, Right * width / height, bottom, top, Near, Far);
-
+			//glFrustum(Left * width / height, Right * width / height, bottom, top, Near, Far);
+			gluPerspective(30, (Right * width / height - Left * width / height)/(top-bottom), Near, Far);
 	}
 	else
 		glFrustum(Left, Right, bottom, top, Near, Far);
@@ -567,11 +569,13 @@ void Keyboard(unsigned char key, int x, int y)
 		kamera = KAMERA_PODAZANIE;
 		rotatex = 20;
 		rotatey = 0;
+		scale = 1;
 		break;
 	case '2':
 		kamera = KAMERA_WIDOK_OGOLNY;
 		rotatex = 30;
 		rotatey -= 45;
+		scale = 0.6;
 		break;
 	case 27 :
 		exit(0);
