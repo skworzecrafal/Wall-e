@@ -77,7 +77,18 @@ GLdouble centerz = -100;
 
 // funkcja generuj¹ca scenê 3D
 WFObject model;
-
+const int ilosc = 9;
+int walls[ilosc][5] = {
+		{-210,0,-300,10,610},
+		{200,0,-300,10,610},
+		{-200,0,-300,400,10},
+		{ -200, 0, 300, 400, 10 },
+		{10,0,50,50,50},
+		{115,0,35,50,30},
+		{-80,0,-130,20,50},
+		{65,0,211,50,30},
+		{-150,0,98,20,50}
+};
 // LoadBitmapFile
 // opis: ³aduje mapê bitow¹ z pliku i zwraca jej adres.
 //       Wype³nia strukturê nag³ówka.
@@ -133,9 +144,6 @@ unsigned char *loadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader
 	fclose(filePtr);
 	return bitmapImage;
 }
-
-
-
 GLuint LoadTexture(char * filename, const int numer)
 {
 	BITMAPINFOHEADER bitmapInfoHeader;
@@ -153,6 +161,8 @@ GLuint LoadTexture(char * filename, const int numer)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth, bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	return textures[numer];
 
@@ -197,6 +207,59 @@ void init()
 	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 }
+void przeszkoda(Vector3f leftDown, int xSize, int zSize)
+{
+	int height = 60;
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+
+	glNormal3d(0, 0, 1);
+	glTexCoord2f(0, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(0, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
+	glTexCoord2f(1, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
+	glTexCoord2f(1, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
+	
+	glNormal3d(1, 0, 0);
+	glTexCoord2f(0, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(0, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
+	glTexCoord2f(1, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
+	glTexCoord2f(1, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
+
+	glNormal3d(0, 0, -1);
+	glTexCoord2f(0, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
+	glTexCoord2f(0, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
+	glTexCoord2f(1, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z);
+	glTexCoord2f(1, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+
+	glNormal3d(-1, 0, 0);
+	glTexCoord2f(0, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+	glTexCoord2f(0, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z);
+	glTexCoord2f(1, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
+	glTexCoord2f(1, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
+
+	glNormal3d(0, 1, 0);
+	glTexCoord2f(0, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(0, 0); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(1, 0); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
+	glTexCoord2f(1, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+
+	glEnd();
+}
+void plansza()
+{
+	for (int i = 0; i < ilosc; i++)
+		Obstancles.push_back(Obstacle(Vector3f(walls[i][0], walls[i][1], walls[i][2]), walls[i][3], walls[i][4]));
+	/*Obstancles.push_back(Obstacle(Vector3f(200, 0, -300), 10, 610));
+	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
+	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
+	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
+	Obstancles.push_back(Obstacle(Vector3f(115, 0, 35), 50, 30)); 
+	Obstancles.push_back(Obstacle(Vector3f(-80, 0, -130), 20, 50));
+	Obstancles.push_back(Obstacle(Vector3f(65, 0, 211), 50, 30));
+	Obstancles.push_back(Obstacle(Vector3f(-150, 0, 98), 20, 50));*/
+}
+
 void Display()
 {
 	#pragma region
@@ -247,23 +310,35 @@ void Display()
 	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
 	
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	glEnable(GL_TEXTURE_2D);
-	glBegin(GL_QUADS);
+
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
+	glBegin(GL_QUADS);
+	
 	glColor3ub(40, 40, 40);
 	glNormal3f(0, 1, 0);
-	glTexCoord2f(0, 1);
-	glVertex3f(-200, 0, -300);
-	glTexCoord2f(0, 0);
-	glVertex3f(-200, 0, 300);
-	glTexCoord2f(1, 0);
-	glVertex3f(200, 0, 300);
-	glTexCoord2f(1, 1);
-	glVertex3f(200, 0, -300);
+	glTexCoord2f(0, 1);	glVertex3f(-200, 0, -300);
+	glTexCoord2f(0, 0);	glVertex3f(-200, 0, 300);
+	glTexCoord2f(1, 0);	glVertex3f(200, 0, 300);
+	glTexCoord2f(1, 1);	glVertex3f(200, 0, -300);
 	glEnd();
+	
+	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_TEXTURE_2D);
+
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glBindTexture(GL_TEXTURE_2D, textures[1]);
+
+	for (int i = 0; i < ilosc; i++)
+		przeszkoda(Vector3f(walls[i][0], walls[i][1], walls[i][2]), walls[i][3], walls[i][4]);
+	/*przeszkoda(Vector3f(10, 0, 50), 50, 50);
+	przeszkoda(Vector3f(200, 0, -300), 10, 610);
+	przeszkoda(Vector3f(65, 0, 211), 50, 30);
+	przeszkoda(Vector3f(65, 0, 211), 50, 30);*/
+
 	glDisable(GL_TEXTURE_2D);
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
@@ -354,9 +429,9 @@ void Display()
 #pragma endregion frontSensor
 	vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
 	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
-	Robo_AI::Movement(a, (float)ret[0]/5, (float)ret[1]/5);
-	Vl += ret[0]/2;
-	Vr += ret[1]/2;
+	Robo_AI::Movement(a, (float)ret[0]/10, (float)ret[1]/10);
+	Vl += ret[0]/4;
+	Vr += ret[1]/4;
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
 	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
@@ -576,17 +651,10 @@ void ActiveMouse(int x, int y)
 	old_y = y;
 }
 
+
 int main(int argc, char * argv[])
 {
-	Obstancles.push_back(Obstacle(Vector3f(-210, 0, -300), 10, 610));
-	Obstancles.push_back(Obstacle(Vector3f(200, 0, -300), 10, 610));
-	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
-	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
-	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
-	Obstancles.push_back(Obstacle(Vector3f(115, 0, 35), 50, 30));
-	Obstancles.push_back(Obstacle(Vector3f(-80, 0, -130), 20, 50));
-	Obstancles.push_back(Obstacle(Vector3f(65, 0, 211), 50, 30));
-	Obstancles.push_back(Obstacle(Vector3f(-150, 0, 98), 20, 50));
+	
 	
 
 	////////////////////
@@ -604,7 +672,7 @@ int main(int argc, char * argv[])
 	//std::cout << "left" << left << "right" << right << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
-	SetTimer(NULL, 1, 30, &Projekcja);
+	SetTimer(NULL, 1, 20, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	//init();
@@ -616,9 +684,12 @@ int main(int argc, char * argv[])
 
 
 	LoadTexture("tekstury\\asfalt.bmp", 0);
+	LoadTexture("tekstury\\s1.bmp", 1);
+	plansza();
+	
 	// do³¹czenie funkcji generuj¹cej scenê 3D
 	glutDisplayFunc(Display);
-
+	
 	// do³¹czenie funkcji wywo³ywanej przy zmianie rozmiaru okna
 	glutReshapeFunc(Reshape);
 	// do³¹czenie funkcji obs³ugi klawiatury

@@ -23,42 +23,7 @@ void Obstacle::Draw()
 	rightDown.x = xSize + leftDown.x;
 	rightDown.y = 0;
 	rightDown.z = 0 + leftDown.z;
-	int height = 40;
-	glBegin(GL_QUADS);
-	glColor3f(1, 0, 0);
-
-	glNormal3d(0, 0, 1);
-	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
-	glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
-	glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
-	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
-
-	glNormal3d(1, 0, 0);
-	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
-	glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
-	glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
-	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
-
-	glNormal3d(0, 0, -1);
-	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
-	glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
-	glVertex3f(leftDown.x, leftDown.y, leftDown.z);
-	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
-
-	glNormal3d(-1, 0, 0);
-	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
-	glVertex3f(leftDown.x, leftDown.y, leftDown.z);
-	glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
-	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
 	
-	glNormal3d(0,1, 0);
-	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
-	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
-	glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
-	glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
-	
-
-	glEnd();
 }
 bool Obstacle::Contain(Vector3f point)
 {
