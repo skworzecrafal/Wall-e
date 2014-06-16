@@ -78,7 +78,7 @@ GLdouble centerz = -100;
 
 // funkcja generuj¹ca scenê 3D
 WFObject model;
-const int ilosc = 9;
+const int ilosc = 15;
 int walls[ilosc][5] = {
 		{-210,0,-300,10,610},
 		{200,0,-300,10,610},
@@ -88,7 +88,13 @@ int walls[ilosc][5] = {
 		{115,0,35,50,30},
 		{-80,0,-130,20,50},
 		{65,0,211,50,30},
-		{-150,0,98,20,50}
+		{-150,0,98,20,50},
+		{100,0,-150,50,50},
+		{-60,0,140,23,50},
+		{0,0,-90,50,60},
+		{20,0,-250,30,45},
+		{-90,0,-20,45,30},
+		{-200,0,-200,50,50}
 };
 // LoadBitmapFile
 // opis: ³aduje mapê bitow¹ z pliku i zwraca jej adres.
@@ -162,8 +168,7 @@ GLuint LoadTexture(char * filename, const int numer)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth, bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
 
 	return textures[numer];
 
@@ -210,40 +215,40 @@ void init()
 }
 void przeszkoda(Vector3f leftDown, int xSize, int zSize)
 {
-	int height = 60;
+	float height = 60.0;
 
 	glBegin(GL_QUADS);
-	glColor3f(1, 0, 0);
+	glColor3f(1.0, 1.0, 1.0);
 
 	glNormal3d(0, 0, 1);
 	glTexCoord2f(0, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
 	glTexCoord2f(0, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
-	glTexCoord2f(1, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
-	glTexCoord2f(1, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(xSize/height, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
+	glTexCoord2f(xSize / height, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
 	
 	glNormal3d(1, 0, 0);
 	glTexCoord2f(0, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
 	glTexCoord2f(0, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z + zSize);
-	glTexCoord2f(1, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
-	glTexCoord2f(1, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
+	glTexCoord2f(zSize / height, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
+	glTexCoord2f(zSize / height, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
 
 	glNormal3d(0, 0, -1);
 	glTexCoord2f(0, 1); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
 	glTexCoord2f(0, 0); glVertex3f(leftDown.x + xSize, leftDown.y, leftDown.z);
-	glTexCoord2f(1, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z);
-	glTexCoord2f(1, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+	glTexCoord2f(xSize / height, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z);
+	glTexCoord2f(xSize / height, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
 
 	glNormal3d(-1, 0, 0);
 	glTexCoord2f(0, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
 	glTexCoord2f(0, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z);
-	glTexCoord2f(1, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
-	glTexCoord2f(1, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(zSize / height, 0); glVertex3f(leftDown.x, leftDown.y, leftDown.z + zSize);
+	glTexCoord2f(zSize / height, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
 
 	glNormal3d(0, 1, 0);
-	glTexCoord2f(0, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
+	glTexCoord2f(0, xSize/height); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z + zSize);
 	glTexCoord2f(0, 0); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z + zSize);
-	glTexCoord2f(1, 0); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
-	glTexCoord2f(1, 1); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
+	glTexCoord2f(zSize / height, 0); glVertex3f(leftDown.x + xSize, leftDown.y + height, leftDown.z);
+	glTexCoord2f(zSize / height, xSize / height); glVertex3f(leftDown.x, leftDown.y + height, leftDown.z);
 
 	glEnd();
 }
@@ -265,7 +270,8 @@ void Display()
 {
 	#pragma region
 	// kolor t³a - zawartoœæ bufora koloru
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0, 0.5, 1.0, 1.0);
+	//glClearColor(1, 1, 1.0, 1.0);
 
 	// czyszczenie bufora koloru
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -326,12 +332,12 @@ void Display()
 	
 	glBegin(GL_QUADS);
 	
-	glColor3ub(40, 40, 40);
+	glColor3ub(255, 255, 255);
 	glNormal3f(0, 1, 0);
-	glTexCoord2f(0, 1);	glVertex3f(-200, 0, -300);
+	glTexCoord2f(0, 12);	glVertex3f(-200, 0, -300);
 	glTexCoord2f(0, 0);	glVertex3f(-200, 0, 300);
-	glTexCoord2f(1, 0);	glVertex3f(200, 0, 300);
-	glTexCoord2f(1, 1);	glVertex3f(200, 0, -300);
+	glTexCoord2f(8, 0);	glVertex3f(200, 0, 300);
+	glTexCoord2f(8, 12);	glVertex3f(200, 0, -300);
 	glEnd();
 	
 	glDisable(GL_TEXTURE_2D);
@@ -343,14 +349,9 @@ void Display()
 
 	for (int i = 0; i < ilosc; i++)
 		przeszkoda(Vector3f(walls[i][0], walls[i][1], walls[i][2]), walls[i][3], walls[i][4]);
-	/*przeszkoda(Vector3f(10, 0, 50), 50, 50);
-	przeszkoda(Vector3f(200, 0, -300), 10, 610);
-	przeszkoda(Vector3f(65, 0, 211), 50, 30);
-	przeszkoda(Vector3f(65, 0, 211), 50, 30);*/
-
+	
 	glDisable(GL_TEXTURE_2D);
-	// kolor krawêdzi obiektu
-	glColor3f(0.0, 0.0, 0.0);
+
 #pragma endregion rozne roznosci
 	// TU RYSOWAC::
 	//glWrap::Axis();
@@ -438,9 +439,9 @@ void Display()
 #pragma endregion frontSensor
 	vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
 	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
-	Robo_AI::Movement(a, (float)ret[0]/10, (float)ret[1]/10);
-	Vl += ret[0]/4;
-	Vr += ret[1]/4;
+	Robo_AI::Movement(a, (float)ret[0]/15.0, (float)ret[1]/15.0);
+	Vl += ret[0]/8;
+	Vr += ret[1]/8;
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
 	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
@@ -590,7 +591,7 @@ void Keyboard(unsigned char key, int x, int y)
 		kamera = KAMERA_WIDOK_OGOLNY;
 		rotatex = 30;
 		rotatey -= 45;
-		scale = 0.6;
+		scale = 0.5;
 		break;
 	case 27 :
 		exit(0);
@@ -691,7 +692,7 @@ int main(int argc, char * argv[])
 	//std::cout << "left" << left << "right" << right << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
-	SetTimer(NULL, 1, 20, &Projekcja);
+	SetTimer(NULL, 1, 15, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	//init();
@@ -702,8 +703,8 @@ int main(int argc, char * argv[])
 	glutCreateWindow("WALL - e");
 
 
-	LoadTexture("tekstury\\asfalt.bmp", 0);
-	LoadTexture("tekstury\\s1.bmp", 1);
+	LoadTexture("tekstury/grass.bmp", 0);
+	LoadTexture("tekstury/cegla1.bmp", 1);
 	plansza();
 	
 	// do³¹czenie funkcji generuj¹cej scenê 3D
