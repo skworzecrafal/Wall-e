@@ -3,6 +3,7 @@
 #include <GL\gl.h>
 #include <GL\glu.h>
 #include "Vector3.h"
+
 class Obstacle
 {
 public:

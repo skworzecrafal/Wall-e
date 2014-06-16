@@ -133,6 +133,8 @@ void Display()
 	//init();
 	// przesuniêcie uk³adu wspó³rzêdnych obiektu do œrodka bry³y odcinania
 	glTranslatef(0, 0, -(Near +Far) / 2);
+	// skalowanie obiektu - klawisze "+" i "-"
+	glScalef(scale, scale, scale);
 	
 	if (kamera == KAMERA_PODARZANIE)
 	{
@@ -147,9 +149,7 @@ void Display()
 		glRotatef(rotatex, 1.0, 0, 0);
 		glRotatef(rotatey, 0, 1.0, 0);
 	}
-	// skalowanie obiektu - klawisze "+" i "-"
-	glScalef(scale, scale, scale);
-
+	
 	glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_LESS);
 	// w³¹czenie oœwietlenia
@@ -165,12 +165,20 @@ void Display()
 	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
 	
+	glBegin(GL_QUADS);
+	glColor3ub(40, 40, 40);
+	glNormal3f(0, 1, 0);
+	glVertex3f(-200, 0, -300);
+	glVertex3f(-200, 0, 300);
+	glVertex3f(200, 0, 300);
+	glVertex3f(200, 0, -300);
+	glEnd();
 	
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
 #pragma endregion rozne roznosci
 	// TU RYSOWAC::
-	glWrap::Axis();
+	//glWrap::Axis();
 	glPushMatrix();
 	//glRotatef(180, 0, 1, 0);
 	if (a->OriPosition==oCenter)
@@ -261,7 +269,8 @@ void Display()
 	vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
 	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
 	Robo_AI::Movement(a, (float)ret[0]/5, (float)ret[1]/5);
-
+	Vl += ret[0]/2;
+	Vr += ret[1]/2;
 	for (int i = 0; i < Obstancles.size(); i++)
 		Obstancles[i].Draw();
 	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
@@ -279,8 +288,7 @@ void Display()
 
 void CALLBACK Projekcja(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
 {
-	Vl += krokL;
-	Vr += krokR;
+	
 	Display();
 }
 // zmiana wielkoœci okna
@@ -524,8 +532,8 @@ void ExtensionSetup()
 }
 int main(int argc, char * argv[])
 {
-	Obstancles.push_back(Obstacle(Vector3f(-210, 0, -300), 10, 600));
-	Obstancles.push_back(Obstacle(Vector3f(200, 0, -300), 10, 600));
+	Obstancles.push_back(Obstacle(Vector3f(-210, 0, -300), 10, 610));
+	Obstancles.push_back(Obstacle(Vector3f(200, 0, -300), 10, 610));
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, -300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(-200, 0, 300), 400, 10));
 	Obstancles.push_back(Obstacle(Vector3f(10, 0, 50), 50, 50));
@@ -533,7 +541,7 @@ int main(int argc, char * argv[])
 	Obstancles.push_back(Obstacle(Vector3f(-80, 0, -130), 20, 50));
 	Obstancles.push_back(Obstacle(Vector3f(65, 0, 211), 50, 30));
 	Obstancles.push_back(Obstacle(Vector3f(-150, 0, 98), 20, 50));
-
+	
 
 	////////////////////
 	mclInitializeApplication(NULL, 0);
