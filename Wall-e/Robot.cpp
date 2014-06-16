@@ -453,82 +453,82 @@ void Robot::figura1(float a, float b, float c)
 	glEnd();
 }
 
-void Robot::Draw(int obrotL, int obrotR)
-{
-
-
-	float rozstaw = 10;
-
-	glPushMatrix();
-	//glTranslatef(-7.5, 2, rozstaw / 2);
-	figura1(10, 10, 10);
-	glPopMatrix();
-
-	glPushMatrix();
-	glRotatef(90, 0, 1, 0);
-	glTranslatef(8, 0, 0);
-	gasienica(obrotR);
-	glPopMatrix();
-
-	glPushMatrix();
-	glRotatef(90, 0, 1, 0);
-	glTranslatef(8, 0, 10 +1.5);
-	gasienica(obrotL);
-	glPopMatrix();
-}
-void Robot::Draw()
-{
-	glPushMatrix();
-	switch (OriPosition)
-	{
-	case oLeftWheel:
-		Origin = lWheel;
-		glTranslatef(LeftWheel.x, LeftWheel.y, LeftWheel.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(LeftWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	case oRightWheel:
-		Origin = rWheel;
-		glTranslatef(RightWheel.x, RightWheel.y, RightWheel.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(RightWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	case oCenter:
-		Origin = center;
-		glTranslatef(Center.x, Center.y, Center.z);
-		glRotatef(oldRot, 0, 1, 0);
-		glRotatef(Rotation.y, 0, 1, 0);
-		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
-		glTranslatef(Translation.x, Translation.y, Translation.z);
-		tmp = Matrixf(Center)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
-		break;
-	}
-	LeftWheel = tmp *lWheel;
-	RightWheel = tmp*rWheel;
-	Center = tmp*center;
-	tmp = tmp*Matrixf(3, 10, -5);
-	
-	oldRot += Rotation.y;
-
-	Translation.x = 0;
-	Translation.y = 0;
-	Translation.z = 0;
-	Rotation.y = 0;
-	 Draw(0, 0);
-	 glTranslatef(3, 10, -5);
-	 SensorLeft.Draw();
-	 laserPointsLeft = tmp*SensorLeft.laserPoints;
-	 
-	 glPopMatrix();
-
-	 
-}
+//void Robot::Draw(int obrotL, int obrotR)
+//{
+//
+//
+//	float rozstaw = 10;
+//
+//	glPushMatrix();
+//	//glTranslatef(-7.5, 2, rozstaw / 2);
+//	figura1(10, 10, 10);
+//	glPopMatrix();
+//
+//	glPushMatrix();
+//	glRotatef(90, 0, 1, 0);
+//	glTranslatef(8, 0, 0);
+//	gasienica(obrotR);
+//	glPopMatrix();
+//
+//	glPushMatrix();
+//	glRotatef(90, 0, 1, 0);
+//	glTranslatef(8, 0, 10 +1.5);
+//	gasienica(obrotL);
+//	glPopMatrix();
+//}
+//void Robot::Draw()
+//{
+//	glPushMatrix();
+//	switch (OriPosition)
+//	{
+//	case oLeftWheel:
+//		Origin = lWheel;
+//		glTranslatef(LeftWheel.x, LeftWheel.y, LeftWheel.z);
+//		glRotatef(oldRot, 0, 1, 0);
+//		glRotatef(Rotation.y, 0, 1, 0);
+//		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
+//		glTranslatef(Translation.x, Translation.y, Translation.z);
+//		tmp = Matrixf(LeftWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
+//		break;
+//	case oRightWheel:
+//		Origin = rWheel;
+//		glTranslatef(RightWheel.x, RightWheel.y, RightWheel.z);
+//		glRotatef(oldRot, 0, 1, 0);
+//		glRotatef(Rotation.y, 0, 1, 0);
+//		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
+//		glTranslatef(Translation.x, Translation.y, Translation.z);
+//		tmp = Matrixf(RightWheel)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
+//		break;
+//	case oCenter:
+//		Origin = center;
+//		glTranslatef(Center.x, Center.y, Center.z);
+//		glRotatef(oldRot, 0, 1, 0);
+//		glRotatef(Rotation.y, 0, 1, 0);
+//		glTranslatef(-Origin.x, -Origin.y, -Origin.z);
+//		glTranslatef(Translation.x, Translation.y, Translation.z);
+//		tmp = Matrixf(Center)*Matrixf(oldRot)*Matrixf(Rotation.y)*Matrixf(-Origin.x, -Origin.y, -Origin.z)*Matrixf(Translation);
+//		break;
+//	}
+//	LeftWheel = tmp *lWheel;
+//	RightWheel = tmp*rWheel;
+//	Center = tmp*center;
+//	tmp = tmp*Matrixf(3, 10, -5);
+//	
+//	oldRot += Rotation.y;
+//
+//	Translation.x = 0;
+//	Translation.y = 0;
+//	Translation.z = 0;
+//	Rotation.y = 0;
+//	 Draw(0, 0);
+//	 glTranslatef(3, 10, -5);
+//	 SensorLeft.Draw();
+//	 laserPointsLeft = tmp*SensorLeft.laserPoints;
+//	 
+//	 glPopMatrix();
+//
+//	 
+//}
 void Robot::head(int obrot)
 {
 	glPushMatrix();
@@ -730,6 +730,8 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 	//NAPED
 	naped(vl,vr);
 	glPopMatrix();
+
+	glColor3f(0, 1, 0);
 	glPushMatrix();
 	glRotatef(45, 0, 1, 0);
 	glTranslatef(0, 10, 0);

@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <GL\glut.h>
-#include <GL/glext.h>
+#include <GL\GLU.h>
+#include <GL\GL.h>
 #include <Windows.h>
 #include "PMath.h"
 #include "robo.h"
@@ -11,18 +12,19 @@
 #include "PMath.h"
 #include "LoadOBJ.h"
 #include "Obstacle.h"
-PFNGLDRAWRANGEELEMENTSEXTPROC glDrawRangeElementsEXT = NULL;
+#define BITMAP_ID 0x4D42
+
 
 char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
 //char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
 double *ret;
-
+GLuint textures[2];
 Robot* a = new Robot();
 enum{
 	KAMERA_WIDOK_OGOLNY,
-	KAMERA_PODARZANIE
+	KAMERA_PODAZANIE
 };
-int kamera = KAMERA_PODARZANIE;
+int kamera = KAMERA_PODAZANIE;
 vector<Obstacle> Obstancles;
 float Vl = 0;
 float Vr = 0;
@@ -75,6 +77,86 @@ GLdouble centerz = -100;
 
 // funkcja generuj¹ca scenê 3D
 WFObject model;
+
+// LoadBitmapFile
+// opis: ³aduje mapê bitow¹ z pliku i zwraca jej adres.
+//       Wype³nia strukturê nag³ówka.
+//	 Nie obs³uguje map 8-bitowych.
+unsigned char *loadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader)
+{
+	FILE *filePtr;							// wskaŸnik pozycji pliku
+	BITMAPFILEHEADER	bitmapFileHeader;		// nag³ówek pliku
+	unsigned char		*bitmapImage;			// dane obrazu
+	int					imageIdx = 0;		// licznik pikseli
+	unsigned char		tempRGB;				// zmienna zamiany sk³adowych
+	// otwiera plik w trybie "read binary"
+	filePtr = fopen(filename, "rb");
+	if (filePtr == NULL)
+		return NULL;
+	// wczytuje nag³ówek pliku
+	fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, filePtr);
+	// sprawdza, czy jest to plik formatu BMP
+	if (bitmapFileHeader.bfType != BITMAP_ID)
+	{
+		fclose(filePtr);
+		return NULL;
+	}
+	// wczytuje nag³ówek obrazu
+	fread(bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1, filePtr);
+	// ustawia wskaŸnik pozycji pliku na pocz¹tku danych obrazu
+	fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
+	// przydziela pamiêæ buforowi obrazu
+	bitmapImage = (unsigned char*)malloc(bitmapInfoHeader->biSizeImage);
+	// sprawdza, czy uda³o siê przydzieliæ pamiêæ
+	if (!bitmapImage)
+	{
+		free(bitmapImage);
+		fclose(filePtr);
+		return NULL;
+	}
+	// wczytuje dane obrazu
+	fread(bitmapImage, 1, bitmapInfoHeader->biSizeImage, filePtr);
+	// sprawdza, czy dane zosta³y wczytane
+	if (bitmapImage == NULL)
+	{
+		fclose(filePtr);
+		return NULL;
+	}
+	// zamienia miejscami sk³adowe R i B 
+	for (imageIdx = 0; imageIdx < bitmapInfoHeader->biSizeImage; imageIdx += 3)
+	{
+		tempRGB = bitmapImage[imageIdx];
+		bitmapImage[imageIdx] = bitmapImage[imageIdx + 2];
+		bitmapImage[imageIdx + 2] = tempRGB;
+	}
+	// zamyka plik i zwraca wskaŸnik bufora zawieraj¹cego wczytany obraz
+	fclose(filePtr);
+	return bitmapImage;
+}
+
+
+
+GLuint LoadTexture(char * filename, const int numer)
+{
+	BITMAPINFOHEADER bitmapInfoHeader;
+	GLubyte * data;
+
+	data = loadBitmapFile(filename, &bitmapInfoHeader);
+
+	glGenTextures(1, &textures[numer]);
+	glBindTexture(GL_TEXTURE_2D, textures[numer]);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitmapInfoHeader.biWidth, bitmapInfoHeader.biHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	return textures[numer];
+
+}
 void init()
 {
 	// Light values and coordinates
@@ -136,7 +218,7 @@ void Display()
 	// skalowanie obiektu - klawisze "+" i "-"
 	glScalef(scale, scale, scale);
 	
-	if (kamera == KAMERA_PODARZANIE)
+	if (kamera == KAMERA_PODAZANIE)
 	{
 		glTranslatef(0, 0, (Near + Far) / 2 - 150);
 		glRotatef(rotatex, 1.0, 0, 0);
@@ -165,15 +247,24 @@ void Display()
 	glEnable(GL_COLOR_MATERIAL);
 	// obroty obiektu - klawisze kursora
 	
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glColor3ub(40, 40, 40);
 	glNormal3f(0, 1, 0);
+	glTexCoord2f(0, 1);
 	glVertex3f(-200, 0, -300);
+	glTexCoord2f(0, 0);
 	glVertex3f(-200, 0, 300);
+	glTexCoord2f(1, 0);
 	glVertex3f(200, 0, 300);
+	glTexCoord2f(1, 1);
 	glVertex3f(200, 0, -300);
 	glEnd();
-	
+	glDisable(GL_TEXTURE_2D);
 	// kolor krawêdzi obiektu
 	glColor3f(0.0, 0.0, 0.0);
 #pragma endregion rozne roznosci
@@ -181,12 +272,7 @@ void Display()
 	//glWrap::Axis();
 	glPushMatrix();
 	//glRotatef(180, 0, 1, 0);
-	if (a->OriPosition==oCenter)
-	glWrap::Print(-30, 60, "OriPosition: center");
-	if (a->OriPosition == oLeftWheel)
-		glWrap::Print(-30, 60, "OriPosition: left");
-	if (a->OriPosition == oRightWheel)
-		glWrap::Print(-30, 60, "OriPosition: right");
+	
 #pragma region
 	bool iSeeL = false;
 	for (int i = 0; i < Obstancles.size(); i++)
@@ -197,7 +283,7 @@ void Display()
 			{
 				float x = PMath::Plength(a->laserPointsLeft[0], a->laserPointsLeft[j]);
 				a->leftValue = PMath::GetEValue((float)x);
-				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
 				iSeeL = true;
 				break;
 
@@ -205,7 +291,7 @@ void Display()
 			if (j == a->laserPointsLeft.size() - 1 && i == Obstancles.size() - 1)
 			{
 				a->leftValue = PMath::GetEValue((float)60);
-				glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
 				iSeeL = false;
 			}
 		}
@@ -223,7 +309,7 @@ void Display()
 			{
 				float x = PMath::Plength(a->laserPointsRight[0], a->laserPointsRight[j]);
 				a->rightValue = PMath::GetEValue((float)x);
-				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+				//glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
 				iSeeR = true;
 				break;
 
@@ -231,7 +317,7 @@ void Display()
 			if (j == a->laserPointsRight.size() - 1 && i == Obstancles.size() - 1)
 			{
 				a->rightValue = PMath::GetEValue((float)60);
-				glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+				//glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
 				iSeeR = false;
 			}
 			if (iSeeR)
@@ -250,7 +336,7 @@ void Display()
 				
 				float x = PMath::Plength(a->laserPointsFront[0], a->laserPointsFront[j]);
 				a->frontValue = PMath::GetEValue((float)x);
-				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
 				iSeeF = true;
 				break;
 
@@ -258,7 +344,7 @@ void Display()
 			if (j == a->laserPointsFront.size() - 1 && i == Obstancles.size() - 1)
 			{
 				a->frontValue = PMath::GetEValue((float)60);
-				glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
 				iSeeF = false;
 			}
 			if (iSeeF)
@@ -403,7 +489,7 @@ void Keyboard(unsigned char key, int x, int y)
 			centerz -= 1;
 		break;
 	case '1':
-		kamera = KAMERA_PODARZANIE;
+		kamera = KAMERA_PODAZANIE;
 		rotatex = 20;
 		rotatey = 0;
 		break;
@@ -489,47 +575,7 @@ void ActiveMouse(int x, int y)
 	old_x = x;
 	old_y = y;
 }
-void ExtensionSetup()
-{
-	// pobranie numeru wersji biblioteki OpenGL
-	const char * version = (char *)glGetString(GL_VERSION);
 
-	// odczyt wersji OpenGL
-	int major = 0, minor = 0;
-	if (sscanf(version, "%d.%d", &major, &minor) != 2)
-	{
-#ifdef WIN32
-		printf("B³êdny format wersji OpenGL\n");
-#else
-
-		printf("Bledny format wersji OpenGL\n");
-#endif
-
-		exit(0);
-	}
-
-	// sprawdzenie czy jest co najmniej wersja 1.2
-	if (major > 1 || minor >= 2)
-	{
-		// pobranie wskaŸników wybranych funkcji OpenGL 1.2
-		glDrawRangeElementsEXT =
-			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElements");
-	}
-	else
-
-		// sprawdzenie czy jest obs³ugiwane rozszerzenie EXT_draw_range_elements
-		if (glutExtensionSupported("GL_EXT_draw_range_elements"))
-		{
-		// pobranie wskaŸników wybranych funkcji rozszerzenia EXT_draw_range_elements
-		glDrawRangeElementsEXT =
-			(PFNGLDRAWRANGEELEMENTSEXTPROC)wglGetProcAddress("glDrawRangeElementsEXT");
-		}
-		else
-		{
-			printf("Brak rozszerzenia EXT_draw_range_elements!\n");
-			glDrawRangeElementsEXT = NULL;
-		}
-}
 int main(int argc, char * argv[])
 {
 	Obstancles.push_back(Obstacle(Vector3f(-210, 0, -300), 10, 610));
@@ -569,7 +615,7 @@ int main(int argc, char * argv[])
 	glutCreateWindow("WALL - e");
 
 
-
+	LoadTexture("tekstury\\asfalt.bmp", 0);
 	// do³¹czenie funkcji generuj¹cej scenê 3D
 	glutDisplayFunc(Display);
 
@@ -583,7 +629,7 @@ int main(int argc, char * argv[])
 	glutMotionFunc(ActiveMouse);
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
-	ExtensionSetup();
+	
 	// wprowadzenie programu do obs³ugi pêtli komunikatów
 	glutMainLoop();
 	KillTimer(NULL, 1);
