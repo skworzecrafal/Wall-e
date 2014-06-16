@@ -23,7 +23,10 @@ Robot* a = new Robot();
 enum{
 	KAMERA_WIDOK_OGOLNY,
 	KAMERA_OCZY,
-	KAMERA_PODAZANIE
+	KAMERA_PODAZANIE,
+	STEROWANIE_LREKA,
+	STEROWANIE_PREKA,
+	STEROWANIE_GLOWA
 };
 int kamera = KAMERA_PODAZANIE;
 vector<Obstacle> Obstancles;
@@ -36,7 +39,7 @@ int RhandV = 0;
 int RhandH = 0;
 float krokL = 0;
 float krokR = 0;
-
+int sterowanie = STEROWANIE_GLOWA;
 
 // aspekt obrazu
 
@@ -529,51 +532,72 @@ void Keyboard(unsigned char key, int x, int y)
 	case 'e':
 		a->Rotation.y -= 1;
 		break;
-	case 'r':
-		RhandH += 5;
-		break;
-	case 'f':
-		RhandH -= 5;
-		break;
-	case 't':
-		if (eyey < 15)
-			eyey += 1;
-		break;
-	case 'g':
-		if (eyey > -15)
-			eyey -= 1;
-		break;
-	case 'y':
-		if (eyez < 15)
-			eyez += 1;
-		break;
-	case 'h':
-		if (eyez > -15)
-			eyez -= 1;
-		break;
-	case 'u':
-		if (centerx < 15)
-			centerx += 1;
-		break;
-	case 'j':
-		if (centerx > -15)
-			centerx -= 1;
-		break;
 	case 'i':
-		if (centery < 15)
-			centery += 1;
+		if (sterowanie == STEROWANIE_GLOWA)
+		{
+			if (Hkat > -20)
+				Hkat -= 1;
+		}
+		if (sterowanie == STEROWANIE_LREKA)
+		{
+			if (LhandV > -90)
+				LhandV -= 2;
+		}
+		if (sterowanie == STEROWANIE_PREKA)
+		{
+			if (RhandV > -90)
+				RhandV -= 2;
+		}
 		break;
 	case 'k':
-		if (centery > -15)
-			centery -= 1;
+		if (sterowanie == STEROWANIE_GLOWA)
+		{
+			if (Hkat <8)
+				Hkat += 1;
+		}
+		if (sterowanie == STEROWANIE_LREKA)
+		{
+			if (LhandV <35)
+				LhandV += 2;
+		}
+		if (sterowanie == STEROWANIE_PREKA)
+		{
+			if (RhandV <35)
+				RhandV += 2;
+		}
 		break;
-	case 'o':
-		if (centerz < 120)
-			centerz += 1;
+	case 'j':
+		if (sterowanie == STEROWANIE_LREKA)
+		{
+			if (LhandH < 90)
+				LhandH += 2;
+		}
+		if (sterowanie == STEROWANIE_PREKA)
+		{
+			if (RhandH < 4)
+				RhandH += 2;
+		}
 		break;
 	case 'l':
-		if (centerz > 80)
-			centerz -= 1;
+		if (sterowanie == STEROWANIE_LREKA)
+		{
+			if (LhandH > -4)
+				LhandH -= 2;
+		}
+		if (sterowanie == STEROWANIE_PREKA)
+		{
+			if (RhandH > -90)
+				RhandH -= 2;
+		}
+		break;
+	case '0':
+		sterowanie = STEROWANIE_GLOWA;
+		break;
+	case '9':
+		sterowanie = STEROWANIE_PREKA;
+		break;
+	case '8':
+		sterowanie = STEROWANIE_LREKA;
 		break;
 	case '1':
 		kamera = KAMERA_PODAZANIE;
@@ -671,7 +695,6 @@ void ActiveMouse(int x, int y)
 	old_y = y;
 }
 
-
 int main(int argc, char * argv[])
 {
 	
@@ -692,7 +715,7 @@ int main(int argc, char * argv[])
 	//std::cout << "left" << left << "right" << right << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
-	SetTimer(NULL, 1, 15, &Projekcja);
+	SetTimer(NULL, 1, 18, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	//init();
