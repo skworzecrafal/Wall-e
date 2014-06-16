@@ -1,0 +1,57 @@
+[System]
+Name='robotSugeno'
+Type='sugeno'
+Version=2.0
+NumInputs=3
+NumOutputs=2
+NumRules=8
+AndMethod='prod'
+OrMethod='probor'
+ImpMethod='prod'
+AggMethod='sum'
+DefuzzMethod='wtaver'
+
+[Input1]
+Name='left'
+Range=[0 1023]
+NumMFs=2
+MF1='small':'trimf',[-1023 1.421e-14 1023]
+MF2='big':'trimf',[0 1023 2046]
+
+[Input2]
+Name='front'
+Range=[0 1023]
+NumMFs=2
+MF1='small':'trimf',[-1023 0 1023]
+MF2='big':'trimf',[0 1023 2046]
+
+[Input3]
+Name='right'
+Range=[0 1023]
+NumMFs=2
+MF1='small':'trimf',[-1023 1.421e-14 1023]
+MF2='big':'trimf',[0 1023 2046]
+
+[Output1]
+Name='V-left'
+Range=[0 1]
+NumMFs=2
+MF1='front':'constant',[10]
+MF2='back':'constant',[-10]
+
+[Output2]
+Name='V-right'
+Range=[0 1]
+NumMFs=2
+MF1='front':'constant',[10]
+MF2='back':'constant',[-10]
+
+[Rules]
+1 1 1, 1 1 (1) : 1
+1 1 2, 2 1 (1) : 1
+1 2 1, 2 1 (1) : 1
+1 2 2, 2 1 (1) : 1
+2 1 1, 1 2 (1) : 1
+2 1 2, 1 1 (1) : 1
+2 2 1, 1 2 (1) : 1
+2 2 2, 2 1 (1) : 1
