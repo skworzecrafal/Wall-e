@@ -15,8 +15,8 @@
 #define BITMAP_ID 0x4D42
 
 
-char path[] = "C:\\Users\\Rafal\\Desktop\\robotSugeno.fis";
-//char path[] = "C:\\Users\\marci_000\\Desktop\\robotSugeno.fis";
+char path[] = "fis\\robotSugeno.fis";
+
 double *ret;
 GLuint textures[2];
 Robot* a = new Robot();
