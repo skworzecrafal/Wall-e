@@ -25,7 +25,7 @@ void Sensor::Draw()
 
 
 	
-	laserPoints = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2), 50);
+	laserPoints = glWrap::LineOfPoints(Vector3f(width / 2, width / 2, 0), Vector3f(width / 2, width / 2, -width / 2), 60);
 
 	
 	
