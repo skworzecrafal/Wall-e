@@ -1,0 +1,12 @@
+Mysz	-obracanie kamer¹
+rolka	-przybli¿/oddal
+1	-kamera zza robota
+2	-kamera "widok oczu"
+3	-kamera widok z daleka
+8	-w³¹czenie sterowania lew¹ rêk¹
+9	-w³¹czenie sterowania praw¹ rêk¹
+0	-w³¹czenie sterowania g³ow¹
+i	-ruch w górê
+k	-ruch w dó³ 
+j	-ruch w lewo
+l	-ruch w prawo
