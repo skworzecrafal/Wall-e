@@ -26,7 +26,9 @@ enum{
 	KAMERA_PODAZANIE,
 	STEROWANIE_LREKA,
 	STEROWANIE_PREKA,
-	STEROWANIE_GLOWA
+	STEROWANIE_GLOWA,
+	START,
+	STOP
 };
 int kamera = KAMERA_PODAZANIE;
 vector<Obstacle> Obstancles;
@@ -41,6 +43,7 @@ float krokL = 0;
 float krokR = 0;
 int sterowanie = STEROWANIE_GLOWA;
 
+int stan = STOP;
 // aspekt obrazu
 
 int aspect = 1;
@@ -365,20 +368,45 @@ void Display()
 	bool iSeeL = false;
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
-		for (int j = 0; j < a->laserPointsLeft.size(); j++)
+		for (int j = 0; j < a->laserPointsLeft1.size(); j++)
 		{
-			if (Obstancles[i].Contain(a->laserPointsLeft[j]))
+			if (Obstancles[i].Contain(a->laserPointsLeft1[j]))
 			{
-				float x = PMath::Plength(a->laserPointsLeft[0], a->laserPointsLeft[j]);
-				a->leftValue = PMath::GetEValue((float)x);
+				float x = PMath::Plength(a->laserPointsLeft1[0], a->laserPointsLeft1[j]);
+				a->leftValue1 = PMath::GetEValue((float)x);
 				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
 				iSeeL = true;
 				break;
 
 			}
-			if (j == a->laserPointsLeft.size() - 1 && i == Obstancles.size() - 1)
+			if (j == a->laserPointsLeft1.size() - 1 && i == Obstancles.size() - 1)
 			{
-				a->leftValue = PMath::GetEValue((float)60);
+				a->leftValue1 = PMath::GetEValue((float)50);
+				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				iSeeL = false;
+			}
+		}
+		if (iSeeL)
+			break;
+	}
+
+	iSeeL = false;
+	for (int i = 0; i < Obstancles.size(); i++)
+	{
+		for (int j = 0; j < a->laserPointsLeft2.size(); j++)
+		{
+			if (Obstancles[i].Contain(a->laserPointsLeft2[j]))
+			{
+				float x = PMath::Plength(a->laserPointsLeft2[0], a->laserPointsLeft2[j]);
+				a->leftValue2 = PMath::GetEValue((float)x);
+				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
+				iSeeL = true;
+				break;
+
+			}
+			if (j == a->laserPointsLeft2.size() - 1 && i == Obstancles.size() - 1)
+			{
+				a->leftValue2 = PMath::GetEValue((float)50);
 				//glWrap::Print(-30, 50, "Left: " + std::to_string(a->leftValue));
 				iSeeL = false;
 			}
@@ -391,20 +419,45 @@ void Display()
 	bool iSeeR = false;
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
-		for (int j = 0; j < a->laserPointsRight.size(); j++)
+		for (int j = 0; j < a->laserPointsRight1.size(); j++)
 		{
-			if (Obstancles[i].Contain(a->laserPointsRight[j]))
+			if (Obstancles[i].Contain(a->laserPointsRight1[j]))
 			{
-				float x = PMath::Plength(a->laserPointsRight[0], a->laserPointsRight[j]);
-				a->rightValue = PMath::GetEValue((float)x);
+				float x = PMath::Plength(a->laserPointsRight1[0], a->laserPointsRight1[j]);
+				a->rightValue1 = PMath::GetEValue((float)x);
 				//glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
 				iSeeR = true;
 				break;
 
 			}
-			if (j == a->laserPointsRight.size() - 1 && i == Obstancles.size() - 1)
+			if (j == a->laserPointsRight1.size() - 1 && i == Obstancles.size() - 1)
 			{
-				a->rightValue = PMath::GetEValue((float)60);
+				a->rightValue1 = PMath::GetEValue((float)50);
+				//glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+				iSeeR = false;
+			}
+			if (iSeeR)
+				break;
+		}
+	}
+
+	iSeeR = false;
+	for (int i = 0; i < Obstancles.size(); i++)
+	{
+		for (int j = 0; j < a->laserPointsRight2.size(); j++)
+		{
+			if (Obstancles[i].Contain(a->laserPointsRight2[j]))
+			{
+				float x = PMath::Plength(a->laserPointsRight2[0], a->laserPointsRight2[j]);
+				a->rightValue2 = PMath::GetEValue((float)x);
+				//glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
+				iSeeR = true;
+				break;
+
+			}
+			if (j == a->laserPointsRight2.size() - 1 && i == Obstancles.size() - 1)
+			{
+				a->rightValue2 = PMath::GetEValue((float)50);
 				//glWrap::Print(-30, 30, "Right: " + std::to_string(a->rightValue));
 				iSeeR = false;
 			}
@@ -417,21 +470,47 @@ void Display()
 	bool iSeeF = false;
 	for (int i = 0; i < Obstancles.size(); i++)
 	{
-		for (int j = 0; j < a->laserPointsFront.size(); j++)
+		for (int j = 0; j < a->laserPointsFront1.size(); j++)
 		{
-			if (Obstancles[i].Contain(a->laserPointsFront[j]))
+			if (Obstancles[i].Contain(a->laserPointsFront1[j]))
 			{
 				
-				float x = PMath::Plength(a->laserPointsFront[0], a->laserPointsFront[j]);
-				a->frontValue = PMath::GetEValue((float)x);
+				float x = PMath::Plength(a->laserPointsFront1[0], a->laserPointsFront1[j]);
+				a->frontValue1 = PMath::GetEValue((float)x);
 				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
 				iSeeF = true;
 				break;
 
 			}
-			if (j == a->laserPointsFront.size() - 1 && i == Obstancles.size() - 1)
+			if (j == a->laserPointsFront1.size() - 1 && i == Obstancles.size() - 1)
 			{
-				a->frontValue = PMath::GetEValue((float)60);
+				a->frontValue1 = PMath::GetEValue((float)50);
+				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				iSeeF = false;
+			}
+			if (iSeeF)
+				break;
+		}
+	}
+
+	iSeeF = false;
+	for (int i = 0; i < Obstancles.size(); i++)
+	{
+		for (int j = 0; j < a->laserPointsFront2.size(); j++)
+		{
+			if (Obstancles[i].Contain(a->laserPointsFront2[j]))
+			{
+
+				float x = PMath::Plength(a->laserPointsFront2[0], a->laserPointsFront2[j]);
+				a->frontValue2 = PMath::GetEValue((float)x);
+				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
+				iSeeF = true;
+				break;
+
+			}
+			if (j == a->laserPointsFront2.size() - 1 && i == Obstancles.size() - 1)
+			{
+				a->frontValue2 = PMath::GetEValue((float)50);
 				//glWrap::Print(-30, 40, "Front: " + std::to_string(a->frontValue));
 				iSeeF = false;
 			}
@@ -440,13 +519,33 @@ void Display()
 		}
 	}
 #pragma endregion frontSensor
-	vector<double> ret = Robo_AI::Dodge(a->leftValue, a->frontValue, a->rightValue, path);
-	//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
-	Robo_AI::Movement(a, (float)ret[0]/15.0, (float)ret[1]/15.0);
-	Vl += ret[0]/8;
-	Vr += ret[1]/8;
-	for (int i = 0; i < Obstancles.size(); i++)
-		Obstancles[i].Draw();
+	int left, right, front;
+	if (a->leftValue1 > a->leftValue2)
+		left = a->leftValue1;
+	else
+		left = a->leftValue2;
+
+	if (a->rightValue1 > a->rightValue2)
+		right = a->rightValue1;
+	else
+		right = a->rightValue2;
+
+	if (a->frontValue1 > a->frontValue2)
+		front = a->frontValue1;
+	else
+		front = a->frontValue2;
+
+	if (stan == START)
+	{
+		vector<double> ret = Robo_AI::Dodge(left, front, right, path);
+		//glWrap::Print(30, 30, to_string(ret[0]) + "   " + to_string(ret[1]));
+		Robo_AI::Movement(a, (float)ret[0] / 10.0, (float)ret[1] / 10.0);
+
+		Vl += ret[0] /2;
+		Vr += ret[1] / 2;
+		for (int i = 0; i < Obstancles.size(); i++)
+			Obstancles[i].Draw();
+	}
 	a->Rysuj(Vl, Vr, Hkat, LhandH, LhandV, RhandH, RhandV);
 	glPopMatrix();
 	//glutPostRedisplay();
@@ -531,6 +630,12 @@ void Keyboard(unsigned char key, int x, int y)
 		break;
 	case 'e':
 		a->Rotation.y -= 1;
+		break;
+	case 'z':
+		if (stan == STOP)
+			stan = START;
+		else
+			stan = STOP;
 		break;
 	case 'i':
 		if (sterowanie == STEROWANIE_GLOWA)
@@ -715,7 +820,7 @@ int main(int argc, char * argv[])
 	//std::cout << "left" << left << "right" << right << std::endl;
 	// inicjalizacja biblioteki GLUT
 	glutInit(&argc, argv);
-	SetTimer(NULL, 1, 18, &Projekcja);
+	SetTimer(NULL, 1, 20, &Projekcja);
 	// inicjalizacja bufora ramki
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	//init();

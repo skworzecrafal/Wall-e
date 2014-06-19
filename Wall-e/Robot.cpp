@@ -703,12 +703,18 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 	LeftWheel = tmp *lWheel;
 	RightWheel = tmp*rWheel;
 	Center = tmp*center;
-	leftSensorTranslation = tmp*Matrixf(45)*Matrixf(0,10,0);
-	frontSensorTranslation = tmp*Matrixf(0)*Matrixf(0,10,0);
-	rightSensorTranslation  = tmp*Matrixf(-45)*Matrixf(0,10,0);
-	laserPointsLeft = leftSensorTranslation*SensorLeft.laserPoints;
-	laserPointsFront = frontSensorTranslation*SensorFront.laserPoints;
-	laserPointsRight = rightSensorTranslation*SensorRight.laserPoints;
+	leftSensorTranslation1 = tmp*Matrixf(80)*Matrixf(0,10,0);
+	leftSensorTranslation2 = tmp*Matrixf(40)*Matrixf(0, 10, 0);
+	frontSensorTranslation1 = tmp*Matrixf(10)*Matrixf(0,10,0);
+	frontSensorTranslation2 = tmp*Matrixf(-10)*Matrixf(0, 10, 0);
+	rightSensorTranslation1  = tmp*Matrixf(-80)*Matrixf(0,10,0);
+	rightSensorTranslation2 = tmp*Matrixf(-40)*Matrixf(0, 10, 0);
+	laserPointsLeft1 = leftSensorTranslation1*SensorLeft1.laserPoints;
+	laserPointsLeft2 = leftSensorTranslation2*SensorLeft2.laserPoints;
+	laserPointsFront1 = frontSensorTranslation1*SensorFront1.laserPoints;
+	laserPointsFront2 = frontSensorTranslation2*SensorFront2.laserPoints;
+	laserPointsRight1 = rightSensorTranslation1*SensorRight1.laserPoints;
+	laserPointsRight2 = rightSensorTranslation2*SensorRight2.laserPoints;
 	oldRot += Rotation.y;
 
 	Translation.x = 0;
@@ -733,21 +739,39 @@ void Robot::Rysuj(float vl, float vr, int heado, int llr, int lud, int rlr, int 
 
 	glColor3f(0, 1, 0);
 	glPushMatrix();
-	glRotatef(45, 0, 1, 0);
+	glRotatef(80, 0, 1, 0);
 	glTranslatef(0, 10, 0);
-	SensorLeft.Draw();
+	SensorLeft1.Draw();
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotatef(-45, 0, 1, 0);
+	glRotatef(40, 0, 1, 0);
 	glTranslatef(0, 10, 0);
-	SensorRight.Draw();
+	SensorLeft2.Draw();
 	glPopMatrix();
 
 	glPushMatrix();
-	glRotatef(0, 0, 1, 0);
+	glRotatef(-80, 0, 1, 0);
 	glTranslatef(0, 10, 0);
-	SensorFront.Draw();
+	SensorRight1.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-40, 0, 1, 0);
+	glTranslatef(0, 10, 0);
+	SensorRight2.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(10, 0, 1, 0);
+	glTranslatef(0, 10, 0);
+	SensorFront1.Draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-10, 0, 1, 0);
+	glTranslatef(0, 10, 0);
+	SensorFront2.Draw();
 	glPopMatrix();
 
 
